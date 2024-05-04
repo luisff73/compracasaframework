@@ -5,7 +5,7 @@
     $path = $_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/';
     include($path . "utils/common.inc.php");
     //include($path . "utils/mail.inc.php");
-    include($path . "paths.php");
+    //include($path . "paths.php");
 
     // ob_start();
     // session_start();
@@ -53,7 +53,7 @@
         
         private function loadModule() {    //Carga el modulo controlador especificado en la url
              if (file_exists('resources/modules.xml')) { //comprueba si existe el archivo modules.xml
-                echo ('el fichero existe');
+                //echo ('el fichero existe');
                  $modules = simplexml_load_file('resources/modules.xml'); //carga el archivo modules.xml
                  foreach ($modules as $row) {   //recorre el archivo modules.xml
                      if (in_array($this -> uriModule, (Array) $row -> uri)) { //comprueba si el modulo existe
@@ -99,8 +99,5 @@
     // patron singleton para obtener una instancia de la clase router
     // luego llama al metodo routingStart que inicia el enrutamiento 
     // y determina que modulo y que funcion cargar
-
     
     router::getInstance() -> routingStart();
-
-    //echo 'hola';

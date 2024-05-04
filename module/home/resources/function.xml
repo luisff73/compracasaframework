@@ -13,7 +13,23 @@
         <uri>category</uri>
     </function>
     <function>
+        <name>city</name>
+        <uri>city</uri>
+    </function>
+    <function>
         <name>type</name>
         <uri>type</uri>
+    </function>
+    <function>
+        <name>operation</name>
+        <uri>operation</uri>
+    </function>
+    <function>
+        <name>mas_visitadas</name>
+        <uri>mas_visitadas</uri>
+    </function>
+    <function>
+        <name>ultimas_busquedas</name>
+        <uri>ultimas_busquedas</uri>
     </function>
 </functions>

@@ -9,6 +9,8 @@
         }
         
         public static function load_view($topPage, $view) {
+            //funcion para cargar la vista del home
+            //comprobamos que existen los archivos top_page_home.html y home.html
             $topPage = VIEW_PATH_INC . $topPage;
             if ((file_exists($topPage)) && (file_exists($view))) {
                 require_once ($topPage);
@@ -28,10 +30,11 @@
                 require_once ($path);
                 if (method_exists($model, $function)) {
                     $obj = $model::getInstance();
-                    if ($args != null) {
-                        return call_user_func(array($obj, $function), $args);
-                    }
-                    return call_user_func(array($obj, $function));
+                    // if ($args != null) {
+                    //     return call_user_func(array($obj, $function), $args);
+                    // }
+                    // return call_user_func(array($obj, $function));
+                    return $obj;
                 }
             }
             throw new Exception();
