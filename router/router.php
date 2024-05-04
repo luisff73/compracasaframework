@@ -1,11 +1,11 @@
 <?php
 
-    // require 'autoload.php';
-    
-    // // $path = $_SERVER['DOCUMENT_ROOT'] . '/Ejercicios/Framework_PHP_OO_MVC/';
-    // // include($path . "utils/common.inc.php");
-    // // include($path . "utils/mail.inc.php");
-    // // include($path . "paths.php");
+    require 'autoload.php';
+        
+    $path = $_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/';
+    include($path . "utils/common.inc.php");
+    //include($path . "utils/mail.inc.php");
+    include($path . "paths.php");
 
     // ob_start();
     // session_start();
@@ -51,22 +51,25 @@
             }
         }
         
-        private function loadModule() {    //Carga el modulo controlador
-            //  if (file_exists('resources/modules.xml')) {
-            //      $modules = simplexml_load_file('resources/modules.xml');
-            //      foreach ($modules as $row) {
-            //          if (in_array($this -> uriModule, (Array) $row -> uri)) {
-            //              $path = MODULES_PATH . $row -> name . '/controller/controller_' . (String) $row -> name . '.class.php';
-            //              if (file_exists($path)) {  //comprueba si existe el archivo del controlador 
-            //                  require_once($path);
-            //                  $controllerName = 'controller_' . (String) $row -> name;
-            //                  $this -> nameModule = (String) $row -> name;
-            //                  return new $controllerName;
-            //              }
-            //          }
-            //      } 
-            //  }
-            //  throw new Exception('Not Module found.');
+        private function loadModule() {    //Carga el modulo controlador especificado en la url
+             if (file_exists('resources/modules.xml')) { //comprueba si existe el archivo modules.xml
+                echo ('el fichero existe');
+                 $modules = simplexml_load_file('resources/modules.xml'); //carga el archivo modules.xml
+                 foreach ($modules as $row) {   //recorre el archivo modules.xml
+                     if (in_array($this -> uriModule, (Array) $row -> uri)) { //comprueba si el modulo existe
+                       echo $modules;
+                        //construye la ruta al archivo del controlador con la constante MODULES_PATH
+                         $path = MODULES_PATH . $row -> name . '/controller/controller_' . (String) $row -> name . '.class.php'; 
+                         if (file_exists($path)) {  //comprueba si existe el archivo del controlador 
+                             require_once($path);
+                             $controllerName = 'controller_' . (String) $row -> name;
+                             $this -> nameModule = (String) $row -> name;
+                             return new $controllerName;
+                         }
+                     }
+                 } 
+             }
+             throw new Exception('Not Module found.');
 
             // cargamos el controlador de la pagina de contacto
             $path = 'module/contact/controller/controller_contact.class.php';
@@ -78,16 +81,16 @@
         }
         
         private function loadFunction() {
-            // $path = MODULES_PATH . $this -> nameModule . '/resources/function.xml'; 
-            // if (file_exists($path)) {
-            //     $functions = simplexml_load_file($path);
-            //     foreach ($functions as $row) {
-            //         if (in_array($this -> uriFunction, (Array) $row -> uri)) {
-            //             return (String) $row -> name;
-            //         }
-            //     }
-            // }
-            // throw new Exception('Not Function found.');
+            $path = MODULES_PATH . $this -> nameModule . '/resources/function.xml'; 
+            if (file_exists($path)) {
+                $functions = simplexml_load_file($path);
+                foreach ($functions as $row) {
+                    if (in_array($this -> uriFunction, (Array) $row -> uri)) {
+                        return (String) $row -> name;
+                    }
+                }
+            }
+            throw new Exception('Not Function found.');
             return (String) 'view';
         }
     }
