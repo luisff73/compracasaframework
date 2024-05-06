@@ -7,8 +7,8 @@
     //include($path . "utils/mail.inc.php");
     //include($path . "paths.php");
 
-    // ob_start();
-    // session_start();
+    ob_start();
+    session_start();
 
     class router {
         private $uriModule;
@@ -30,14 +30,22 @@
         function __construct() {   
             if(isset($_GET['module'])){
                 $this -> uriModule = $_GET['module'];  //module es el nombre del modulo que viene del loadmenu en el main.js
+                //error_log($this -> uriModule);
             }else{
                 $this -> uriModule = 'home';
             }
             if(isset($_GET['op'])){
                 $this -> uriFunction = ($_GET['op'] === "") ? 'view' : $_GET['op'];
+                //error_log($this -> uriFunction);
             }else{
                 $this -> uriFunction = 'view';
             }
+                // Imprime el valor de uriModule
+
+    // echo $this -> uriModule;
+
+
+
         }
     
         function routingStart() {
@@ -80,7 +88,7 @@
 
         }
         
-        private function loadFunction() {
+        private function loadFunction() { //Carga la función del controlador especificada en la url
             $path = MODULES_PATH . $this -> nameModule . '/resources/function.xml'; 
             if (file_exists($path)) {
                 $functions = simplexml_load_file($path);
