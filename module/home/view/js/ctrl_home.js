@@ -1,7 +1,9 @@
 
 function carousel_operation() {
     //ajaxPromise('module/home/controller/ctrl_home.php?op=homepageoperation', 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
-    ajaxPromise(friendlyURL("?module=home&op=carousel"), 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
+    //ajaxPromise(friendlyURL("?module=home&op=carousel"), 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
+    ajaxPromise("?module=home&op=carousel", 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
+
         .then(function (data) {
             for (row in data) {
                 $('<div></div>').attr('class', "carousel__elements").attr('id', data[row].id_operation).appendTo(".carousel_operaciones")
@@ -27,12 +29,14 @@ function carousel_operation() {
 
         })
         .catch(function () {
+            console.log('Error en la carga del carrusel de operaciones');
             //window.location.href = "index.php?module=ctrl_exceptions&op=503&type=503&lugar=Carrousel_Brand HOME";
         });
 }
 function loadCategories() {
     //ajaxPromise('module/home/controller/ctrl_home.php?op=homepagecategory', 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
-    ajaxPromise(friendlyURL("?module=home&op=category"), 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
+    // ajaxPromise(friendlyURL("?module=home&op=category"), 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
+    ajaxPromise("?module=home&op=category", 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
         .then(function (data) {
             for (row in data) {
 
@@ -49,12 +53,14 @@ function loadCategories() {
                     )
             }
         }).catch(function () {
+            console.log('Error en la carga de las categorias');
             //window.location.href = "index.php?module=ctrl_exceptions&op=503&type=503&lugar=Type_Categories HOME";
         });
 }
 function loadcatcity() {
     //ajaxPromise('module/home/controller/ctrl_home.php?op=homepagecity', 'GET', 'JSON')
-    ajaxPromise(friendlyURL("?module=home&op=city"), 'GET', 'JSON')
+    //ajaxPromise(friendlyURL("?module=home&op=city"), 'GET', 'JSON')
+    ajaxPromise("?module=home&op=city", 'GET', 'JSON')
         .then(function (data) {
             for (row in data) {
                 $('<div></div>').attr('class', "div_city").attr({ 'id': data[row].id_city }).appendTo('#containercity')
@@ -75,7 +81,8 @@ function loadcatcity() {
 }
 function loadCatTypes() {
     //ajaxPromise('module/home/controller/ctrl_home.php?op=homepagetype', 'GET', 'JSON')
-    ajaxPromise(friendlyURL("?module=home&op=type"), 'GET', 'JSON')
+    //ajaxPromise(friendlyURL("?module=home&op=type"), 'GET', 'JSON')
+    ajaxPromise("?module=home&op=type", 'GET', 'JSON')
         .then(function (data) {
             for (row in data) {
                 $('<div></div>').attr('class', "div_type").attr({ 'id': data[row].id_type }).appendTo('#containertype')
@@ -97,7 +104,8 @@ function loadCatTypes() {
 }
 function loadoperation() {
     //ajaxPromise('module/home/controller/ctrl_home.php?op=homepageoperation', 'GET', 'JSON')
-    ajaxPromise(friendlyURL("?module=home&op=operation"), 'GET', 'JSON')
+    //ajaxPromise(friendlyURL("?module=home&op=operation"), 'GET', 'JSON')
+    ajaxPromise("?module=home&op=operation", 'GET', 'JSON')
         .then(function (data) {
             for (row in data) {
                 $('<div></div>').attr('class', "div_operation").attr({ 'id': data[row].id_operation }).appendTo('#containeroperation')
@@ -117,10 +125,9 @@ function loadoperation() {
         });
 }
 function mas_visitadas() {
-
-
     //ajaxPromise('module/home/controller/ctrl_home.php?op=mas_visitadas', 'GET', 'JSON')
-    ajaxPromise(friendlyURL("?module=home&op=mas_visitadas"), 'GET', 'JSON')
+    //ajaxPromise(friendlyURL("?module=home&op=mas_visitadas"), 'GET', 'JSON')
+    ajaxPromise("?module=home&op=mas_visitadas", 'GET', 'JSON')
         .then(function (data) {
             for (row in data) {
                 $('<div></div>').attr('class', "div_busquedas").attr({ 'id': data[row].id_vivienda }).appendTo('#containermasvisitadas')
@@ -146,7 +153,8 @@ function ultimas_busquedas() {
 
 
     //ajaxPromise('module/home/controller/ctrl_home.php?op=ultimas_busquedas', 'GET', 'JSON', { filters_shop })
-    ajaxPromise(friendlyURL("?module=home&op=ultimas_busquedas"), 'GET', 'JSON', { filters_shop })
+    //ajaxPromise(friendlyURL("?module=home&op=ultimas_busquedas"), 'GET', 'JSON', { filters_shop })
+    ajaxPromise("?module=home&op=ultimas_busquedas", 'GET', 'JSON', { filters_shop })
         .then(function (data) {
             for (row in data) {
                 $('<div></div>').attr('class', "div_busquedas").attr({ 'id': data[row].id_vivienda }).appendTo('#containerbusquedas')

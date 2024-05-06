@@ -27,8 +27,6 @@ function ajaxPromises(sUrl, sType, sTData, sData = undefined) {
 //================LOAD-HEADER================
 function load_menuold() {
     var accestoken = localStorage.getItem('accestoken');
-
-
     if (accestoken) { //si hay un valor en token
 
         ajaxPromises('module/login/controller/ctrl_login.php?op=data_user', 'POST', 'JSON', { 'accestoken': accestoken })
@@ -72,22 +70,43 @@ function load_menuold() {
 
 /* ========================== LOAD MENU ============================*/
 function load_menu() {
+
     $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=home&op=view") + '" class="nav_link">Home</a>').appendTo('.nav_list');
-    $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=shop&op=view") + '" class="nav_link">Shop</a>').appendTo('.nav_list');
+    //$('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=shop&op=view") + '" class="nav_link">Shop</a>').appendTo('.nav_list');
     //$('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=contact&op=view") + '" class="nav_link">Contact us</a>').appendTo('.nav_list');
     //$('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=contact") + '" class="nav_link">Contact us</a>').appendTo('.nav_list');
 
-    ajaxPromise(friendlyURL('?module=login&op=data_user'), 'POST', 'JSON', { token: localStorage.getItem('token') })
-        .then(function (data) {
-            if (data[0].user_type === 'admin') {
-                menu_admin();
-            } else if (data[0].user_type === 'client') {
-                menu_client();
-            }
-            click_profile(data[0]);
-        }).catch(function () {
-            $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=login&op=view") + '" class="nav_link" data-tr="Log in">Log in</a>').appendTo('.nav_list');
-        });
+    // ajaxPromise(friendlyURL('?module=login&op=data_user'), 'POST', 'JSON', { token: localStorage.getItem('accesstoken') })
+    //     //ajaxPromises('?module/login/controller/ctrl_login.php?op=data_user', 'POST', 'JSON', { 'accestoken': accestoken })
+
+    //     .then(function (data) {
+    //         alert('data: ' + data[0].user_type);
+    //         if (data.type_user == "client") {
+    //             console.log("Cliente logeado");
+    //             $('#login-register').empty();
+    //             // $('.opc_CRUD').empty();
+    //             // $('.opc_exceptions').empty();
+    //         } else {
+    //             console.log("Admin loged");
+    //             // $('.opc_CRUD').show();
+    //             // $('.opc_exceptions').show();
+    //         }
+
+    //             $('.log-icon').empty();
+    //             $('#user_info').empty();
+    //             $('login-register').empty();
+    //             $('<img src="' + data.avatar + '"alt="Robot">').appendTo('.log-icon');
+    //             $('<p></p>').attr({ 'id': 'username' }).appendTo('#des_inf_user')
+    //                 .html('<a>' + data.username + '<a/>&nbsp;&nbsp;' +
+    //                     '<a id="logout"><i id="icon-logout" class="fa-solid fa-right-from-bracket"></i></a>'
+    //                 )
+
+
+    //         //click_profile(data[0]);
+    //     }).catch(function () {
+    //         alert('Error al cargar los datos del usuario');
+    //         $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=login&op=view") + '" class="nav_link" data-tr="Log in">Log in</a>').appendTo('.nav_list');
+    //     });
 }
 
 
@@ -126,7 +145,23 @@ function click_shop() {
     });
 }
 
-
+/* FRIENDLY URL */
+function friendlyURL(url) {
+    var link = "";
+    url = url.replace("?", "");
+    url = url.split("&");
+    cont = 0;
+    for (var i = 0; i < url.length; i++) {
+        cont++;
+        var aux = url[i].split("=");
+        if (cont == 2) {
+            link += "/" + aux[1] + "/";
+        } else {
+            link += "/" + aux[1];
+        }
+    }
+    return "http://localhost/compracasaframework" + link;
+}
 
 
 
@@ -135,6 +170,6 @@ function click_shop() {
 
 $(document).ready(function () {
     load_menu();
-    click_logout();
-    click_shop();
+    //click_logout();
+    //click_shop();
 });
