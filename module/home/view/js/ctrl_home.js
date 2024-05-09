@@ -1,6 +1,5 @@
 
 function carousel_operation() {
-    //ajaxPromise('module/home/controller/ctrl_home.php?op=homepageoperation', 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
     //ajaxPromise(friendlyURL("?module=home&op=carousel"), 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
     ajaxPromise("?module=home&op=carousel", 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
 
@@ -34,7 +33,6 @@ function carousel_operation() {
         });
 }
 function loadCategories() {
-    //ajaxPromise('module/home/controller/ctrl_home.php?op=homepagecategory', 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
     // ajaxPromise(friendlyURL("?module=home&op=category"), 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
     ajaxPromise("?module=home&op=category", 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
         .then(function (data) {
@@ -58,7 +56,6 @@ function loadCategories() {
         });
 }
 function loadcatcity() {
-    //ajaxPromise('module/home/controller/ctrl_home.php?op=homepagecity', 'GET', 'JSON')
     //ajaxPromise(friendlyURL("?module=home&op=city"), 'GET', 'JSON')
     ajaxPromise("?module=home&op=city", 'GET', 'JSON')
         .then(function (data) {
@@ -80,7 +77,6 @@ function loadcatcity() {
         });
 }
 function loadCatTypes() {
-    //ajaxPromise('module/home/controller/ctrl_home.php?op=homepagetype', 'GET', 'JSON')
     //ajaxPromise(friendlyURL("?module=home&op=type"), 'GET', 'JSON')
     ajaxPromise("?module=home&op=type", 'GET', 'JSON')
         .then(function (data) {
@@ -103,7 +99,6 @@ function loadCatTypes() {
         });
 }
 function loadoperation() {
-    //ajaxPromise('module/home/controller/ctrl_home.php?op=homepageoperation', 'GET', 'JSON')
     //ajaxPromise(friendlyURL("?module=home&op=operation"), 'GET', 'JSON')
     ajaxPromise("?module=home&op=operation", 'GET', 'JSON')
         .then(function (data) {
@@ -125,7 +120,6 @@ function loadoperation() {
         });
 }
 function mas_visitadas() {
-    //ajaxPromise('module/home/controller/ctrl_home.php?op=mas_visitadas', 'GET', 'JSON')
     //ajaxPromise(friendlyURL("?module=home&op=mas_visitadas"), 'GET', 'JSON')
     ajaxPromise("?module=home&op=mas_visitadas", 'GET', 'JSON')
         .then(function (data) {
@@ -152,7 +146,6 @@ function ultimas_busquedas() {
     var filters_shop = localStorage.getItem('filters_shop');
 
 
-    //ajaxPromise('module/home/controller/ctrl_home.php?op=ultimas_busquedas', 'GET', 'JSON', { filters_shop })
     //ajaxPromise(friendlyURL("?module=home&op=ultimas_busquedas"), 'GET', 'JSON', { filters_shop })
     ajaxPromise("?module=home&op=ultimas_busquedas", 'GET', 'JSON', { filters_shop })
         .then(function (data) {
@@ -185,7 +178,8 @@ function clicks() { //función que se encarga de redirigir a la página de shop 
         //localStorage.setItem('filters_home', JSON.stringify(filters_home))
         localStorage.setItem('filters_shop', JSON.stringify(filters_home));
         setTimeout(function () {
-            window.location.href = 'index.php?page=ctrl_shop&op=list'; //redirige a la página de shop con la opcion de ver los productos filtrados.
+            //window.location.href = 'index.php?page=ctrl_shop&op=list'; //redirige a la página de shop con la opcion de ver los productos filtrados.
+            window.location.href = '?module=shop&op=list'; //redirige a la página de shop con la opcion de ver los productos filtrados.
         }, 200);
     });
 
@@ -197,7 +191,7 @@ function clicks() { //función que se encarga de redirigir a la página de shop 
         //localStorage.setItem('filters_home', JSON.stringify(filters_home));
         localStorage.setItem('filters_shop', JSON.stringify(filters_home));
         setTimeout(function () {
-            window.location.href = 'index.php?page=ctrl_shop&op=list'; //redirige a la página de shop con la opcion de ver los productos filtrados.
+            window.location.href = '?module=shop&op=list'; //redirige a la página de shop con la opcion de ver los productos filtrados.
         }, 200);
     });
 
@@ -209,7 +203,7 @@ function clicks() { //función que se encarga de redirigir a la página de shop 
         //localStorage.setItem('filters_home', JSON.stringify(filters_home));
         localStorage.setItem('filters_shop', JSON.stringify(filters_home));
         setTimeout(function () {
-            window.location.href = 'index.php?page=ctrl_shop&op=list'; //redirige a la página de shop con la opcion de ver los productos filtrados.
+            window.location.href = '?module=shop&op=list'; //redirige a la página de shop con la opcion de ver los productos filtrados.
         }, 200);
     });
 
@@ -221,7 +215,7 @@ function clicks() { //función que se encarga de redirigir a la página de shop 
         //localStorage.setItem('filters_home', JSON.stringify(filters_home));
         localStorage.setItem('filters_shop', JSON.stringify(filters_home));
         setTimeout(function () {
-            window.location.href = 'index.php?page=ctrl_shop&op=list'; //redirige a la página de shop con la opcion de ver los productos filtrados.
+            window.location.href = '?module=shop&op=list'; //redirige a la página de shop con la opcion de ver los productos filtrados.
         }, 200);
     });
 

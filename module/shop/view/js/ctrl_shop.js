@@ -84,8 +84,6 @@ function ajaxForSearch(url, type, dataType, sData = undefined, offset = 0, items
             console.log('error catch');
         });
 }
-
-
 function loadviviendas() {
 
     //var verificate_filters_home = localStorage.getItem('filters_home') || undefined; //si no hay un valor, devuelve une valor undefined
@@ -100,7 +98,9 @@ function loadviviendas() {
     //} else 
     if (verificate_filters_shop != undefined) {
         var filters = JSON.parse(verificate_filters_shop); // convierte la variable json a un objeto de javascript pasamos del string al objeto array
-        ajaxForSearch('module/shop/controller/ctrl_shop.php?op=filters_shop', 'POST', 'JSON', { 'filters': filters, 'offset': offset, 'items_page': items_page }); // si es distinta de false carga los filtros de la página de shop
+        // sin array ajaxForSearch('?module=shop&op=filters_shop', 'POST', 'JSON', { 'filters': filters, 'offset': offset, 'items_page': items_page }); // si es distinta de false carga los filtros de la página de shop
+        ajaxForSearch('?module=shop&op=filters_shop', 'POST', 'JSON', [{ 'filters': filters, 'offset': offset, 'items_page': items_page }]); // si es distinta de false carga los filtros de la página de shop
+
     } else {
         // if (verificate_filters_search != undefined) {
         //     alert('valor de filters_search en load viviendas' + verificate_filters_search)
@@ -110,8 +110,8 @@ function loadviviendas() {
         // } else {
 
         //console.log('no hay filtros en load viviendas');
-        ajaxForSearch('module/shop/controller/ctrl_shop.php?op=all_viviendas', 'POST', 'JSON', { 'filters': filters, 'offset': offset, 'items_page': items_page }); // si no carga todas las viviendas
-
+        // sin arrary ajaxForSearch('?module=shop&op=all_viviendas', 'POST', 'JSON', { 'filters': filters, 'offset': offset, 'items_page': items_page }); // si no carga todas las viviendas
+        ajaxForSearch('?module=shop&op=all_viviendas', 'POST', 'JSON', [{ 'filters': filters }, { 'offset': offset }, { 'items_page': items_page }]);
     }
 }
 function mapBox(id) {
@@ -289,7 +289,6 @@ function loadDetails(id_vivienda) {
         });
 }
 function print_filters() {
-
     // Creamos un nuevo elemento <div> con la clase "div-filters" y luego lo agregamos como un hijo al elemento con la clase "filters".
     $('<div class="div-filters"></div>').appendTo('.filters_shop_html') //añadimos un div con la clase div-filters a la clase filters
         .html(
@@ -366,6 +365,7 @@ function print_filters() {
             '<button class="filter_button button_spinner" id="Button_filter">Filter</button>' +
             '<button class="filter_remove" id="Remove_filter">Remove</button>');
 }
+
 document.addEventListener('DOMContentLoaded', (event) => {
     var modal = document.getElementById("modal_estado");//obtenemos el modal
     var btn = document.getElementById("openModalEstado");//obtenemos el boton que abre el modal
@@ -549,9 +549,9 @@ function remove_filters() {
 }
 function loadCategoriesfilter() {
 
-    ajaxPromise('module/shop/controller/ctrl_shop.php?op=select_categories', 'GET', 'JSON')
+    ajaxPromise('?module=shop&op=select_categories', 'GET', 'JSON')
         .then(function (data) {
-            //console.log(data);
+            console.log('valor de data en categories'.data);
             for (let category of data) {
                 $('<option></option>').attr('value', category.id_category).text(category.category_name).appendTo('#select_category');
             }
@@ -562,7 +562,7 @@ function loadCategoriesfilter() {
 }
 function loadOperationfilter() {
 
-    ajaxPromise('module/shop/controller/ctrl_shop.php?op=select_operation', 'GET', 'JSON')
+    ajaxPromise('?module=shop&op=select_operation', 'GET', 'JSON')
         .then(function (data) {
             //console.log(data);
             for (let operation of data) {
@@ -575,7 +575,7 @@ function loadOperationfilter() {
 }
 function loadCityfilter() {
 
-    ajaxPromise('module/shop/controller/ctrl_shop.php?op=select_city', 'GET', 'JSON')
+    ajaxPromise('?module=shop&op=select_city', 'GET', 'JSON')
         .then(function (data) {
             //console.log(data);
             for (let city of data) {
@@ -587,7 +587,7 @@ function loadCityfilter() {
         });
 }
 function loadTypefilter() {
-    ajaxPromise('module/shop/controller/ctrl_shop.php?op=select_type', 'GET', 'JSON')
+    ajaxPromise('?module=shop&op=select_type', 'GET', 'JSON')
         .then(function (data) {
             //console.log(data);
             for (let type of data) {// recorremos el array de objetos
@@ -600,7 +600,7 @@ function loadTypefilter() {
 }
 function loadPricefilter() {
     // no se utiliza de momento por que no es dinamico.
-    ajaxPromise('module/shop/controller/ctrl_shop.php?op=select_price', 'GET', 'JSON')
+    ajaxPromise('?module=shop&op=select_price', 'GET', 'JSON')
         .then(function (data) {
             console.log(data);
             for (let price of data) {
@@ -758,7 +758,6 @@ function more_viviendas_related(id_city) {
         });
     $('html, body').animate({ scrollTop: $(".wrap") });
 }
-
 function clicks_details_related() {
     $(document).on("click", ".related_viviendas", function () {
         //  $('<div></div>').attr({ 'id': data[row].id_vivienda, 'class': 'more_info_list' }).appendTo('.viviendas_content')
@@ -776,7 +775,6 @@ function clicks_details_related() {
             });
     });
 }
-
 function click_like() {
     $(document).on("click", "#boton_like", function () {
         var id_vivienda = $(this).data('id-vivienda');
@@ -834,12 +832,12 @@ $(document).ready(function () {
     loadTypefilter();
     //loadPricefilter(); //De momento no es dinamico
     loadviviendas();
-    clicks_details();
-    clicks_details_related();
-    filter_button();
-    pagination();
-    click_like();
-    //highlightFilters();
+    //clicks_details();
+    //clicks_details_related();
+    //filter_button();
+    //pagination();
+    //click_like();
+
 });
 
 
