@@ -1,2 +1,0 @@
-- http://localhost/compracasaframework/index.php?module=contact&op=view   
-                                  

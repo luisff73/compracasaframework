@@ -86,32 +86,17 @@ function ajaxForSearch(url, type, dataType, sData = undefined, offset = 0, items
 }
 function loadviviendas() {
 
-    //var verificate_filters_home = localStorage.getItem('filters_home') || undefined; //si no hay un valor, devuelve une valor undefined
     var verificate_filters_shop = localStorage.getItem('filters_shop') || undefined; //si no hay un valor, devuelve une valor undefined
-    //var verificate_filters_search = localStorage.getItem('filters_search') || undefined; //si no hay un valor, devuelve une valor undefined
     var offset = 0;
     var items_page = 3;
 
-    //if (verificate_filters_home != undefined) { // comprueba si la variable verificate_filters es distinta de false (si existe)
-    //    var filters = JSON.parse(verificate_filters_home); // convierte la variable json a un objeto de javascript pasamos del string al objeto array
-    //    ajaxForSearch('module/shop/controller/ctrl_shop.php?op=filters_home', 'POST', 'JSON', { 'filters': filters, 'offset': offset, 'items_page': items_page }); // si es distinta de false carga los filtros de la página de shop
-    //} else 
     if (verificate_filters_shop != undefined) {
         var filters = JSON.parse(verificate_filters_shop); // convierte la variable json a un objeto de javascript pasamos del string al objeto array
-        // sin array ajaxForSearch('?module=shop&op=filters_shop', 'POST', 'JSON', { 'filters': filters, 'offset': offset, 'items_page': items_page }); // si es distinta de false carga los filtros de la página de shop
-        ajaxForSearch('?module=shop&op=filters_shop', 'POST', 'JSON', [{ 'filters': filters, 'offset': offset, 'items_page': items_page }]); // si es distinta de false carga los filtros de la página de shop
+        ajaxForSearch('?module=shop&op=filters_shop', 'POST', 'JSON', { 'filters': filters, 'offset': offset, 'items_page': items_page }); // si es distinta de false carga los filtros de la página de shop
 
     } else {
-        // if (verificate_filters_search != undefined) {
-        //     alert('valor de filters_search en load viviendas' + verificate_filters_search)
-        //     var filters = JSON.parse(verificate_filters_search); // convierte la variable json a un objeto de javascript pasamos del string al objeto array
-        //     ajaxForSearch('module/shop/controller/ctrl_shop.php?op=filters_search', 'POST', 'JSON', { 'filters': filters, 'offset': offset, 'items_page': items_page });
-        //ajaxForSearch('module/shop/controller/ctrl_shop.php?op=filters_search', 'POST', 'JSON', { 'filters': filters }, { 'offset': offset }, { 'items_page': items_page }); // si es distinta de false carga los filtros de la página de shop
-        // } else {
 
-        //console.log('no hay filtros en load viviendas');
-        // sin arrary ajaxForSearch('?module=shop&op=all_viviendas', 'POST', 'JSON', { 'filters': filters, 'offset': offset, 'items_page': items_page }); // si no carga todas las viviendas
-        ajaxForSearch('?module=shop&op=all_viviendas', 'POST', 'JSON', [{ 'filters': filters }, { 'offset': offset }, { 'items_page': items_page }]);
+        ajaxForSearch('?module=shop&op=all_viviendas', 'POST', 'JSON', { 'offset': offset, 'items_page': items_page }); // si no carga todas las viviendas
     }
 }
 function mapBox(id) {
