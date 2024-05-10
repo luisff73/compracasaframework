@@ -71,8 +71,8 @@
             INNER JOIN city ci ON v.id_city = ci.id_city 
             INNER JOIN type t ON v.id_type = t.id_type 
             LEFT JOIN likes l on v.id_vivienda=l.id_vivienda
-            LEFT JOIN adapted a ON v.id_vivienda = a.id_vivienda where v.id_vivienda>0 group by v.id_vivienda;";
-            //LEFT JOIN adapted a ON v.id_vivienda = a.id_vivienda where v.id_vivienda>0 group by v.id_vivienda LIMIT $offset,$items_page;";
+            LEFT JOIN adapted a ON v.id_vivienda = a.id_vivienda where v.id_vivienda>0 group by v.id_vivienda LIMIT $offset,$items_page;";
+            //LEFT JOIN adapted a ON v.id_vivienda = a.id_vivienda where v.id_vivienda>0 group by v.id_vivienda;";
             $stmt = $db -> ejecutar($sql);
             return $db -> listar($stmt);
             
@@ -112,7 +112,76 @@
             return $db -> listar($stmt);
             
         }
+        public function select_count_all_viviendas($db) {
 
+            $sql = "SELECT COUNT(*) as contador FROM viviendas;";
+
+            $stmt = $db -> ejecutar($sql);
+            return $db -> listar($stmt);
+            
+        }
+
+        public function select_filters_home($db, $filters, $offset, $items_page) {
+
+            $select = "SELECT v.id_vivienda, v.vivienda_name, ci.city_name, v.state, v.status, v.vivienda_price, 
+            v.description, v.image_name, v.m2, v.long, v.lat, c.category_name, o.operation_name, t.type_name, 
+            c.id_category, o.id_operation, ci.id_city, t.id_type, a.adapted, count(l.id_vivienda) as total_likes  
+            FROM viviendas v 
+            INNER JOIN category c ON v.id_category = c.id_category 
+            INNER JOIN operation o ON v.id_operation = o.id_operation 
+            INNER JOIN city ci ON v.id_city = ci.id_city 
+            INNER JOIN type t ON v.id_type = t.id_type 
+            LEFT JOIN adapted a ON v.id_vivienda = a.id_vivienda 
+            LEFT JOIN likes l on v.id_vivienda=l.id_vivienda
+            WHERE v.id_vivienda>0";
+
+            if (isset($filters[0][0]) && $filters[0][0] == 'id_operation') {  // Si el array de filtros contiene el índice id_operation((iel isset obliga)
+                $add_filter = $filters[0][1];
+                $select .= " and o.id_operation = '$add_filter'";
+            } else if (isset($filters[0][0]) && $filters[0][0] =='id_category') { // Si el array de filtros contiene el índice id_category
+                $add_filter = $filters[0][1];
+                $select .= " and c.id_category = '$add_filter'";
+            } else if (isset($filters[0][0]) && $filters[0][0] =='id_city') { // Si el array de filtros contiene el índice id_city
+                $add_filter = $filters[0][1];
+                $select .= " and ci.id_city = '$add_filter'";
+            } else if (isset($filters[0][0]) && $filters[0][0] =='id_type') { // Si el array de filtros contiene el índice id_type
+                $add_filter = $filters[0][1];
+                $select .= " and t.id_type = '$add_filter'";
+            } else if (isset($filters[0][0]) && $filters[0][0] =='adapted') { // Si el array de filtros contiene el índice adapted
+                $add_filter = $filters[0][1];
+                $select .= " and a.adapted = '$add_filter'";
+            } else if (isset($filters[0][0]) && $filters[0][0] =='vivienda_price') { // Si el array de filtros contiene el índice vivienda_price
+                $add_filter = $filters[0][1];
+                $select .= " and v.vivienda_price = '$add_filter'";
+            } else if (isset($filters[0]['filter_order'])) { // Si el array de filtros contiene el índice filter_order
+                $add_filter = $filters[0][1];
+                $select .= " ORDER BY v.vivienda_price $add_filter";
+            }
+            $select .= " GROUP BY v.id_vivienda";
+            $select .= " LIMIT $offset,$items_page";
+
+            $stmt = $db -> ejecutar($select);
+            //return $db -> listar($stmt);
+
+            $retrArray = array();
+            if ($stmt->num_rows > 0) {
+                while ($row = mysqli_fetch_assoc($stmt)) {
+                    $retrArray[] = $row;
+                }
+            }
+            //return $select; //Esto no devuelve $select, con estro comprobamos que resuelve ajaxs desde el console.log
+            return $retrArray;
+            
+        }
+
+        public function select_details_viviendas($db) {  // PENDIENTE
+
+            $sql = "SELECT DISTINCT v.vivienda_price FROM viviendas v";
+
+            $stmt = $db -> ejecutar($sql);
+            return $db -> listar($stmt);
+            
+        }
         public function select_price($db) {
 
             $sql = "SELECT DISTINCT v.vivienda_price FROM viviendas v";
@@ -121,11 +190,52 @@
             return $db -> listar($stmt);
             
         }
+        public function select_incrementa_visita($db,$id) {
+
+            $sql = "UPDATE most_visited SET visitas = visitas + 1 WHERE id_vivienda = '$id';";
+
+            $stmt = $db -> ejecutar($sql);
+            return $db -> listar($stmt);
+            
+        }
+
+        public function select_viviendas_related($db,$id_city,$offset,$items) {
+
+            $sql = "SELECT v.id_vivienda,v.vivienda_name,v.long,v.lat,ci.city_name,state,status,v.vivienda_price,
+            v.description,v.image_name,v.m2,c.category_name,o.operation_name, t.type_name,a.adapted, ci.city_name
+            FROM viviendas v 
+            INNER JOIN category c ON v.id_category = c.id_category 
+            INNER JOIN operation o ON v.id_operation = o.id_operation 
+            INNER JOIN city ci ON v.id_city = ci.id_city 
+            INNER JOIN type t ON v.id_type = t.id_type 
+            LEFT JOIN adapted a ON v.id_vivienda = a.id_vivienda 
+            WHERE ci.id_city = '$id_city' 
+            LIMIT $offset, $items";
 
 
-        public function select_data_mas_visitadas($db) {
+            $stmt = $db -> ejecutar($sql);
+            return $db -> listar($stmt);
+            
+        }   
+        public function select_count_viviendas_related($db,$id_city,$offset,$items) {
 
-            $sql = "SELECT DISTINCT v.id_vivienda,v.vivienda_name,ci.city_name,state,status,v.vivienda_price,v.description,v.image_name,v.m2,c.category_name,o.operation_name, t.type_name,a.adapted, vv.visitas FROM viviendas v INNER JOIN category c ON v.id_category = c.id_category INNER JOIN operation o ON v.id_operation = o.id_operation INNER JOIN city ci ON v.id_city = ci.id_city INNER JOIN type t ON v.id_type = t.id_type LEFT JOIN adapted a ON v.id_vivienda = a.id_vivienda INNER JOIN most_visited vv ON v.id_vivienda=vv.id_vivienda order by vv.visitas desc;";
+            $sql = "SELECT COUNT(*) AS num_viviendas,v.id_vivienda,v.vivienda_name,v.long,v.lat,ci.city_name,state,status,v.vivienda_price,
+            v.description,v.image_name,v.m2,c.category_name,o.operation_name, t.type_name,a.adapted 
+            FROM viviendas v 
+            INNER JOIN category c ON v.id_category = c.id_category 
+            INNER JOIN operation o ON v.id_operation = o.id_operation 
+            INNER JOIN city ci ON v.id_city = ci.id_city 
+            INNER JOIN type t ON v.id_type = t.id_type 
+            LEFT JOIN adapted a ON v.id_vivienda = a.id_vivienda WHERE ci.id_city = '$id_city'";
+
+            $stmt = $db -> ejecutar($sql);
+            return $db -> listar($stmt);
+            
+        }   
+
+        public function select_incrementa_like($db,$id_vivienda,$id_user) {
+
+            $sql = "CALL ACTUALIZA_LIKES('$id_vivienda', '$id_user');";
 
             $stmt = $db -> ejecutar($sql);
             return $db -> listar($stmt);

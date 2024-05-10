@@ -1,39 +1,37 @@
 <?php
+
+$path = $_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/';
+include($path . "model/JWT.php"); // INCLUIMOS LA LIBRERIA JWT  
+
 class middleware{
-    public static function decode_username($get_token){
-		$jwt = parse_ini_file(UTILS . "jwt.ini");
-		$secret = $jwt['secret'];
-		$token = $get_token;
 
-		$JWT = new JWT;
-		$json = $JWT -> decode($token, $secret);
-		$json = json_decode($json, TRUE);
-
-        $decode_user = $json['name'];
-        return $decode_user;
+    public static function decode_token($token){
+        $jwt = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/model/jwt.ini');
+        $secret = $jwt['secret'];
+        $JWT = new JWT;
+        $token_dec = $JWT->decode($token, $secret);
+        $rt_token = json_decode($token_dec, TRUE);
+        //json_decode en una funcion de php que convierte un string json en un array asociativo
+        return $rt_token;
+    
     }
-
-	public static function decode_exp($get_token){
-		$jwt = parse_ini_file(UTILS . "jwt.ini");
-		$secret = $jwt['secret'];
-		$token = $get_token;
-
-		$JWT = new JWT;
-		$json = $JWT -> decode($token, $secret);
-		$json = json_decode($json, TRUE);
-
-        $decode_exp = $json['exp'];
-        return $decode_exp;
+    public static function create_accestoken($username){
+        $jwt = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/model/jwt.ini');
+        $header = $jwt['header']; // OBTENEMOS EL HEADER DEL ARCHIVO INI
+        $secret = $jwt['secret']; // OBTENEMOS EL SECRET DEL ARCHIVO INI
+        $payload = '{"iat":"' . time() . '","exp":"' . time() + (600) . '","username":"' . $username . '"}';
+        $JWT = new JWT;  // CREACION DE OBJETO JWT
+        $token = $JWT->encode($header, $payload, $secret); // CODIFICAMOS EL TOKEN
+        return $token;
     }
-
-	public static function encode($user) {
-        $jwt = parse_ini_file(UTILS . "jwt.ini");
-
+    public static function create_refreshtoken($username){
+        $jwt = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/model/jwt.ini');
         $header = $jwt['header'];
         $secret = $jwt['secret'];
-        $payload = json_encode(['iat' => time(), 'exp' => time() + (60 * 60), 'name' => $user]);
-
-        $JWT = new jwt();
-        return $JWT -> encode($header, $payload, $secret);
+        $payload = '{"iat":"' . time() . '","exp":"' . time() + (1600) . '","username":"' . $username . '"}';
+        $JWT = new JWT;  // CREACION DE OBJETO JWT
+        $token = $JWT->encode($header, $payload, $secret); // CODIFICAMOS EL TOKEN
+        return $token;
     }
+
 }
