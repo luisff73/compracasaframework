@@ -1,5 +1,4 @@
 <?php
-  require ('module/home/model/DAO/search_dao.class.singleton.php');
 
 	class search_bll {
 		private $dao;
