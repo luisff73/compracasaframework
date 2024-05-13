@@ -5,7 +5,9 @@
     $path = $_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/';
     include($path . "utils/common.inc.php");
     //include($path . "utils/mail.inc.php");
-    //include($path . "paths.php");
+    require($path . "module/search/controller/controller_search.class.php");
+    
+
 
     ob_start();
     session_start();

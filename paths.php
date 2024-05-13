@@ -48,6 +48,7 @@
     define('BLL_SEARCH', SITE_ROOT . 'module/search/model/BLL/');
     define('MODEL_SEARCH', SITE_ROOT . 'module/search/model/model/');
     define('JS_VIEW_SEARCH', SITE_PATH . 'module/search/view/js/');
+    define ('VIEW_PATH_SEARCH', SITE_ROOT . 'module/search/view/');
 
     //MODEL_SHOP
     define('UTILS_SHOP', SITE_ROOT . 'module/shop/utils/');

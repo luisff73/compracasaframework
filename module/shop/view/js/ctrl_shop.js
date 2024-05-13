@@ -818,7 +818,7 @@ $(document).ready(function () {
     print_filters();
     loadCategoriesfilter();
     loadOperationfilter();
-    loadCityfiltfer();
+    loadCityfilter();
     loadTypefilter();
     //loadPricefilter(); //De momento no es dinamico
     loadviviendas();

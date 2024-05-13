@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<functions>
+    <function>
+        <name>view</name>
+        <uri>view</uri>
+    </function>
+    <function>
+        <name>search_operation</name>
+        <uri>search_operation</uri>
+    </function>
+    <function>
+        <name>search_category</name>
+        <uri>search_category</uri>
+    </function>
+    <function>
+        <name>search_category_null</name>
+        <uri>search_category_null</uri>
+    </function>
+    <function>
+        <name>autocomplete</name>
+        <uri>autocomplete</uri>
+    </function>
+</functions>

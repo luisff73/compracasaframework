@@ -4,7 +4,7 @@ function carousel_operation() {
     ajaxPromise("?module=home&op=carousel", 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
 
         .then(function (data) {
-            console.log(data);
+            //console.log(data);
             for (row in data) {
                 $('<div></div>').attr('class', "carousel__elements").attr('id', data[row].id_operation).appendTo(".carousel_operaciones")
                     .html(
@@ -61,7 +61,7 @@ function loadcatcity() {
     ajaxPromise(friendlyURL("?module=home&op=city"), 'GET', 'JSON')
         //ajaxPromise("?module=home&op=city", 'GET', 'JSON')
         .then(function (data) {
-            console.log(data);
+            //console.log(data);
             for (row in data) {
                 $('<div></div>').attr('class', "div_city").attr({ 'id': data[row].id_city }).appendTo('#containercity')
                     .html(
@@ -181,8 +181,8 @@ function clicks() { //función que se encarga de redirigir a la página de shop 
         //localStorage.setItem('filters_home', JSON.stringify(filters_home))
         localStorage.setItem('filters_shop', JSON.stringify(filters_home));
         setTimeout(function () {
-            //window.location.href = 'index.php?page=ctrl_shop&op=list'; //redirige a la página de shop con la opcion de ver los productos filtrados.
-            window.location.href = '?module=shop&op=list'; //redirige a la página de shop con la opcion de ver los productos filtrados.
+            //window.location.href = 'index.php?page=ctrl_shop&op=view'; //redirige a la página de shop con la opcion de ver los productos filtrados.
+            window.location.href = '?module=shop&op=view'; //redirige a la página de shop con la opcion de ver los productos filtrados.
         }, 200);
     });
 
@@ -194,7 +194,7 @@ function clicks() { //función que se encarga de redirigir a la página de shop 
         //localStorage.setItem('filters_home', JSON.stringify(filters_home));
         localStorage.setItem('filters_shop', JSON.stringify(filters_home));
         setTimeout(function () {
-            window.location.href = '?module=shop&op=list'; //redirige a la página de shop con la opcion de ver los productos filtrados.
+            window.location.href = '?module=shop&op=view'; //redirige a la página de shop con la opcion de ver los productos filtrados.
         }, 200);
     });
 
@@ -206,7 +206,7 @@ function clicks() { //función que se encarga de redirigir a la página de shop 
         //localStorage.setItem('filters_home', JSON.stringify(filters_home));
         localStorage.setItem('filters_shop', JSON.stringify(filters_home));
         setTimeout(function () {
-            window.location.href = '?module=shop&op=list'; //redirige a la página de shop con la opcion de ver los productos filtrados.
+            window.location.href = '?module=shop&op=view'; //redirige a la página de shop con la opcion de ver los productos filtrados.
         }, 200);
     });
 
@@ -218,7 +218,7 @@ function clicks() { //función que se encarga de redirigir a la página de shop 
         //localStorage.setItem('filters_home', JSON.stringify(filters_home));
         localStorage.setItem('filters_shop', JSON.stringify(filters_home));
         setTimeout(function () {
-            window.location.href = '?module=shop&op=list'; //redirige a la página de shop con la opcion de ver los productos filtrados.
+            window.location.href = '?module=shop&op=view'; //redirige a la página de shop con la opcion de ver los productos filtrados.
         }, 200);
     });
 
