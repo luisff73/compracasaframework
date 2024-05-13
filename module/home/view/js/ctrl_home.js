@@ -4,6 +4,7 @@ function carousel_operation() {
     ajaxPromise("?module=home&op=carousel", 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
 
         .then(function (data) {
+            console.log(data);
             for (row in data) {
                 $('<div></div>').attr('class', "carousel__elements").attr('id', data[row].id_operation).appendTo(".carousel_operaciones")
                     .html(
@@ -33,8 +34,8 @@ function carousel_operation() {
         });
 }
 function loadCategories() {
-    // ajaxPromise(friendlyURL("?module=home&op=category"), 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
-    ajaxPromise("?module=home&op=category", 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
+    ajaxPromise(friendlyURL("?module=home&op=category"), 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
+        //ajaxPromise("?module=home&op=category", 'GET', 'JSON') //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
         .then(function (data) {
             for (row in data) {
 
@@ -49,6 +50,7 @@ function loadCategories() {
                         "</div>" +
                         "</li>"
                     )
+
             }
         }).catch(function () {
             console.log('Error en la carga de las categorias');
@@ -56,9 +58,10 @@ function loadCategories() {
         });
 }
 function loadcatcity() {
-    //ajaxPromise(friendlyURL("?module=home&op=city"), 'GET', 'JSON')
-    ajaxPromise("?module=home&op=city", 'GET', 'JSON')
+    ajaxPromise(friendlyURL("?module=home&op=city"), 'GET', 'JSON')
+        //ajaxPromise("?module=home&op=city", 'GET', 'JSON')
         .then(function (data) {
+            console.log(data);
             for (row in data) {
                 $('<div></div>').attr('class', "div_city").attr({ 'id': data[row].id_city }).appendTo('#containercity')
                     .html(
@@ -77,8 +80,8 @@ function loadcatcity() {
         });
 }
 function loadCatTypes() {
-    //ajaxPromise(friendlyURL("?module=home&op=type"), 'GET', 'JSON')
-    ajaxPromise("?module=home&op=type", 'GET', 'JSON')
+    ajaxPromise(friendlyURL("?module=home&op=type"), 'GET', 'JSON')
+        //ajaxPromise("?module=home&op=type", 'GET', 'JSON')
         .then(function (data) {
             for (row in data) {
                 $('<div></div>').attr('class', "div_type").attr({ 'id': data[row].id_type }).appendTo('#containertype')
@@ -99,8 +102,8 @@ function loadCatTypes() {
         });
 }
 function loadoperation() {
-    //ajaxPromise(friendlyURL("?module=home&op=operation"), 'GET', 'JSON')
-    ajaxPromise("?module=home&op=operation", 'GET', 'JSON')
+    ajaxPromise(friendlyURL("?module=home&op=operation"), 'GET', 'JSON')
+        //ajaxPromise("?module=home&op=operation", 'GET', 'JSON')
         .then(function (data) {
             for (row in data) {
                 $('<div></div>').attr('class', "div_operation").attr({ 'id': data[row].id_operation }).appendTo('#containeroperation')
@@ -120,8 +123,8 @@ function loadoperation() {
         });
 }
 function mas_visitadas() {
-    //ajaxPromise(friendlyURL("?module=home&op=mas_visitadas"), 'GET', 'JSON')
-    ajaxPromise("?module=home&op=mas_visitadas", 'GET', 'JSON')
+    ajaxPromise(friendlyURL("?module=home&op=mas_visitadas"), 'GET', 'JSON')
+        //ajaxPromise("?module=home&op=mas_visitadas", 'GET', 'JSON')
         .then(function (data) {
             for (row in data) {
                 $('<div></div>').attr('class', "div_busquedas").attr({ 'id': data[row].id_vivienda }).appendTo('#containermasvisitadas')
@@ -146,8 +149,8 @@ function ultimas_busquedas() {
     var filters_shop = localStorage.getItem('filters_shop');
 
 
-    //ajaxPromise(friendlyURL("?module=home&op=ultimas_busquedas"), 'GET', 'JSON', { filters_shop })
-    ajaxPromise("?module=home&op=ultimas_busquedas", 'GET', 'JSON', { filters_shop })
+    ajaxPromise(friendlyURL("?module=home&op=ultimas_busquedas"), 'GET', 'JSON', { filters_shop })
+        //ajaxPromise("?module=home&op=ultimas_busquedas", 'GET', 'JSON', { filters_shop })
         .then(function (data) {
             for (row in data) {
                 $('<div></div>').attr('class', "div_busquedas").attr({ 'id': data[row].id_vivienda }).appendTo('#containerbusquedas')

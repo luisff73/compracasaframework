@@ -161,16 +161,8 @@
             $select .= " LIMIT $offset,$items_page";
 
             $stmt = $db -> ejecutar($select);
-            //return $db -> listar($stmt);
+            return $db -> listar($stmt);
 
-            $retrArray = array();
-            if ($stmt->num_rows > 0) {
-                while ($row = mysqli_fetch_assoc($stmt)) {
-                    $retrArray[] = $row;
-                }
-            }
-            //return $select; //Esto no devuelve $select, con estro comprobamos que resuelve ajaxs desde el console.log
-            return $retrArray;
             
         }
 

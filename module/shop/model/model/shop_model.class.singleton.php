@@ -13,7 +13,6 @@
             if (!(self::$_instance instanceof self)) {
                 self::$_instance = new self();
             }
-            //return 'hola get instance';
             return self::$_instance;
         }
 

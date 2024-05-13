@@ -212,7 +212,7 @@ function clicks_details() {
     $(document).on("click", ".detalles_inmueble", function () {
         var id_vivienda = this.getAttribute('id');
         loadDetails(id_vivienda);
-        ajaxPromise('?module=shop?op=incrementa_visita&id=' + id_vivienda, 'POST', 'JSON')
+        ajaxPromise(friendlyURL('?module=shop?op=incrementa_visita&id=') + id_vivienda, 'POST', 'JSON')
             .then(function () {
                 console.log('Visita incrementada con éxito');
             })
@@ -222,7 +222,7 @@ function clicks_details() {
 }
 function loadDetails(id_vivienda) {
 
-    ajaxPromise('module/shop/controller/ctrl_shop.php?op=details_vivienda&id=' + id_vivienda, 'GET', 'JSON')
+    ajaxPromise(friendlyURL('module/shop/controller/ctrl_shop.php?op=details_vivienda&id=') + id_vivienda, 'GET', 'JSON')
 
         .then(function (data) {
 
@@ -601,7 +601,7 @@ function remove_filters() {
 }
 function loadCategoriesfilter() {
 
-    ajaxPromise('?module=shop&op=select_categories', 'GET', 'JSON')
+    ajaxPromise(friendlyURL('?module=shop&op=select_categories'), 'GET', 'JSON')
         .then(function (data) {
             console.log('valor de data en categories'.data);
             for (let category of data) {
@@ -614,7 +614,7 @@ function loadCategoriesfilter() {
 }
 function loadOperationfilter() {
 
-    ajaxPromise('?module=shop&op=select_operation', 'GET', 'JSON')
+    ajaxPromise(friendlyURL('?module=shop&op=select_operation'), 'GET', 'JSON')
         .then(function (data) {
             //console.log(data);
             for (let operation of data) {
@@ -627,7 +627,7 @@ function loadOperationfilter() {
 }
 function loadCityfilter() {
 
-    ajaxPromise('?module=shop&op=select_city', 'GET', 'JSON')
+    ajaxPromise(friendlyURL('?module=shop&op=select_city'), 'GET', 'JSON')
         .then(function (data) {
             //console.log(data);
             for (let city of data) {
@@ -639,7 +639,7 @@ function loadCityfilter() {
         });
 }
 function loadTypefilter() {
-    ajaxPromise('?module=shop&op=select_type', 'GET', 'JSON')
+    ajaxPromise(friendlyURL('?module=shop&op=select_type'), 'GET', 'JSON')
         .then(function (data) {
             //console.log(data);
             for (let type of data) {// recorremos el array de objetos
@@ -652,7 +652,7 @@ function loadTypefilter() {
 }
 function loadPricefilter() {
     // no se utiliza de momento por que no es dinamico.
-    ajaxPromise('?module=shop&op=select_price', 'GET', 'JSON')
+    ajaxPromise(friendlyURL('?module=shop&op=select_price'), 'GET', 'JSON')
         .then(function (data) {
             console.log(data);
             for (let price of data) {
@@ -667,7 +667,7 @@ function loadPricefilter() {
 function viviendas_related(offset = 0, id_city, total_items) {
     let items_page = 3;
 
-    ajaxPromise("module/shop/controller/ctrl_shop.php?op=viviendas_related", 'POST', 'JSON', { 'id_city': id_city, 'offset': offset, 'items_page': items_page })
+    ajaxPromise(friendlyURL("module/shop/controller/ctrl_shop.php?op=viviendas_related"), 'POST', 'JSON', { 'id_city': id_city, 'offset': offset, 'items_page': items_page })
         .then(function (data) {
             if (offset == 0) {
                 $('<div></div>').attr({ 'id': 'title_content', class: 'title_content' }).appendTo('.related_viviendas_title')
@@ -733,7 +733,7 @@ function viviendas_related(offset = 0, id_city, total_items) {
 function more_viviendas_related(id_city) {
     var id_city = id_city;
     var items_page = 0;
-    ajaxPromise('module/shop/controller/ctrl_shop.php?op=count_viviendas_related', 'POST', 'JSON', { 'id_city': id_city })
+    ajaxPromise(friendlyURL('module/shop/controller/ctrl_shop.php?op=count_viviendas_related'), 'POST', 'JSON', { 'id_city': id_city })
         .then(function (data) {
             var total_items = data[0].num_viviendas;
             //var total_items = math.ceil(num_viviendas / 3) * 3;
@@ -757,7 +757,7 @@ function clicks_details_related() {
 
         alert('has entrado en more viviendas related con el id de city ' + id_vivienda);
         loadDetails(id_vivienda);
-        ajaxPromise('module/shop/controller/ctrl_shop.php?op=incrementa_visita&id=' + id_vivienda, 'POST', 'JSON')
+        ajaxPromise(friendlyURL('module/shop/controller/ctrl_shop.php?op=incrementa_visita&id=') + id_vivienda, 'POST', 'JSON')
             .then(function () {
                 console.log('Visita incrementada con éxito');
             })
@@ -801,7 +801,7 @@ function click_like() {
         let accestoken = localStorage.getItem('accestoken');  //obtenemos el token de acceso del localstorage
 
         // Hacemos una promesa y le paso el id de la vivienda y el token de acceso al servidor
-        ajaxPromise('module/shop/controller/ctrl_shop.php?op=incrementa_like', 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken })
+        ajaxPromise(friendlyURL('module/shop/controller/ctrl_shop.php?op=incrementa_like'), 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken })
 
             .then(function (data) {
                 console.log(data);
@@ -818,7 +818,7 @@ $(document).ready(function () {
     print_filters();
     loadCategoriesfilter();
     loadOperationfilter();
-    loadCityfilter();
+    loadCityfiltfer();
     loadTypefilter();
     //loadPricefilter(); //De momento no es dinamico
     loadviviendas();

@@ -16,7 +16,6 @@
 				self::$_instance = new self();
 			}
 			return self::$_instance;
-   			//return 'hola get instance';
 		}
 		
 

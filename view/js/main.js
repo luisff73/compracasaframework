@@ -126,7 +126,7 @@ function click_logout() {
 
 //================LOG-OUT================
 function logout() {
-    ajaxPromise('module/login/controller/ctrl_login.php?op=logout', 'POST', 'JSON')
+    ajaxPromise(friendlyURL('module/login/controller/ctrl_login.php?op=logout'), 'POST', 'JSON')
         .then(function (data) {
             //localStorage.removeItem('token');
             localStorage.removeItem('accestoken');   /// usamos siempre el ACCESStoken
@@ -172,6 +172,6 @@ function friendlyURL(url) {
 
 $(document).ready(function () {
     load_menu();
-    //click_logout();
-    //click_shop();
+    click_logout();
+    click_shop();
 });
