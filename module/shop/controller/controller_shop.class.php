@@ -1,8 +1,8 @@
 <?php
     class controller_shop {
         function view() {
-            echo ('Hola view');
-            echo ( VIEW_PATH_HOME . 'shop.html');
+            //echo ('Hola view'); // hay que practicar esto
+            //echo ( VIEW_PATH_HOME . 'shop.html');
             common::load_view('top_page_shop.html', VIEW_PATH_SHOP . 'shop.html'); //cargamos la vista del shop
         }
         

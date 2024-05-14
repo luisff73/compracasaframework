@@ -75,6 +75,7 @@
 
             $stmt = $db -> ejecutar($sql);
             return $db -> listar($stmt);
+            //return $sql;
             
         }
 
