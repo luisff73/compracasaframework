@@ -133,7 +133,7 @@ function button_search() {
             //localStorage.setItem('filters_search', JSON.stringify(search)); //guardamos en el localstorage los filtros de busqueda
             localStorage.setItem('filters_shop', JSON.stringify(search)); // hacemos esto para que la pagina de shop pueda coger los datos
         }
-        window.location.href = 'index.php?page=ctrl_shop&op=list';
+        window.location.href = '?module=shop&op=view';
     });
 }
 

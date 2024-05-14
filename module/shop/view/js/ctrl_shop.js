@@ -163,10 +163,11 @@ function pagination() {
     //alert('filters .... despues del if ' + filters);
     //alert('valor de la url ' + url);
     ajaxPromise(url, 'POST', 'JSON', { 'filters_shop': filters_shop, 'filters_search': filters_search, 'filters_home': filters_home })
+        // con array ajaxPromise(url, 'POST', 'JSON', { 'filters_shop': [filters_shop], 'filters_search': [filters_search], 'filters_home': [filters_home] })
 
         //en este ajaxpromise podemos pasarle varios valores de varios filtros almacenados en el localstorage
         .then(function (data) {
-            console.log('valor de data ' + data);
+            //console.log('valor de data[0].contador ' + data[0].contador);
             var offset = data[0].contador; //guardamos en la variable offset el valor de la posicion 0 del array data que es el total productos
             if (offset >= 3) {
                 total_pages = Math.ceil(offset / 3)
@@ -603,7 +604,7 @@ function loadCategoriesfilter() {
 
     ajaxPromise(friendlyURL('?module=shop&op=select_categories'), 'GET', 'JSON')
         .then(function (data) {
-            console.log('valor de data en categories'.data);
+            //console.log('valor de data en categories'.data);
             for (let category of data) {
                 $('<option></option>').attr('value', category.id_category).text(category.category_name).appendTo('#select_category');
             }

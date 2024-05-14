@@ -34,7 +34,10 @@
         }
 
         function count_filters_shop() {
-            echo json_encode(common::load_model('shop_model', 'get_count_filters_shop', $_POST['filters_shop']));
+             echo json_encode(common::load_model('shop_model', 'get_count_filters_shop', $_POST['filters_shop']));
+            // echo json_encode(common::load_model('shop_model', 'get_count_filters_shop', $_POST['filters_shop'],$_POST['filters_search'],$_POST['filters_home']));
+            // echo json_encode(common::load_model('shop_model', 'get_count_filters_shop', [$_POST['filters_shop'],$_POST['filters_search'],$_POST['filters_home']]));
+            //echo json_encode(common::load_model('shop_model', 'get_count_filters_shop', [$_POST['filters_shop'], $_POST['filters_search'], $_POST['filters_home']]));
         }
 
         function count_filters_search() {
