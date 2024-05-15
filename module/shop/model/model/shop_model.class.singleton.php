@@ -51,9 +51,9 @@
             //return 'hola type';
             return $this -> bll -> get_filters_search_BLL($args);
         }
-        public function get_details_viviendas() {
+        public function get_details_viviendas($args) {
             //return 'hola type';
-            return $this -> bll -> get_details_viviendas_BLL();
+            return $this -> bll -> get_details_viviendas_BLL($args);
         }
         public function get_select_categories() {
             //return 'hola type';

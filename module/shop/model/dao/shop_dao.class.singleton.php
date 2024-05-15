@@ -311,16 +311,6 @@
             
         }   
 
-       
-
-        public function select_details_viviendas($db) {  // PENDIENTE
-
-            $sql = "SELECT DISTINCT v.vivienda_price FROM viviendas v";
-
-            $stmt = $db -> ejecutar($sql);
-            return $db -> listar($stmt);
-            
-        }
         public function select_price($db) { // PENDIENTE
 
             $sql = "SELECT DISTINCT v.vivienda_price FROM viviendas v";

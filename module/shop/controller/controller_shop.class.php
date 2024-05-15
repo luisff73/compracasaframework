@@ -2,22 +2,22 @@
     class controller_shop {
         function view() {
             //echo ('Hola view'); // hay que practicar esto
+            //echo '<p>Hola view</p>';  // hay que practicar esto
             //echo ( VIEW_PATH_HOME . 'shop.html');
             common::load_view('top_page_shop.html', VIEW_PATH_SHOP . 'shop.html'); //cargamos la vista del shop
         }
+        
         
         function all_viviendas() {   
             // echo ('Hola all_viviendas');
             echo json_encode(common::load_model('shop_model', 'get_all_viviendas', [$_POST['offset'], $_POST['items_page']]));  //esta funcion get_carrusel se encuentra en el modelo home_model.class.singleton.php
         }              
         function filters_shop() {
-            //echo json_encode(common::load_model('shop_model', 'get_filters_shop'));
             echo json_encode(common::load_model('shop_model', 'get_filters_shop', [$_POST['filters'], $_POST['offset'],$_POST['items_page']]));
         }
         
         function count_all_viviendas() {
-            //echo ('Hola count_all_viviendas');
-            echo json_encode(common::load_model('shop_model', 'get_count_all_viviendas'));
+           echo json_encode(common::load_model('shop_model', 'get_count_all_viviendas'));
         }
 
         function filters_home() {
@@ -35,9 +35,6 @@
 
         function count_filters_shop() {
              echo json_encode(common::load_model('shop_model', 'get_count_filters_shop', $_POST['filters_shop']));
-            // echo json_encode(common::load_model('shop_model', 'get_count_filters_shop', $_POST['filters_shop'],$_POST['filters_search'],$_POST['filters_home']));
-            // echo json_encode(common::load_model('shop_model', 'get_count_filters_shop', [$_POST['filters_shop'],$_POST['filters_search'],$_POST['filters_home']]));
-            //echo json_encode(common::load_model('shop_model', 'get_count_filters_shop', [$_POST['filters_shop'], $_POST['filters_search'], $_POST['filters_home']]));
         }
 
         function count_filters_search() {
@@ -45,34 +42,7 @@
         }
 
         function details_viviendas() {
-            echo json_encode(common::load_model('shop_model', 'get_details_viviendas'));
-
-            // case 'details_vivienda':  //request al servidor
-
-            //     try {
-            //         $daoshop = new DAOShop();
-            //         $Details_viviendas = $daoshop->select_one_vivienda($_GET['id']);
-            //     } catch (Exception $e) {
-            //         echo json_encode("error");
-            //     }
-        
-            //     try {
-            //         $daoshop_img = new DAOShop();
-            //         $Date_images = $daoshop_img->select_img_viviendas($_GET['id']);
-            //     } catch (Exception $e) {
-            //         echo json_encode("error");
-            //     }
-        
-            //     if (!empty($Details_viviendas || $Date_images)) { // si hay datos details e images
-            //         $resultado = array();
-            //         $resultado[0] = $Details_viviendas;
-            //         $resultado[1][] = $Date_images;
-            //         echo json_encode($resultado);
-            //     } else {
-        
-            //         echo json_encode("error");
-            //     }
-            //     break;
+            echo json_encode(common::load_model('shop_model', 'get_details_viviendas', $_GET['id']));
         }
 
         function select_categories() {

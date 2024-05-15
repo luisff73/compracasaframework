@@ -155,7 +155,7 @@ function pagination() {
         url = "?module=shop&op=count_filters_search";
         filters = filters_search;
         //} else if (filters_home != undefined) {
-        //    url = "module/shop/controller/ctrl_shop.php?op=count_filters_home";
+        //    url = "?module=shop&op=count_filters_home";
         //    filters = filters_home;
     } else {
         url = "?module=shop&op=count_all_viviendas";
@@ -213,7 +213,9 @@ function clicks_details() {
     $(document).on("click", ".detalles_inmueble", function () {
         var id_vivienda = this.getAttribute('id');
         loadDetails(id_vivienda);
-        ajaxPromise(friendlyURL('?module=shop?op=incrementa_visita&id=') + id_vivienda, 'POST', 'JSON')
+        // parece que da problemas ajaxPromise(friendlyURL('?module=shop&op=incrementa_visita&id=') + id_vivienda), 'POST', 'JSON') 
+        ajaxPromise('?module=shop&op=incrementa_visita&id=' + id_vivienda, 'POST', 'JSON')
+
             .then(function () {
                 console.log('Visita incrementada con éxito');
             })
@@ -222,8 +224,9 @@ function clicks_details() {
     });
 }
 function loadDetails(id_vivienda) {
-
-    ajaxPromise(friendlyURL('module/shop/controller/ctrl_shop.php?op=details_vivienda&id=') + id_vivienda, 'GET', 'JSON')
+    alert(friendlyURL('?module=shop&op=details_viviendas&id='));
+    // parece que da problemas ajaxPromise(friendlyURL('?module=shop&op=details_viviendas&id=' + id_vivienda), 'GET', 'JSON')
+    ajaxPromise('?module=shop&op=details_viviendas&id=' + id_vivienda, 'GET', 'JSON')
 
         .then(function (data) {
 
@@ -263,7 +266,6 @@ function loadDetails(id_vivienda) {
             if (data[0].total_likes) {
                 console.log('total_likes ', data[0].total_likes);
                 imagelike = "<img src='view/img/like1.png'>";
-                //resultlike = "<i id='col-ico' class='image'></i>&nbsp;&nbsp;&nbsp;" + imagelike + "</br> &nbsp;&nbsp;&nbsp;"
                 resultlike = "<i id='col-ico4' class='image'></i>&nbsp;&nbsp;&nbsp;" + imagelike + "</br> &nbsp;&nbsp;&nbsp; "
             } else {
                 resultlike = "";
@@ -535,7 +537,8 @@ function filter_button() { //funcion para filtrar los productos
         var filter_array = [];
         remove_filters();
         if (filter_array == 0 || filter_array == undefined) {//si el array filter es igual a 0
-            ajaxForSearch('module/shop/controller/ctrl_shop.php?op=all_viviendas', 'POST', 'JSON', { 'offset': 0, 'items_page': 3 });
+            alert(friendlyURL('?module=shop&op=all_viviendas'));
+            ajaxForSearch(friendlyURL('?module=shop&op=all_viviendas'), 'POST', 'JSON', { 'offset': 0, 'items_page': 3 });
             location.reload();//recargamos la página
         }
     });
@@ -668,7 +671,7 @@ function loadPricefilter() {
 function viviendas_related(offset = 0, id_city, total_items) {
     let items_page = 3;
 
-    ajaxPromise(friendlyURL("module/shop/controller/ctrl_shop.php?op=viviendas_related"), 'POST', 'JSON', { 'id_city': id_city, 'offset': offset, 'items_page': items_page })
+    ajaxPromise(friendlyURL("?module=shop&op=viviendas_related"), 'POST', 'JSON', { 'id_city': id_city, 'offset': offset, 'items_page': items_page })
         .then(function (data) {
             if (offset == 0) {
                 $('<div></div>').attr({ 'id': 'title_content', class: 'title_content' }).appendTo('.related_viviendas_title')
@@ -734,7 +737,7 @@ function viviendas_related(offset = 0, id_city, total_items) {
 function more_viviendas_related(id_city) {
     var id_city = id_city;
     var items_page = 0;
-    ajaxPromise(friendlyURL('module/shop/controller/ctrl_shop.php?op=count_viviendas_related'), 'POST', 'JSON', { 'id_city': id_city })
+    ajaxPromise(friendlyURL('?module=shop&op=count_viviendas_related'), 'POST', 'JSON', { 'id_city': id_city })
         .then(function (data) {
             var total_items = data[0].num_viviendas;
             //var total_items = math.ceil(num_viviendas / 3) * 3;
@@ -758,7 +761,7 @@ function clicks_details_related() {
 
         alert('has entrado en more viviendas related con el id de city ' + id_vivienda);
         loadDetails(id_vivienda);
-        ajaxPromise(friendlyURL('module/shop/controller/ctrl_shop.php?op=incrementa_visita&id=') + id_vivienda, 'POST', 'JSON')
+        ajaxPromise(friendlyURL('?module=shop&op=incrementa_visita&id=') + id_vivienda, 'POST', 'JSON')
             .then(function () {
                 console.log('Visita incrementada con éxito');
             })
@@ -802,7 +805,7 @@ function click_like() {
         let accestoken = localStorage.getItem('accestoken');  //obtenemos el token de acceso del localstorage
 
         // Hacemos una promesa y le paso el id de la vivienda y el token de acceso al servidor
-        ajaxPromise(friendlyURL('module/shop/controller/ctrl_shop.php?op=incrementa_like'), 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken })
+        ajaxPromise(friendlyURL('?module=shop&op=incrementa_like'), 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken })
 
             .then(function (data) {
                 console.log(data);

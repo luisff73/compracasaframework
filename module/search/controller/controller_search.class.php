@@ -3,6 +3,8 @@
         function view() {
             //echo ('Hola view');  // hay que practicar esto
             //echo ( VIEW_PATH_HOME . 'shop.html');
+            //echo '<p>VIEW_PATH_HOME . \'shop.html\'</p>';  // hay que practicar esto
+
             common::load_view('top_page_home.html', VIEW_PATH_HOME . 'home.html');
         }
 
