@@ -18,61 +18,49 @@ require ('module/login/model/DAO/login_dao.class.singleton.php');
 			return self::$_instance;
 		}
 
-		public function get_register_BLL($args) {
-			// $hashed_pass = password_hash($args[1], PASSWORD_DEFAULT);
-			// $hashavatar = md5(strtolower(trim($args[2]))); 
-			// $avatar = "https://robohash.org/$hashavatar";
-			// $token_email = common::generate_Token_secure(20);
-			// $id = common::generate_Token_secure(6);
+	
+public function get_register_BLL($username, $password, $email) {
+    $hashed_pass = password_hash($password, PASSWORD_DEFAULT);
+    $hashavatar = md5(strtolower(trim($email))); 
+    $avatar = "https://robohash.org/$hashavatar";
+    $token_email = common::generate_Token_secure(20);
+    $id = common::generate_Token_secure(6);
 
-			try {
-				$check = $this -> dao -> select_email($this->db,$_POST['email_reg']);
-			 } catch (Exception $e) {
-				 echo json_encode("error");
-				 exit;
-			 }
-	 
-			 if ($check) {
-				 $check_email = false;
-			 } else {
-				 $check_email = true;
-			 }
-	 
-			 // Si no existe el email creará el usuario
-			 if ($check_email) {
-				 try {
-			   
-					 $rdo = $this -> dao -> insert_user($this -> db, $_POST['username_reg'], $_POST['email_reg'], $_POST['passwd1_reg']);
-				 } catch (Exception $e) {
-					 echo json_encode("error");
-					 exit;
-				 }
-				 if (!$rdo) {
-					 echo json_encode("error_user");
-					 exit;
-				 } else {
-					 echo json_encode("ok");
-					 exit;
-				 }
-			 } else {
-				 echo json_encode("error_email");
-				 exit;
-			 }
+    try {
+        $check = $this -> dao -> select_email($this->db, $email);
+    } catch (Exception $e) {
+        echo json_encode("error");
+        exit;
+    }
 
+    if ($check) {
+        echo json_encode("error_email");
+        exit;
+    } else {
+        try {
+            $rdo = $this -> dao -> insert_user($this -> db, $username, $email, $hashed_pass, $avatar, $token_email);
+        } catch (Exception $e) {
+            echo json_encode("error");
+            exit;
+        }
+        if (!$rdo) {
+            echo json_encode("error_user");
+            exit;
+        } else {
+            $message = [ 'type' => 'validate', 
+                            'token' => $token_email, 
+                            'toEmail' =>  $email];
+            $email = json_decode(mail::send_email($message), true);
+            if (!empty($email)) {
+                return;  
+            } else {
+                echo json_encode("ok");
+                exit;
+            }
+        }
+    }
+}
 
-			// if (!empty($this -> dao -> select_user($this->db, $args[0], $args[2]))) {
-			// 	return 'error';
-            // } else {
-			// 	$this -> dao -> insert_user($this->db, $id, $args[0], $hashed_pass, $args[2], $avatar, $token_email);
-			// 	$message = [ 'type' => 'validate', 
-			// 					'token' => $token_email, 
-			// 					'toEmail' =>  $args[0]];
-			// 	$email = json_decode(mail::send_email($message), true);
-			// 	if (!empty($email)) {
-			// 		return;  
-			// 	}   
-			// }
-		}
 
 		public function get_login_BLL($args) {
 			// if (!empty($this -> dao -> select_user($this->db, $args[0], $args[0]))) {

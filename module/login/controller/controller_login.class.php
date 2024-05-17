@@ -11,12 +11,8 @@
         function recover_view() {
             common::load_view('top_page_home.html', VIEW_PATH_LOGIN . 'recover_pass.html');
         }
-    
-        function login_register_view() {
-            common::load_view('top_page_home.html', VIEW_PATH_LOGIN . 'login-register.html');
-        }
         function register() {
-            echo json_encode(common::load_model('login_model', 'register', [$_POST['username_reg'], $_POST['pass_reg'], $_POST['email_reg']]));
+            echo json_encode(common::load_model('login_model', 'register', [$_POST['username_reg'], $_POST['passwd1_reg'], $_POST['email_reg']]));
         }
         function login() {
             echo json_encode(common::load_model('login_model', 'login', [$_POST['username_log'], $_POST['passwd_log']]));
@@ -29,13 +25,13 @@
             echo json_encode('Done');
         } 
         function data_user() {
-            echo json_encode(common::load_model('login_model', 'data_user', $_POST['accesstoken']));
+            echo json_encode(common::load_model('login_model', 'data_user', $_POST['accestoken']));
         }
         function actividad() {
             echo json_encode(common::load_model('login_model', 'activity'));
         }
         function controluser() {
-            echo json_encode(common::load_model('login_model', 'controluser', $_POST['accesstoken']));
+            echo json_encode(common::load_model('login_model', 'controluser', $_POST['accestoken']));
         }
 
         function refresh_cookie() {
