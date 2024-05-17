@@ -12,18 +12,33 @@
             return self::$_instance;
         }
 
-        public function insert_user($db, $id, $username_reg, $hashed_pass, $email_reg, $avatar, $token_email) {
+        public function select_email($db, $email){
 
-            $sql = "INSERT INTO users (id, username, password, email, user_type, avatar, token_email, activate)
-            VALUES ('$id', '$username_reg', '$hashed_pass', '$email_reg', 'client', '$avatar', '$token_email', 0)";
+			$sql = "SELECT email FROM users WHERE email='$email'";
+            $stmt = $db->ejecutar($sql);
+            return $db->listar($stmt);
+        }
 
+        public function insert_user($db, $username, $email, $password) {
+
+            $hashed_pass = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]); //funcion de php para encriptar la contraseña
+            $hashavatar = md5(strtolower(trim($email))); //genera un hash a partir del email
+            $avatar = "https://i.pravatar.cc/500?u=$hashavatar"; //genera un avatar aleatorio con el nombre de usuario
+            $sql ="   INSERT INTO `users`(`username`, `password`, `email`, `type_user`, `avatar`) 
+            VALUES ('$username','$hashed_pass','$email','client','$avatar')";
             return $stmt = $db->ejecutar($sql);
         }
        
-        public function select_user($db, $username, $email){
+        public function select_user($db, $username){
 
-			$sql = "SELECT id, username, password, email, user_type, avatar, token_email, activate FROM users WHERE username = '$username' OR email = '$email'";
+			$sql = "SELECT `username`, `password`, `email`, `type_user`, `avatar` FROM `users` WHERE username='$username'";
+            $stmt = $db->ejecutar($sql);
+            return $db->listar($stmt);
+        }
 
+        public function select_data_user($db, $username){
+
+			$sql = "SELECT * FROM users WHERE username='$username'";
             $stmt = $db->ejecutar($sql);
             return $db->listar($stmt);
         }
@@ -84,13 +99,7 @@
 
 
 
-        public function select_data_user($db, $username){
 
-			$sql = "SELECT id, username, password, email, user_type, avatar, token_email, activate FROM users WHERE username = '$username'";
-            
-            $stmt = $db->ejecutar($sql);
-            return $db->listar($stmt);
-        }
 
     }
 

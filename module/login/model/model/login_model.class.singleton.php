@@ -14,23 +14,33 @@ class login_model {
         return self::$_instance;
     }
 
-    public function get_register($args) {
+    public function register($args) {
         $res = $this -> bll -> get_register_BLL($args);
     }
 
-    public function get_login($args) {
+    public function login($args) {
         return $this -> bll -> get_login_BLL($args);
     }
+    
+    public function data_user($args) {
+        return $this -> bll -> get_data_user_BLL($args);
+    }
+    public function activity() {
+        return $this -> bll -> get_activity_BLL();
+    }
+    public function controluser($args) {
+        return $this -> bll -> get_controluser_BLL($args);
+    }
 
-    public function get_social_login($args) {
+    public function social_login($args) {
         return $this -> bll -> get_social_login_BLL($args);
     }
     
-    public function get_verify_email($args) {
+    public function verify_email($args) {
         return $this -> bll -> get_verify_email_BLL($args);
     }
 
-    public function get_recover_email($args) {
+    public function recover_email($args) {
         return $this -> bll -> get_recover_email_BBL($args);
     }
 
@@ -38,27 +48,15 @@ class login_model {
         return $this -> bll -> get_verify_token_BLL($args);
     }
 
-    public function get_new_password($args) {
+    public function new_password($args) {
         return $this -> bll -> get_new_password_BLL($args);
     }
 
-    public function get_data_user($args) {
-        return $this -> bll -> get_data_user_BLL($args);
-    }
-
-    public function get_activity() {
-        return $this -> bll -> get_activity_BLL();
-    }
-
-    public function get_controluser($args) {
-        return $this -> bll -> get_controluser_BLL($args);
-    }
-
-    public function get_refresh_token($args) {
+    public function refresh_token($args) {
         return $this -> bll -> get_refresh_token_BLL($args);
     }
 
-    public function get_token_expires($args) {
+    public function token_expires($args) {
         return $this -> bll -> get_token_expires_BLL($args);
     }
 }

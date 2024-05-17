@@ -1,4 +1,6 @@
 <?php
+//include($path . "/module/login/model/DAO/login_dao.class.singleton.php");
+//include($path . "/model/middleware_auth.inc.php");
     class controller_shop {
         function view() {
             //echo ('Hola view'); // hay que practicar esto
