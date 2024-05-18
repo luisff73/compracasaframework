@@ -1,5 +1,7 @@
 <?php
-require __DIR__ . '/../vendor/autoload.php';
+
+require __DIR__ . '/vendor/autoload.php';
+
 
 
     class mail {
@@ -23,23 +25,26 @@ require __DIR__ . '/../vendor/autoload.php';
         }    
 
         public static function send_resend($values){
-             $reenvio = parse_ini_file(UTILS . "mailgun.ini");  // modificar el ini y ver el UTILS EN paths
+             $reenvio = parse_ini_file(UTILS . "jwt.ini");  // modificar el ini y ver el UTILS EN paths
              $api_key = $reenvio['api_key'];
             // $api_url = $mailgun['api_url'];
-
             // $config = array();
             // $config['api_key'] = $api_key; 
             // $config['api_url'] = $api_url;
             
-            $resend = Resend::client($api_key);   // pasar por ini 
-            // poner en el ini 're_kt8KKNEG_JQd5Qfx2HejwfHKWDFNMvjQn'
+           // $resend = Resend::client($api_key);   // busca en el ini 're_kt8KKNEG_JQd5Qfx2HejwfHKWDFNMvjQn'
+            $resend = Resend::client('re_kt8KKNEG_JQd5Qfx2HejwfHKWDFNMvjQn'); 
 
             try {
                 $result = $resend->emails->send([
-                    'from' => $values['inputEmail'],
+                    //'from' => $values['inputEmail'],
+                    'from' => 'onboarding@resend.dev',
                     'to' => 'jvrluis@hotmail.com', // Esto lo pongo fijo por que solo tengo un correo
-                    'subject' => $values['inputMatter'],
-                    'html' => $values['inputMessage'] ,
+                    // 'subject' => $values['inputMatter'],
+                    'subject' => 'Hola Luis',
+                    // 'html' => $values['inputMessage'] ,
+                    'html' => '<p>Enorabuena on sending your <strong>first email</strong>!</p>'
+
                 ]);
             } catch (\Exception $e) {
                 exit('Error: ' . $e->getMessage());

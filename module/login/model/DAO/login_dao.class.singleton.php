@@ -31,7 +31,7 @@
        
         public function select_user($db, $username){
 
-			$sql = "SELECT `username`, `password`, `email`, `type_user`, `avatar` FROM `users` WHERE username='$username'";
+			$sql = "SELECT `username`, `password`, `email`, `type_user`, `avatar`, 'token_email','activate' FROM `users` WHERE username='$username'";
             $stmt = $db->ejecutar($sql);
             return $db->listar($stmt);
             //return $sql;

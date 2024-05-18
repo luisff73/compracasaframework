@@ -19,15 +19,15 @@ require ('module/login/model/DAO/login_dao.class.singleton.php');
 		}
 
 	
-public function get_register_BLL($username, $password, $email) {
-    $hashed_pass = password_hash($password, PASSWORD_DEFAULT);
-    $hashavatar = md5(strtolower(trim($email))); 
+public function get_register_BLL($args) {
+    $hashed_pass = password_hash($args[1], PASSWORD_DEFAULT);
+    $hashavatar = md5(strtolower(trim($args[2]))); 
     $avatar = "https://robohash.org/$hashavatar";
     $token_email = common::generate_Token_secure(20);
     $id = common::generate_Token_secure(6);
 
     try {
-        $check = $this -> dao -> select_email($this->db, $email);
+        $check = $this -> dao -> select_email($this->db, $args[0]);
     } catch (Exception $e) {
         echo json_encode("error");
         exit;
@@ -38,7 +38,7 @@ public function get_register_BLL($username, $password, $email) {
         exit;
     } else {
         try {
-            $rdo = $this -> dao -> insert_user($this -> db, $username, $email, $hashed_pass, $avatar, $token_email);
+            $rdo = $this -> dao -> insert_user($this -> db, $args[0], $args[2], $hashed_pass, $avatar, $token_email);
         } catch (Exception $e) {
             echo json_encode("error");
             exit;
@@ -49,7 +49,7 @@ public function get_register_BLL($username, $password, $email) {
         } else {
             $message = [ 'type' => 'validate', 
                             'token' => $token_email, 
-                            'toEmail' =>  $email];
+                            'toEmail' =>  $args[2]];
             $email = json_decode(mail::send_email($message), true);
             if (!empty($email)) {
                 return;  
@@ -81,12 +81,18 @@ public function get_register_BLL($username, $password, $email) {
 			// }
 
 			try {
-				$rdo = $this->dao->select_user($_POST['username_log'],$_POST['passwd_log']);                                               
+				//$rdo = $this->dao->select_user($_POST['username_log'],$_POST['passwd_log']);                                               
+				$rdo = $this->dao->select_user($this->db,$args[0]);
+				//$rdo = $this->dao->select_user($this->db,$_POST['username_log'],$_POST['passwd_log']);
+				//echo json_encode ($rdo);
+				//return ($rdo);
 				if ($rdo == "error_select_user") {
 					echo json_encode("error_select_user"); //devuelve error_select_user para que lo recoga la funcion login
 					exit;
 				} else {
+
 					if (password_verify($_POST['passwd_log'], $rdo['password'])) { //comprueba que la contraseña sea correcta
+					//if (password_verify($_POST['passwd_log'], $args[1])) { //comprueba que la contraseña sea correcta
 					   $accestoken = middleware::create_accestoken($rdo["username"]); //crea el token de la funcion accestoken del middleware_auth.php
 					   $refreshtoken = middleware::create_refreshtoken($rdo["username"]); //crea el token create_refreshtoken del middleware_auth.php este token se usa para refrescar el accestoken  
 						
@@ -162,7 +168,8 @@ public function get_register_BLL($username, $password, $email) {
 			// 	}
 			// 	return 'match';
 			// }
-			$token_dec = middleware::decode_token($_POST['accestoken']);
+			$token_dec = middleware::decode_token($args[0]);
+			//$token_dec = middleware::decode_token($_POST['accestoken']);
 
 			if ($token_dec['exp'] < time()) {
 				echo json_encode("Wrong_User");
@@ -172,7 +179,8 @@ public function get_register_BLL($username, $password, $email) {
 			 //(o sea que comprobamos que el usuario de localstorage sea el mismo que el del token del servidor)
 			if (isset($_SESSION['username']) && ($_SESSION['username']) == $token_dec['username']) { 
 				echo json_encode("Correct_User");
-				$old_token = middleware::decode_token($_POST['accestoken']);
+				//$old_token = middleware::decode_token($_POST['accestoken']);
+				$old_token = middleware::decode_token($args[0]);
 				$new_token = middleware::create_accestoken($old_token['username']);
 				echo json_encode($new_token);
 				exit();

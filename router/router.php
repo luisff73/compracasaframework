@@ -1,7 +1,9 @@
 <?php
 
     require 'autoload.php';
-        
+    //require __DIR__ . '/../vendor/autoload.php';
+
+    
     $path = $_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/';
     include($path . "utils/common.inc.php");
     //include($path . "utils/mail.inc.php");
