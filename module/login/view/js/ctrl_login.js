@@ -3,8 +3,7 @@ function login() {
         var data = [];
         data.push({ name: 'username_log', value: document.getElementById('username_log').value });
         data.push({ name: 'passwd_log', value: document.getElementById('passwd_log').value });
-        //console.log('valor de data ');
-        //console.log(data);
+        console.log('valor de data ');
         ajaxPromise('?module=login&op=login', 'POST', 'JSON', data) //data lleva el usuario y la contraseña
             .then(function (result) {//result es lo que devuelve el php
                 var accestoken = result.accestoken; //accestoken es el token que devuelve el php EN UN ARRAY
@@ -21,7 +20,7 @@ function login() {
                     localStorage.setItem("refreshtoken", refreshtoken);
 
                     toastr.success("Loged succesfully");
-                    setTimeout(' window.location.href = "index.php?page=ctrl_shop&op=list"; ', 3000);
+                    setTimeout(' window.location.href = "?module=shop&op=list"; ', 3000);
 
                 }
             }).catch(function (textStatus) {

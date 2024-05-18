@@ -27,11 +27,11 @@ function ajaxPromises(sUrl, sType, sTData, sData = undefined) {
 }
 
 //================LOAD-HEADER================
-function load_menuold() {
+function load_menu() {
     var accestoken = localStorage.getItem('accestoken');
     if (accestoken) { //si hay un valor en token
 
-        ajaxPromises('module/login/controller/ctrl_login.php?op=data_user', 'POST', 'JSON', { 'accestoken': accestoken })
+        ajaxPromise('?module=login&op=data_user', 'POST', 'JSON', { 'accestoken': accestoken })
             .then(function (data) {
                 //console.log('valor de data en main js: ');
                 //console.log(data);
@@ -66,19 +66,19 @@ function load_menuold() {
         $('.opc_exceptions').empty();
         $('#user_info').hide();
         $('.log-icon').empty();
-        $('<a href="index.php?module=ctrl_l ogin&op=login-register_view"><i id="col-ico" class="fa-solid fa-user fa-2xl"></i></a>').appendTo('.log-icon'); //añadimos el icono de login
+        $('<a href="?module=login&op=login-register_view"><i id="col-ico" class="fa-solid fa-user fa-2xl"></i></a>').appendTo('.log-icon'); //añadimos el icono de login
     }
 }
 
 /* ========================== LOAD MENU ============================*/
-function load_menu() {
+function load_menunew() {
 
-    $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=home&op=view") + '" class="nav_link">Home</a>').appendTo('.nav_list');
-    $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=shop&op=view") + '" class="nav_link">Shop</a>').appendTo('.nav_list');
-    //$('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=contact&op=view") + '" class="nav_link">Contact us</a>').appendTo('.nav_list');
+    // $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=home&op=view") + '" class="nav_link">Home</a>').appendTo('.nav_list');
+    // $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=shop&op=view") + '" class="nav_link">Shop</a>').appendTo('.nav_list');
+    // //$('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=contact&op=view") + '" class="nav_link">Contact us</a>').appendTo('.nav_list');
     //$('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=contact") + '" class="nav_link">Contact us</a>').appendTo('.nav_list');
 
-    // ajaxPromise(friendlyURL('?module=login&op=data_user'), 'POST', 'JSON', { token: localStorage.getItem('accesstoken') })
+    // ajaxPromise(friendlyURL('?module=login&op=data_user'), 'POST', 'JSON', { token: localStorage.getItem('accestoken') })
     //     //ajaxPromises('?module/login/controller/ctrl_login.php?op=data_user', 'POST', 'JSON', { 'accestoken': accestoken })
 
     //     .then(function (data) {
@@ -126,14 +126,14 @@ function click_logout() {
 
 //================LOG-OUT================
 function logout() {
-    ajaxPromise(friendlyURL('module/login/controller/ctrl_login.php?op=logout'), 'POST', 'JSON')
+    ajaxPromise(friendlyURL('?module=login&op=logout'), 'POST', 'JSON')
         .then(function (data) {
             //localStorage.removeItem('token');
-            localStorage.removeItem('accestoken');   /// usamos siempre el ACCESStoken
+            localStorage.removeItem('accestoken');   /// usamos siempre el accestoken
             localStorage.removeItem('refreshtoken');
             localStorage.removeItem('total_prod');
             console.log('Logout succesfully');
-            window.location.href = "index.php?module=ctrl_home&op=list";
+            window.location.href = "?module=home&op=list";
         }).catch(function () {
             console.log('No se ha podido cerrar la sesión');
         });
