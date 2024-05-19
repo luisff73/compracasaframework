@@ -19,13 +19,10 @@
             return $db->listar($stmt);
         }
 
-        public function insert_user($db, $username, $email, $password) {
+        public function insert_user($db, $username, $email, $hashed_pass, $avatar, $token_email) {
 
-            $hashed_pass = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]); //funcion de php para encriptar la contraseña
-            $hashavatar = md5(strtolower(trim($email))); //genera un hash a partir del email
-            $avatar = "https://i.pravatar.cc/500?u=$hashavatar"; //genera un avatar aleatorio con el nombre de usuario
-            $sql ="   INSERT INTO `users`(`username`, `password`, `email`, `type_user`, `avatar`) 
-            VALUES ('$username','$hashed_pass','$email','client','$avatar')";
+            $sql ="   INSERT INTO `users`(`username`, `password`, `email`, `type_user`, `avatar`, `token_email`, `activate`) 
+            VALUES ('$username','$hashed_pass','$email','client','$avatar','$token_email',0)";
             return $stmt = $db->ejecutar($sql);
         }
        

@@ -22,7 +22,7 @@
             }
         }
         
-        public static function load_model($model, $function = null, $args = null) {
+        public static function load_model($model, $function = null, $args = null) { //carga el modelo
             //error_log('valor de $model '.$model); // home_model
             //error_log('valor de $function '.$function); // get_carrusel
             $dir = explode('_', $model);
@@ -46,7 +46,7 @@
             if ($longitud < 4) {
                 $longitud = 4;
             }
-            return bin2hex(openssl_random_pseudo_bytes(($longitud - ($longitud % 2)) / 2));
+            return bin2hex(openssl_random_pseudo_bytes(($longitud - ($longitud % 2)) / 2)); //genera un token seguro
         }
 
         function friendlyURL_php($url) {

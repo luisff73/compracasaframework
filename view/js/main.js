@@ -66,7 +66,9 @@ function load_menu() {
         $('.opc_exceptions').empty();
         $('#user_info').hide();
         $('.log-icon').empty();
-        $('<a href="?module=login&op=login-register_view"><i id="col-ico" class="fa-solid fa-user fa-2xl"></i></a>').appendTo('.log-icon'); //añadimos el icono de login
+        //$('<a href="?module=login&op=login-register_view"><i id="col-ico" class="fa-solid fa-user fa-2xl"></i></a>').appendTo('.log-icon'); //añadimos el icono de login
+        $('<a href="?module=login&op=login"><i id="col-ico" class="fa-solid fa-user fa-2xl"></i></a>').appendTo('.log-icon'); //añadimos el icono de login
+
     }
 }
 

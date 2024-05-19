@@ -1,5 +1,7 @@
 <?php
 require ('module/login/model/DAO/login_dao.class.singleton.php');
+require_once  ('utils/mail.inc.php');
+
 	
 		class login_bll {
 		private $dao;
@@ -20,38 +22,40 @@ require ('module/login/model/DAO/login_dao.class.singleton.php');
 
 	
 public function get_register_BLL($args) {
-    $hashed_pass = password_hash($args[1], PASSWORD_DEFAULT);
-    $hashavatar = md5(strtolower(trim($args[2]))); 
-    $avatar = "https://robohash.org/$hashavatar";
-    $token_email = common::generate_Token_secure(20);
-    $id = common::generate_Token_secure(6);
+    $hashed_pass = password_hash($args[1], PASSWORD_DEFAULT); //encripta la contraseña
+    $hashavatar = md5(strtolower(trim($args[3]))); // genera un hash a partir del email
+	$avatar = "https://i.pravatar.cc/500?u=$hashavatar"; //genera un avatar aleatorio con el nombre de usuario
+    $token_email = common::generate_Token_secure(20); //genera un token de 20 caracteres
 
     try {
-        $check = $this -> dao -> select_email($this->db, $args[0]);
+        $check = $this -> dao -> select_email($this->db, $args[3]);
+		//echo json_encode($args[3]);
     } catch (Exception $e) {
         echo json_encode("error");
         exit;
     }
 
-    if ($check) {
-        echo json_encode("error_email");
+    if ($check) { //si el email ya existe
+        echo json_encode("error_email_reg"); //devuelve error_email_reg
         exit;
     } else {
         try {
-            $rdo = $this -> dao -> insert_user($this -> db, $args[0], $args[2], $hashed_pass, $avatar, $token_email);
+            $rdo = $this -> dao -> insert_user($this -> db, $args[0], $args[3], $hashed_pass, $avatar, $token_email);
         } catch (Exception $e) {
             echo json_encode("error");
             exit;
         }
-        if (!$rdo) {
-            echo json_encode("error_user");
+        if (!$rdo) { //si no se ha insertado
+            echo json_encode("error_user_exist"); //devuelve error_user_exist
             exit;
         } else {
-            $message = [ 'type' => 'validate', 
+            $message = [ 'type' => 'validate', // enviamos un tipo de email con la opcion de validación
                             'token' => $token_email, 
-                            'toEmail' =>  $args[2]];
+                            'toEmail' =>  $args[3]];
+
             $email = json_decode(mail::send_email($message), true);
-            if (!empty($email)) {
+			
+            if (!empty($email)) { //si el email se ha enviado
                 return;  
             } else {
                 echo json_encode("ok");
@@ -93,7 +97,7 @@ public function get_register_BLL($args) {
 
 					if (password_verify($_POST['passwd_log'], $rdo['password'])) { //comprueba que la contraseña sea correcta
 					//if (password_verify($_POST['passwd_log'], $args[1])) { //comprueba que la contraseña sea correcta
-					   $accestoken = middleware::create_accestoken($rdo["username"]); //crea el token de la funcion accestoken del middleware_auth.php
+						$accestoken = middleware::create_accestoken($rdo["username"]); //crea el token de la funcion accestoken del middleware_auth.php
 					   $refreshtoken = middleware::create_refreshtoken($rdo["username"]); //crea el token create_refreshtoken del middleware_auth.php este token se usa para refrescar el accestoken  
 						
 						$_SESSION['username'] = $rdo['username']; //Guardamos el usuario en la sesion
@@ -192,81 +196,79 @@ public function get_register_BLL($args) {
 
 		}
 
+			public function get_social_login_BLL($args) {
+			if (!empty($this -> dao -> select_user($this->db, $args[1], $args[2]))) {
+				$user = $this -> dao -> select_user($this->db, $args[1], $args[2]);
+				$jwt = jwt_process::encode($user[0]['username']);
+				return json_encode($jwt);
+            } else {
+				$this -> dao -> insert_social_login($this->db, $args[0], $args[1], $args[2], $args[3]);
+				$user = $this -> dao -> select_user($this->db, $args[1], $args[2]);
+				$jwt = jwt_process::encode($user[0]['username']);
+				return json_encode($jwt);
+			}
+		}
 
-		///////////////////////////////////////
-		// 	public function get_social_login_BLL($args) {
-		// 	if (!empty($this -> dao -> select_user($this->db, $args[1], $args[2]))) {
-		// 		$user = $this -> dao -> select_user($this->db, $args[1], $args[2]);
-		// 		$jwt = jwt_process::encode($user[0]['username']);
-		// 		return json_encode($jwt);
-        //     } else {
-		// 		$this -> dao -> insert_social_login($this->db, $args[0], $args[1], $args[2], $args[3]);
-		// 		$user = $this -> dao -> select_user($this->db, $args[1], $args[2]);
-		// 		$jwt = jwt_process::encode($user[0]['username']);
-		// 		return json_encode($jwt);
-		// 	}
-		// }
+		public function get_verify_email_BLL($args) {
+			if($this -> dao -> select_verify_email($this->db, $args[0])){
+				$this -> dao -> update_verify_email($this->db, $args[0]);
+				return 'verify';
+			} else {
+				return 'fail';
+			}
+		}
 
-		// public function get_verify_email_BLL($args) {
-		// 	if($this -> dao -> select_verify_email($this->db, $args)){
-		// 		$this -> dao -> update_verify_email($this->db, $args);
-		// 		return 'verify';
-		// 	} else {
-		// 		return 'fail';
-		// 	}
-		// }
+		public function get_recover_email_BBL($args) {
+			$user = $this -> dao -> select_recover_password($this->db, $args);
+			$token = common::generate_Token_secure(20);
 
-		// public function get_recover_email_BBL($args) {
-		// 	$user = $this -> dao -> select_recover_password($this->db, $args);
-		// 	$token = common::generate_Token_secure(20);
+			if (!empty($user)) {
+				$this -> dao -> update_recover_password($this->db, $args, $token);
+                $message = ['type' => 'recover', 
+                            'token' => $token, 
+                            'toEmail' => $args];
+                $email = json_decode(mail::send_email($message), true);
+				if (!empty($email)) {
+					return;  
+				}   
+            }else{
+                return 'error';
+            }
+		}
 
-		// 	if (!empty($user)) {
-		// 		$this -> dao -> update_recover_password($this->db, $args, $token);
-        //         $message = ['type' => 'recover', 
-        //                     'token' => $token, 
-        //                     'toEmail' => $args];
-        //         $email = json_decode(mail::send_email($message), true);
-		// 		if (!empty($email)) {
-		// 			return;  
-		// 		}   
-        //     }else{
-        //         return 'error';
-        //     }
-		// }
+		public function get_verify_token_BLL($args) {
+			if($this -> dao -> select_verify_email($this->db, $args)){
+				return 'verify';
+			}
+			return 'fail';
+		}
 
-		// public function get_verify_token_BLL($args) {
-		// 	if($this -> dao -> select_verify_email($this->db, $args)){
-		// 		return 'verify';
-		// 	}
-		// 	return 'fail';
-		// }
+		public function get_new_password_BLL($args) {
+			$hashed_pass = password_hash($args[1], PASSWORD_DEFAULT, ['cost' => 12]);
+			if($this -> dao -> update_new_passwoord($this->db, $args[0], $hashed_pass)){
+				return 'done';
+			}
+			return 'fail';
+		}
+		public function get_refresh_token_BLL($args) {
+			$token = explode('"', $args);
+			$void_email = "";
+			$decode = middleware::decode_token($token[1]);
+			$user = $this -> dao -> select_user($this->db, $decode, $void_email);
 
-		// public function get_new_password_BLL($args) {
-		// 	$hashed_pass = password_hash($args[1], PASSWORD_DEFAULT, ['cost' => 12]);
-		// 	if($this -> dao -> update_new_passwoord($this->db, $args[0], $hashed_pass)){
-		// 		return 'done';
-		// 	}
-		// 	return 'fail';
-		// }
-		// public function get_refresh_token_BLL($args) {
-		// 	$token = explode('"', $args);
-		// 	$void_email = "";
-		// 	$decode = middleware::decode_username($token[1]);
-		// 	$user = $this -> dao -> select_user($this->db, $decode, $void_email);
+			$new_token = jwt_process::encode($user[0]['username']);
 
-		// 	$new_token = jwt_process::encode($user[0]['username']);
+            return $new_token;
+		}
 
-        //     return $new_token;
-		// }
-
-		// public function get_token_expires_BLL($args) {
-		// 	$token = explode('"', $args);
-		// 	$decode = middleware::decode_exp($token[1]);
+		public function get_token_expires_BLL($args) {
+			$token = explode('"', $args);
+			$decode = middleware::decode_token($token[1]);
 			
-        //     if(time() >= $decode) {  
-		// 		return "inactivo"; 
-		// 	} else{
-		// 		return "activo";
-		// 	}
-		// }
+            if(time() >= $decode) {  
+				return "inactivo"; 
+			} else{
+				return "activo";
+			}
+		}
 	}

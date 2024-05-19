@@ -6,7 +6,8 @@ include($path . "model/JWT.php"); // INCLUIMOS LA LIBRERIA JWT
 class middleware{
 
     public static function decode_token($token){
-        $jwt = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/model/jwt.ini');
+        //$jwt = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/model/jwt.ini');
+        $jwt = parse_ini_file(UTILS . "jwt.ini");
         $secret = $jwt['secret'];
         $JWT = new JWT;
         $token_dec = $JWT->decode($token, $secret);
@@ -16,7 +17,8 @@ class middleware{
     
     }
     public static function create_accestoken($username){
-        $jwt = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/model/jwt.ini');
+        //$jwt = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/model/jwt.ini');
+        $jwt = parse_ini_file(UTILS . "jwt.ini");
         $header = $jwt['header']; // OBTENEMOS EL HEADER DEL ARCHIVO INI
         $secret = $jwt['secret']; // OBTENEMOS EL SECRET DEL ARCHIVO INI
         $payload = '{"iat":"' . time() . '","exp":"' . time() + (600) . '","username":"' . $username . '"}';
@@ -25,7 +27,8 @@ class middleware{
         return $token;
     }
     public static function create_refreshtoken($username){
-        $jwt = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/model/jwt.ini');
+        //$jwt = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/model/jwt.ini');
+        $jwt = parse_ini_file(UTILS . "jwt.ini");
         $header = $jwt['header'];
         $secret = $jwt['secret'];
         $payload = '{"iat":"' . time() . '","exp":"' . time() + (1600) . '","username":"' . $username . '"}';

@@ -11,8 +11,12 @@
         function recover_view() {
             common::load_view('top_page_home.html', VIEW_PATH_LOGIN . 'recover_pass.html');
         }
+        function login_register_view() {
+            common::load_view('top_page_home.html', VIEW_PATH_LOGIN . 'login-register.html');
+            //echo json_encode(common::load_model('login_model', 'login'));
+        }    
         function register() {
-            echo json_encode(common::load_model('login_model', 'register', [$_POST['username_reg'], $_POST['passwd1_reg'], $_POST['email_reg']]));
+            echo json_encode(common::load_model('login_model', 'register', [$_POST['username_reg'], $_POST['passwd1_reg'], $_POST['passwd2_reg'],$_POST['email_reg']]));
         }
         function login() {
             echo json_encode(common::load_model('login_model', 'login', [$_POST['username_log'], $_POST['passwd_log']]));
@@ -44,7 +48,7 @@
         function social_login() {
             echo json_encode(common::load_model('login_model', 'social_login', [$_POST['id'], $_POST['username'], $_POST['email'], $_POST['avatar']]));
         } 
-    
+                 
         function verify_email() {
             $verify = json_encode(common::load_model('login_model', 'verify_email', $_POST['token_email']));
             echo json_encode($verify);
