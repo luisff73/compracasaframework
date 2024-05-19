@@ -50,8 +50,7 @@
         } 
                  
         function verify_email() {
-            $verify = json_encode(common::load_model('login_model', 'verify_email', $_POST['token_email']));
-            echo json_encode($verify);
+            echo json_encode(common::load_model('login_model', 'verify_email', $_POST['token_email']));
         }
 
         function recover_email() {

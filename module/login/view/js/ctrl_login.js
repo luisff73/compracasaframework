@@ -227,10 +227,14 @@ function click_recover_password() {
     });
 
     $('#button_recover').on('click', function (e) {
+
         e.preventDefault();
         send_recover_password();
     });
 }
+
+
+
 function validate_recover_password() {
     var mail_exp = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
     var error = false;
@@ -253,10 +257,13 @@ function validate_recover_password() {
 }
 function send_recover_password() {
     if (validate_recover_password() != 0) {
+
         var data = $('#recover_email_form').serialize();
+        alert('el valor de data es ' + data);
         $.ajax({
-            url: friendlyURL('?module=login&op=send_recover_email'),
-            dataType: 'json',
+            //url: friendlyURL('?module=login&op=recover_email'),
+            url: '?module=login&op=recover_email',
+            dataType: 'JSON',
             type: "POST",
             data: data,
         }).done(function (data) {
@@ -353,29 +360,29 @@ function send_new_password(token_email) {
         });
     }
 }
-function load_content() {
-    let path = window.location.pathname.split('/');
+// function load_content() {
+//     let path = window.location.pathname.split('/');
 
-    if (path[5] === 'recover') {
-        window.location.href = friendlyURL("?module=login&op=recover_view");
-        localStorage.setItem("token_email", path[6]);
-    } else if (path[5] === 'verify') {
-        ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { token_email: path[6] })
-            .then(function (data) {
-                toastr.options.timeOut = 3000;
-                toastr.success('Email verified');
-                setTimeout('window.location.href = "?module=home&op=view"', 1000);
-            })
-            .catch(function () {
-                console.log('Error: verify email error');
-            });
-    } else if (path[4] === 'view') {
-        $(".login-wrap").show();
-        $(".forget_html").hide();
-    } else if (path[4] === 'recover_view') {
-        load_form_new_password();
-    }
-}
+//     if (path[5] === 'recover') {
+//         window.location.href = friendlyURL("?module=login&op=recover_view");
+//         localStorage.setItem("token_email", path[6]);
+//     } else if (path[5] === 'verify') {
+//         ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { token_email: path[6] })
+//             .then(function (data) {
+//                 toastr.options.timeOut = 3000;
+//                 toastr.success('Email verified');
+//                 setTimeout('window.location.href = "?module=home&op=view"', 1000);
+//             })
+//             .catch(function () {
+//                 console.log('Error: verify email error');
+//             });
+//     } else if (path[4] === 'view') {
+//         $(".login-wrap").show();
+//         $(".forget_html").hide();
+//     } else if (path[4] === 'recover_view') {
+//         load_form_new_password();
+//     }
+// }
 
 $(document).ready(function () {
     key_login();
@@ -383,4 +390,5 @@ $(document).ready(function () {
     key_register();
     button_register();
     load_content();
+    click_recover_password()
 });
