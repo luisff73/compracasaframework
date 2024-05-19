@@ -210,11 +210,14 @@ public function get_register_BLL($args) {
 		}
 
 		public function get_verify_email_BLL($args) {
-			if($this -> dao -> select_verify_email($this->db, $args[0])){
-				$this -> dao -> update_verify_email($this->db, $args[0]);
-				return 'verify';
+
+			if($this -> dao -> select_verify_email($this->db, $args)){
+				$this -> dao -> update_verify_email($this->db, $args);
+				return 'verify' ;
 			} else {
+				
 				return 'fail';
+
 			}
 		}
 

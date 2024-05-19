@@ -168,12 +168,13 @@ function friendlyURL(url) {
 }
 
 function load_content() {
+
     let path = window.location.pathname.split('/');
 
-    if (path[5] === 'recover') {
+    if (path[5] === 'recover_email') {
         window.location.href = friendlyURL("?module=login&op=recover_view");
         localStorage.setItem("token_email", path[6]);
-    } else if (path[5] === 'verify') {
+    } else if (path[5] === 'verify_email') {
         ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { token_email: path[6] })
             .then(function (data) {
                 toastr.options.timeOut = 3000;
@@ -198,4 +199,5 @@ $(document).ready(function () {
     load_menu();
     click_logout();
     click_shop();
+    load_content();
 });

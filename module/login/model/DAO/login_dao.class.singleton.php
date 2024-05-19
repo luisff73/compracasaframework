@@ -62,7 +62,9 @@
 			$sql = "SELECT token_email FROM users WHERE token_email = '$token_email'";
 
             $stmt = $db->ejecutar($sql);
-            return $db->listar($stmt);
+            //return $db->listar($stmt);
+            return $stmt;
+            //return $token_email;
         } 
 
         public function update_verify_email($db, $token_email){

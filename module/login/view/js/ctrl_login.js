@@ -258,8 +258,9 @@ function validate_recover_password() {
 function send_recover_password() {
     if (validate_recover_password() != 0) {
 
-        var data = $('#recover_email_form').serialize();
-        alert('el valor de data es ' + data);
+        //var data = $('#recover_email_form').serialize();
+        var data = $('#email_forg').serialize();
+        //alert(data);
         $.ajax({
             //url: friendlyURL('?module=login&op=recover_email'),
             url: '?module=login&op=recover_email',
@@ -267,12 +268,15 @@ function send_recover_password() {
             type: "POST",
             data: data,
         }).done(function (data) {
+            console.log(data);
+            alert(data);
             if (data == "error") {
                 $("#error_email_forg").html("The email doesn't exist");
             } else {
                 toastr.options.timeOut = 3000;
                 toastr.success("Email sended");
-                setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
+                //setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
+                setTimeout('window.location.href = "?module=login&op=view"', 1000);
             }
         }).fail(function (textStatus) {
             console.log('Error: Recover password error');
