@@ -178,27 +178,28 @@ function load_content() {
         window.location.href = "?module=login&op=recover_view";
         localStorage.setItem("token_email", path[4]);
     } else if (path[3] === 'verify_email') {
-        //console.log('verify_email');
-        console.log('path[4]: ' + path[4]);
-        console.log('token_email: ' + localStorage.getItem("token_email"));
+
         ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { token_email: path[4] })
+
             .then(function (data) {
+
+                console.log('data: ' + data);
                 toastr.options.timeOut = 3000;
                 toastr.success('Email verified');
                 setTimeout('window.location.href = "?module=home&op=view"', 1000);
             })
             .catch(function () {
-                console.log('Error: verify email error');
+                toastr.options.timeOut = 3000;
+                toastr.error('Email no verificado');
+                alert('data: ' + data);
             });
     } else if (path[4] === 'view') {
         $(".login-wrap").show();
         $(".forget_html").hide();
-    } else if (path[4] === 'recover_view') {
+    } else if (path[3] === 'recover_view') {
         load_form_new_password();
     }
 }
-
-
 
 
 $(document).ready(function () {

@@ -366,9 +366,10 @@ function send_new_password(token_email) {
             }
         }).fail(function (textStatus) {
             console.log("Error: New password error");
+
         });
     }
-}
+} // Path: module/login/view/js/ctrl_login.js
 
 
 $(document).ready(function () {
