@@ -128,7 +128,7 @@ function click_logout() {
 
 //================LOG-OUT================
 function logout() {
-    ajaxPromise(friendlyURL('?module=login&op=logout'), 'POST', 'JSON')
+    ajaxPromise('?module=login&op=logout', 'POST', 'JSON')
         .then(function (data) {
             //localStorage.removeItem('token');
             localStorage.removeItem('accestoken');   /// usamos siempre el accestoken
@@ -170,12 +170,18 @@ function friendlyURL(url) {
 function load_content() {
 
     let path = window.location.pathname.split('/');
+    console.log(path);
 
-    if (path[5] === 'recover_email') {
-        window.location.href = friendlyURL("?module=login&op=recover_view");
-        localStorage.setItem("token_email", path[6]);
-    } else if (path[5] === 'verify_email') {
-        ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { token_email: path[6] })
+    if (path[3] === 'recover_email') {
+        //console.log('recover_email');
+        // window.location.href = friendlyURL("?module=login&op=recover_view");
+        window.location.href = "?module=login&op=recover_view";
+        localStorage.setItem("token_email", path[4]);
+    } else if (path[3] === 'verify_email') {
+        //console.log('verify_email');
+        console.log('path[4]: ' + path[4]);
+        console.log('token_email: ' + localStorage.getItem("token_email"));
+        ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { token_email: path[4] })
             .then(function (data) {
                 toastr.options.timeOut = 3000;
                 toastr.success('Email verified');

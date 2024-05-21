@@ -1,6 +1,6 @@
 <?php
-require ('module/login/model/DAO/login_dao.class.singleton.php');
-require_once  ('utils/mail.inc.php');
+require_once ('module/login/model/DAO/login_dao.class.singleton.php');
+require_once ('utils/mail.inc.php');
 
 	
 		class login_bll {
@@ -210,7 +210,7 @@ public function get_register_BLL($args) {
 		}
 
 		public function get_verify_email_BLL($args) {
-
+			 //echo json_encode($args); //aqui llega el token
 			if($this -> dao -> select_verify_email($this->db, $args)){
 				$this -> dao -> update_verify_email($this->db, $args);
 				return 'verify' ;
@@ -221,15 +221,15 @@ public function get_register_BLL($args) {
 			}
 		}
 
-		public function get_recover_email_BBL($args) {
-			$user = $this -> dao -> select_recover_password($this->db, $args);
+		public function get_recover_email_BBL($email) {
+			$user = $this -> dao -> select_recover_password($this->db, $email);
 			$token = common::generate_Token_secure(20);
 
 			if (!empty($user)) {
-				$this -> dao -> update_recover_password($this->db, $args, $token);
+				$this -> dao -> update_recover_password($this->db, $email, $token);
                 $message = ['type' => 'recover', 
                             'token' => $token, 
-                            'toEmail' => $args];
+                            'toEmail' => $email];
                 $email = json_decode(mail::send_email($message), true);
 				if (!empty($email)) {
 					return;  
@@ -238,17 +238,15 @@ public function get_register_BLL($args) {
                 return 'error';
             }
 		}
-
 		public function get_verify_token_BLL($args) {
 			if($this -> dao -> select_verify_email($this->db, $args)){
 				return 'verify';
 			}
 			return 'fail';
 		}
-
 		public function get_new_password_BLL($args) {
 			$hashed_pass = password_hash($args[1], PASSWORD_DEFAULT, ['cost' => 12]);
-			if($this -> dao -> update_new_passwoord($this->db, $args[0], $hashed_pass)){
+			if($this -> dao -> update_new_password($this->db, $args[0], $hashed_pass)){
 				return 'done';
 			}
 			return 'fail';
@@ -263,7 +261,6 @@ public function get_register_BLL($args) {
 
             return $new_token;
 		}
-
 		public function get_token_expires_BLL($args) {
 			$token = explode('"', $args);
 			$decode = middleware::decode_token($token[1]);

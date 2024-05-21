@@ -232,9 +232,6 @@ function click_recover_password() {
         send_recover_password();
     });
 }
-
-
-
 function validate_recover_password() {
     var mail_exp = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
     var error = false;
@@ -258,9 +255,9 @@ function validate_recover_password() {
 function send_recover_password() {
     if (validate_recover_password() != 0) {
 
-        //var data = $('#recover_email_form').serialize();
         var data = $('#email_forg').serialize();
-        //alert(data);
+        //var data = $('#form_recover_password').serialize();
+
         $.ajax({
             //url: friendlyURL('?module=login&op=recover_email'),
             url: '?module=login&op=recover_email',
@@ -268,19 +265,28 @@ function send_recover_password() {
             type: "POST",
             data: data,
         }).done(function (data) {
-            console.log(data);
-            alert(data);
+
             if (data == "error") {
                 $("#error_email_forg").html("The email doesn't exist");
             } else {
+                console.log(data);
                 toastr.options.timeOut = 3000;
                 toastr.success("Email sended");
                 //setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
                 setTimeout('window.location.href = "?module=login&op=view"', 1000);
             }
-        }).fail(function (textStatus) {
-            console.log('Error: Recover password error');
-        });
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+
+            console.log('Error: ' + textStatus);
+            console.log('Error: ' + errorThrown);
+            console.log('Response: ' + jqXHR.responseText);
+            console.log('Error: Recover password error ' + textStatus);
+        })
+            .always(function () {
+                // Esta función se ejecuta cuando la llamada AJAX se completa, independientemente del éxito o el fracaso.
+                console.log('AJAX call completed');
+            });
+
     }
 }
 function load_form_new_password() {
@@ -301,7 +307,6 @@ function load_form_new_password() {
         console.log("Error: Verify token error");
     });
 }
-
 function click_new_password(token_email) {
     $(".recover_html").keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -364,35 +369,12 @@ function send_new_password(token_email) {
         });
     }
 }
-// function load_content() {
-//     let path = window.location.pathname.split('/');
 
-//     if (path[5] === 'recover') {
-//         window.location.href = friendlyURL("?module=login&op=recover_view");
-//         localStorage.setItem("token_email", path[6]);
-//     } else if (path[5] === 'verify') {
-//         ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { token_email: path[6] })
-//             .then(function (data) {
-//                 toastr.options.timeOut = 3000;
-//                 toastr.success('Email verified');
-//                 setTimeout('window.location.href = "?module=home&op=view"', 1000);
-//             })
-//             .catch(function () {
-//                 console.log('Error: verify email error');
-//             });
-//     } else if (path[4] === 'view') {
-//         $(".login-wrap").show();
-//         $(".forget_html").hide();
-//     } else if (path[4] === 'recover_view') {
-//         load_form_new_password();
-//     }
-// }
 
 $(document).ready(function () {
     key_login();
     button_login();
     key_register();
     button_register();
-    load_content();
     click_recover_password()
 });

@@ -1,15 +1,15 @@
 <?php
-//include($path . "/module/login/model/DAO/login_dao.class.singleton.php");
+include_once("C:/xampp/htdocs/compracasaframework/module/login/controller/controller_login.class.php");
               
-//include($path . "/model/middleware_auth.inc.php");
+include_once("C:/xampp/htdocs/compracasaframework/model/middleware_auth.inc.php");
+
     class controller_login {
 
         function view() {
-            common::load_view('top_page_home.html', VIEW_PATH_LOGIN . 'login-register.html');
+            common::load_view('top_page_shop.html', VIEW_PATH_LOGIN . 'login-register.html');
         }
-
         function recover_view() {
-            common::load_view('top_page_home.html', VIEW_PATH_LOGIN . 'recover_pass.html');
+            common::load_view('top_page_shop.html', VIEW_PATH_LOGIN . 'recover_pass.html');
         }
         function login_register_view() {
             common::load_view('top_page_home.html', VIEW_PATH_LOGIN . 'login-register.html');
@@ -42,7 +42,6 @@
             session_regenerate_id();
             echo json_encode("Done");
         } 
-
         ///////////////////////////////////////////////////////////
 
         function social_login() {
@@ -50,30 +49,16 @@
         } 
                  
         function verify_email() {
-            //echo json_encode(common::load_model('login_model', 'verify_email', $_POST['token_email']));
-            echo json_encode(common::load_model('login_model', 'verify_email', $_GET['token_email']));
+
+             echo json_encode(common::load_model('login_model', 'verify_email', $_POST['token_email']));
+               
         }
 
         function recover_email() {
-            echo json_encode(common::load_model('login_model', 'recover_email', $_GET['email_forg']));
+
+            echo json_encode(common::load_model('login_model', 'recover_email', $_POST['email_forg']));
+
         }
-
-        // public function recover_email() {
-        //     // Obtener el token desde la URL
-        //     if (isset($_GET['email_forg'])) {
-        //         $token = $_GET['email_forg'];
-        //     } else {
-        //         // Manejar el error, por ejemplo, establecer un valor por defecto o mostrar un mensaje de error
-        //         $token = null;
-        //         echo json_encode(['status' => 'error', 'message' => 'El token de recuperación de la contraseña no está definido.']);
-        //         exit(); // O manejar el error de manera apropiada
-        //     }
-    
-        //     // Llamar al método recover_email con el parámetro del token
-        //     $result = common::load_model('login_model', 'recover_email', $token);
-        //     echo json_encode($result);
-        // }
-
 
         function verify_token() {
             echo json_encode(common::load_model('login_model', 'verify_token', $_POST['token_email']));

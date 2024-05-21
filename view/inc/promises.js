@@ -19,12 +19,12 @@ function ajaxPromise(sUrl, sType, sTData, sData = undefined) {
             //console.log("Respuesta del servidor en el promise: ", data)
             resolve(data);
         }).fail((jqXHR, textStatus, errorThrow) => {
-            console.log("Error en el promise, Valor de sUrl: ", sUrl);
-            console.log("VALOR DE sType: ", sType);
-            console.log("VALOR DE sTdata: ", sTData);
-            console.log("VALOR DE sData: ", sData);
-            console.log("Respuesta del servidor en el promise responsetext : ", jqXHR.responseText);
-            console.log("Respuesta del servidor en el promise log : ", jqXHR.log);
+            // console.log("Error en el promise, Valor de sUrl: ", sUrl);
+            // console.log("VALOR DE sType: ", sType);
+            // console.log("VALOR DE sTdata: ", sTData);
+            // console.log("VALOR DE sData: ", sData);
+            // console.log("Respuesta del servidor en el promise responsetext : ", jqXHR.responseText);
+            // console.log("Respuesta del servidor en el promise log : ", jqXHR.log);
             //console.log('fail'.textStatus);
             reject(errorThrow);
         });

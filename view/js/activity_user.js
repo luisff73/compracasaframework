@@ -10,9 +10,8 @@ function protecturl() {
                 logout_auto();
             }
         })
-        .catch(function () { console.log("ANONYMOUS_user") });
+        .catch(function () { console.log("Usuario anonimo") });
 }
-
 function control_activity() {
     //ESTA FUNCION RECOGERA EL TOKEN Y COMPROBARA SI EL USUARIO ESTA ACTIVO O INACTIVO
     var accestoken = localStorage.getItem('accestoken');
@@ -32,7 +31,6 @@ function control_activity() {
         console.log("No hay usario logeado");
     }
 }
-
 function refresh_cookie() {
     ajaxPromise('?module=login&op=refresh_cookie', 'POST', 'JSON')
         //.then(function (response) {??RESPONSE NO SE USA??
@@ -40,9 +38,7 @@ function refresh_cookie() {
             //console.log("Refresh cookie correctly");
         });
 }
-
 function logout_auto() {
-
     ajaxPromise('?module=login&op=logout', 'POST', 'JSON')
         .then(function (data) {
             localStorage.removeItem('accestoken');

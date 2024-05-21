@@ -39,7 +39,13 @@
                 $this -> uriModule = 'home';
             }
             if(isset($_GET['op'])){
-                $this -> uriFunction = ($_GET['op'] === "") ? 'view' : $_GET['op'];
+                
+                if ($_GET['op'] === 'verify_email' | $_GET['op'] === 'recover_email') {
+                    $this ->uriFunction ='view';
+                } else {
+                    $this -> uriFunction = ($_GET['op'] === "") ? 'view' : $_GET['op'];
+                }
+
                 //error_log($this -> uriFunction);
             }else{
                 $this -> uriFunction = 'view';
