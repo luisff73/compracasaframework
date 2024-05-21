@@ -7,7 +7,7 @@
     spl_autoload_register('loadClasses');
     
     function loadClasses($className) {
-        $breakClass = explode('_', $className);
+        $breakClass = explode('_', $className); // divide la variable $classname en un array utilizando el elemento delimitador "_"
         $modelName = "";
         
         if (isset($breakClass[1])) {
