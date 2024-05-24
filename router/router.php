@@ -32,16 +32,19 @@
         }
     
         function __construct() {   
-            if(isset($_GET['module'])){
+            if(isset($_GET['module'])){ //comprueba si existe el modulo
                 $this -> uriModule = $_GET['module'];  //module es el nombre del modulo que viene del loadmenu en el main.js
                 //error_log($this -> uriModule);
             }else{
                 $this -> uriModule = 'home';
             }
+
             if(isset($_GET['op'])){
                 
-                if ($_GET['op'] === 'verify_email' | $_GET['op'] === 'recover_email') {
-                    $this ->uriFunction ='view';
+                if ($_GET['op'] === 'verify_email' ){
+                $this ->uriFunction ='view';
+                } else if ($_GET['op'] === 'recover_email') {
+                    $this -> uriFunction = 'recover_view';
                 } else {
                     $this -> uriFunction = ($_GET['op'] === "") ? 'view' : $_GET['op'];
                 }
@@ -53,8 +56,6 @@
                 // Imprime el valor de uriModule
 
     // echo $this -> uriModule;
-
-
 
         }
     
@@ -83,6 +84,7 @@
                              $controllerName = 'controller_' . (String) $row -> name;
                              $this -> nameModule = (String) $row -> name;
                              return new $controllerName;
+                             //return $controllerName::getInstance();;
                          }
                      }
                  } 

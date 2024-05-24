@@ -2,6 +2,18 @@
 //include($path . "/module/login/model/DAO/login_dao.class.singleton.php");
 //include($path . "/model/middleware_auth.inc.php");
     class controller_shop {
+        static $_instance;
+
+        function __construct() {
+		}
+
+		public static function getInstance() {
+			if (!(self::$_instance instanceof self)) {
+				self::$_instance = new self();
+			}
+			return self::$_instance;
+		}
+        
         function view() {
             //echo ('Hola view'); // hay que practicar esto
             //echo '<p>Hola view</p>';  // hay que practicar esto

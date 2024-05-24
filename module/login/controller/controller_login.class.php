@@ -1,5 +1,4 @@
 <?php
-include_once("C:/xampp/htdocs/compracasaframework/module/login/controller/controller_login.class.php");
               
 include_once("C:/xampp/htdocs/compracasaframework/model/middleware_auth.inc.php");
 

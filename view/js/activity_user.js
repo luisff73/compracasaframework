@@ -53,13 +53,25 @@ $(document).ready(function () {
 
     //controal activity se ejecuta cada xxxx tiempo para comprobar si el usuario esta activo 
     //o inactivo dependiendo del valor que devuelva el php (alli definimos el tiempo de inactividad que queramos)
-    setInterval(function () { control_activity() }, 10000); //10min= 600000
+
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // descomentar cuando vaya bien setInterval(function () { control_activity() }, 10000); //10min= 600000
 
     // esta funcion se encarga de comprobar que el usuario que esta logeado 
     // es el mismo que el que esta en la session (comparando el token del 
     // servidor y el usuario de localStorage)
-    protecturl();
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    // descomentar cuanda vaya bien protecturl();
 
     //igual que en el caso anterior, este fragmento de código
-    setInterval(function () { refresh_cookie() }, 15000);
+    //setInterval(function () { refresh_cookie() }, 15000);
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    // descomentar cuando vaya bien setInterval(function () { refresh_cookie() }, 15000);
+
 });

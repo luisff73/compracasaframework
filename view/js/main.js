@@ -61,12 +61,11 @@ function load_menu() {
                 console.log(data);
             });
     } else {
-        console.log("No hay token disponible");
+        //console.log("No hay token disponible");
         $('.opc_CRUD').empty();
         $('.opc_exceptions').empty();
         $('#user_info').hide();
         $('.log-icon').empty();
-        //$('<a href="?module=login&op=login-register_view"><i id="col-ico" class="fa-solid fa-user fa-2xl"></i></a>').appendTo('.log-icon'); //añadimos el icono de login
         $('<a href="?module=login&op=login"><i id="col-ico" class="fa-solid fa-user fa-2xl"></i></a>').appendTo('.log-icon'); //añadimos el icono de login
 
     }
@@ -170,15 +169,16 @@ function friendlyURL(url) {
 function load_content() {
 
     let path = window.location.pathname.split('/');
-    console.log(path);
+    //console.log(path);
 
     if (path[3] === 'recover_email') {
         //console.log('recover_email');
         // window.location.href = friendlyURL("?module=login&op=recover_view");
         window.location.href = "?module=login&op=recover_view";
         localStorage.setItem("token_email", path[4]);
-    } else if (path[3] === 'verify_email') {
 
+    } else if (path[3] === 'verify_email') {
+        console.log('data del token: ' + path[4]);
         ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { token_email: path[4] })
 
             .then(function (data) {
@@ -188,10 +188,11 @@ function load_content() {
                 toastr.success('Email verified');
                 setTimeout('window.location.href = "?module=home&op=view"', 1000);
             })
-            .catch(function () {
+            .catch(function (error) {
+                alert('error data: ' + JSON.stringify(error.message));
+                console.log('error data: ' + JSON.stringify(error.responseText));
                 toastr.options.timeOut = 3000;
                 toastr.error('Email no verificado');
-                alert('data: ' + data);
             });
     } else if (path[4] === 'view') {
         $(".login-wrap").show();

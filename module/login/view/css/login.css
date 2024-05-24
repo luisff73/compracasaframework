@@ -52,7 +52,7 @@ a {
 
 .login-html .sign-in-htm,
 .login-html .sign-up-htm,
-.login-html .recover_email_form-htm {
+.login-html .recover-htm {
     top: 0;
     left: 0;
     right: 0;
@@ -65,7 +65,8 @@ a {
 
 .login-html .sign-in,
 .login-html .sign-up,
-.login-html .recover_email_form .login-form .group .check {
+.login-html .recover,
+.login-html .third-form .login-form .group .check {
     display: none;
 }
 
@@ -86,7 +87,7 @@ a {
 
 .login-html .sign-in:checked+.tab,
 .login-html .sign-up:checked+.tab,
-.login-html .recover_email_form:checked+.tab {
+.login-html .recover:checked+.tab {
     color: #fff;
     border-color: #373737;
 }
@@ -180,15 +181,19 @@ a {
     transform: scale(1) rotate(-45deg);
 }
 
-.login-html .sign-in:checked+.tab+.sign-up+.tab+.login-form .sign-in-htm {
+.login-html .sign-in:checked+.tab+.sign-up+.tab+.recover+.tab+.login-form .sign-in-htm {
     transform: rotate(0);
 }
 
-.login-html .sign-up:checked+.tab+.login-form .sign-up-htm {
+.login-html .sign-up:checked+.tab+.recover+.tab+.login-form .sign-up-htm {
     transform: rotate(0);
 }
 
-.login-html .recover_email_form:checked+.tab+.login-form .recover_email_form-htm {
+.login-html .recover:checked+.tab+.login-form .recover-htm {
+    transform: rotate(0);
+}
+
+.login-html .third-form:checked+.tab+.login-form .third-form-htm {
     transform: rotate(0);
 }
 
@@ -216,4 +221,20 @@ a {
 
 #wrapper {
     background-color: rgb(255, 255, 255);
+}
+
+/* Añade estilos para la nueva pestaña "ThirdForm" */
+.login-html .third-form {
+    display: none;
+}
+
+/* Muestra la pestaña "ThirdForm" cuando su checkbox asociado esté seleccionado */
+.login-html .third-form:checked~.login-form .third-form-htm {
+    transform: rotate(0);
+}
+
+/* Cambia el color de la pestaña "ThirdForm" cuando su checkbox asociado esté seleccionado */
+.login-html .third-form:checked+.tab {
+    color: #fff;
+    border-color: #373737;
 }

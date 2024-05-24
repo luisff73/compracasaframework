@@ -66,65 +66,61 @@ public function get_register_BLL($args) {
 }
 
 
-		public function get_login_BLL($args) {
-			// if (!empty($this -> dao -> select_user($this->db, $args[0], $args[0]))) {
-			// 	$user = $this -> dao -> select_user($this->db, $args[0], $args[0]);
-			// 	if (password_verify($args[1], $user[0]['password']) && $user[0]['activate'] == 1) {
-			// 		$jwt = jwt_process::encode($user[0]['username']);
-			// 		$_SESSION['username'] = $user[0]['username'];
-			// 		$_SESSION['tiempo'] = time();
-            //         session_regenerate_id();
-			// 		return json_encode($jwt);
-			// 	} else if (password_verify($args[1], $user[0]['password']) && $user[0]['activate'] == 0) {
-			// 		return 'activate error';
-			// 	} else {
-			// 		return 'error';
-			// 	}
-            // } else {
-			// 	return 'user error';
-			// }
 
-			try {
-				//$rdo = $this->dao->select_user($_POST['username_log'],$_POST['passwd_log']);                                               
-				$rdo = $this->dao->select_user($this->db,$args[0]);
-				//$rdo = $this->dao->select_user($this->db,$_POST['username_log'],$_POST['passwd_log']);
-				//echo json_encode ($rdo);
-				//return ($rdo);
-				if ($rdo == "error_select_user") {
-					echo json_encode("error_select_user"); //devuelve error_select_user para que lo recoga la funcion login
-					exit;
-				} else {
+public function get_login_BLL($args) { 
+	//return "hola login";
+	//return $args;
 
-					if (password_verify($_POST['passwd_log'], $rdo['password'])) { //comprueba que la contraseña sea correcta
-					//if (password_verify($_POST['passwd_log'], $args[1])) { //comprueba que la contraseña sea correcta
-						$accestoken = middleware::create_accestoken($rdo["username"]); //crea el token de la funcion accestoken del middleware_auth.php
-					   $refreshtoken = middleware::create_refreshtoken($rdo["username"]); //crea el token create_refreshtoken del middleware_auth.php este token se usa para refrescar el accestoken  
-						
-						$_SESSION['username'] = $rdo['username']; //Guardamos el usuario en la sesion
-						$_SESSION['tiempo'] = time(); //Guardamos el tiempo que se logea
-	
-					
-						$response = array(
-							'accestoken' => $accestoken,
-							'refreshtoken' => $refreshtoken
-						);
-						
-						echo json_encode($response);
-						
-						
-						exit;
-					} else {
-						echo json_encode("error_password");                 
-						exit;
-					}
-				}
-			} catch (Exception $e) {
-				echo json_encode("error");
-				exit;  
-			}
+     try { 
+        $resultado = $this->dao->select_user($this->db,$args[0]);
+		
+
+		//return $resultado;
+		
+        if (!$resultado) { 
+            return "error_select_user";
+
+        } else { 
+			
+		$value=get_object_vars($resultado); 
+		//return $value;
+
+			if (password_verify($args[1], $value['password'])) { 
+
+				//return $resultado;
+				
+                $accestoken = middleware::create_accestoken($value['username']);
+                $refreshtoken = middleware::create_refreshtoken($value['username']);
+
+				//return $accestoken;
+
+                
+                $_SESSION['username'] = $value['username'];
+                $_SESSION['tiempo'] = time();
+
+                $response = array(
+                    'accestoken' => $accestoken,
+                    'refreshtoken' => $refreshtoken
+                );
+                
+                echo json_encode($response);
+                
+                exit;
+            } else { 
+                echo json_encode("error_password");                 
+                exit;
+            } 
+        } 
+                               
+
+    } catch (Exception $e) { 
+        echo json_encode("error");
+        return ("error catch");
+        exit;  
+    } 
+} 
 
 
-		}
 
 		public function get_data_user_BLL($args) {
 			// $token = explode('"', $args);
@@ -196,30 +192,29 @@ public function get_register_BLL($args) {
 
 		}
 
-			public function get_social_login_BLL($args) {
-			if (!empty($this -> dao -> select_user($this->db, $args[1], $args[2]))) {
-				$user = $this -> dao -> select_user($this->db, $args[1], $args[2]);
-				$jwt = jwt_process::encode($user[0]['username']);
-				return json_encode($jwt);
-            } else {
-				$this -> dao -> insert_social_login($this->db, $args[0], $args[1], $args[2], $args[3]);
-				$user = $this -> dao -> select_user($this->db, $args[1], $args[2]);
-				$jwt = jwt_process::encode($user[0]['username']);
-				return json_encode($jwt);
-			}
-		}
+public function get_social_login_BLL($args) {
+if (!empty($this -> dao -> select_user($this->db, $args[1], $args[2]))) {
+	$user = $this -> dao -> select_user($this->db, $args[1], $args[2]);
+	$jwt = middleware::create_accestoken($user[0]['username']);
+	return json_encode($jwt);
+} else {
+	$this -> dao -> insert_social_login($this->db, $args[0], $args[1], $args[2], $args[3]);
+	$user = $this -> dao -> select_user($this->db, $args[1], $args[2]);
+	$jwt = middleware::create_accestoken($user[0]['username']);
+	return json_encode($jwt);
+}
+}
 
-		public function get_verify_email_BLL($args) {
-			 //echo json_encode($args); //aqui llega el token
-			if($this -> dao -> select_verify_email($this->db, $args)){
-				$this -> dao -> update_verify_email($this->db, $args);
-				return 'verify' ;
-			} else {
-				
-				return 'fail';
-
-			}
-		}
+public function get_verify_email_BLL($args) {
+		//echo json_encode($args); //aqui llega el token
+	if($this -> dao -> select_verify_email($this->db, $args)){
+		$this -> dao -> update_verify_email($this->db, $args);
+		return 'verify' ;
+	} else {
+		return 'fail';
+	}
+			
+}
 
 		public function get_recover_email_BBL($email) {
 			$user = $this -> dao -> select_recover_password($this->db, $email);
@@ -257,7 +252,7 @@ public function get_register_BLL($args) {
 			$decode = middleware::decode_token($token[1]);
 			$user = $this -> dao -> select_user($this->db, $decode, $void_email);
 
-			$new_token = jwt_process::encode($user[0]['username']);
+			$new_token = middleware::create_accestoken($user[0]['username']);
 
             return $new_token;
 		}

@@ -8,7 +8,7 @@ function carousel_operation() {
             for (row in data) {
                 $('<div></div>').attr('class', "carousel__elements").attr('id', data[row].id_operation).appendTo(".carousel_operaciones")
                     .html(
-                        "<img class='carousel__img' id='' src='" + data[row].image_name + "' alt='' >" +
+                        "<img class='carousel__img' id='' src='http://localhost/compracasaframework/" + data[row].image_name + "' alt='' >" +
                         "<h5>" + data[row].operation_name + "</h5>"
                     )
 

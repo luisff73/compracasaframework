@@ -39,7 +39,7 @@ class login_model {
     public function verify_email($args) {
         return $this -> bll -> get_verify_email_BLL($args);
     }
-
+      
     public function recover_email($args) {
         return $this -> bll -> get_recover_email_BBL($args);
     }

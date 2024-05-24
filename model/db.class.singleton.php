@@ -7,6 +7,7 @@
         private $link;
         private $stmt;
         private $array;
+        private $object;
         static $_instance;
 
         private function __construct() { // Constructor privado para evitar que se pueda instanciar desde fuera de la clase
@@ -51,5 +52,11 @@
             }
             return $this -> array;
         }
+        
+        public function listar_object($stmt) {
+            $this -> object= $stmt -> fetch_object();
+            return $this -> object ;
+        }
+
 
     }

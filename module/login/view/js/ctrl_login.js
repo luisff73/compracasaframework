@@ -1,19 +1,24 @@
 function login() {
-    if (validate_login() != 0) {
-        var data = [];
-        data.push({ name: 'username_log', value: document.getElementById('username_log').value });
-        data.push({ name: 'passwd_log', value: document.getElementById('passwd_log').value });
-        console.log('valor de data ');
-        console.log(data)
-        ajaxPromise('?module=login&op=login', 'POST', 'JSON', data) //data lleva el usuario y la contraseña
-            .then(function (result) {//result es lo que devuelve el php
-                var accestoken = result.accestoken; //accestoken es el token que devuelve el php EN UN ARRAY
-                var refreshtoken = result.refreshtoken; //refreshtoken es el token que devuelve el php EN UN ARRAY
+    if (validate_login() != 0) {  //si la validacion es distinta de 0, es decir, si no hay errores
+
+        var username_log = document.getElementById('username_log').value;
+        var passwd_log = document.getElementById('passwd_log').value;
+
+        // console.log(data);
+        //return;
+
+        ajaxPromise('?module=login&op=login', 'POST', 'JSON', { 'username_log': username_log, 'passwd_log': passwd_log }) //data lleva el usuario y la contraseña
+
+            .then(function (data) {//data es lo que devuelve el php
+                console.log('Data: ', data);
+                //return;
+                var accestoken = data.accestoken; //accestoken es el token que devuelve el php EN UN ARRAY
+                var refreshtoken = data.refreshtoken; //refreshtoken es el token que devuelve el php EN UN ARRAY
 
 
-                if (result == "error_select_user") {
-                    document.getElementById('error_username_log').innerHTML = "El usario no existe,asegurase de que lo a escrito correctamente"
-                } else if (result == "error_password") {
+                if (data == "error_select_user") {
+                    document.getElementById('error_username_log').innerHTML = "El usario no existe en la base de datos o no es activo"
+                } else if (data == "error_password") {
                     document.getElementById('error_passwd_log').innerHTML = "La contraseña es incorrecta"
                 } else {
 
@@ -24,9 +29,9 @@ function login() {
                     setTimeout(' window.location.href = "?module=shop&op=list"; ', 3000);
 
                 }
-            }).catch(function (textStatus) {
+            }).catch(function (textStatus, sData, errorThrown, jqXHR, data) {
                 if (console && console.log) {
-                    console.log("La solicitud ha fallado en el login : " + textStatus);
+                    reject(errorThrow);
                 }
             });
     }
@@ -41,14 +46,12 @@ function key_login() {
         }
     });
 }
-
 function button_login() {
     $('#login').on('click', function (e) {
         e.preventDefault();//evita que se recargue la pagina, en JavaScript se utiliza para prevenir la ejecución de la acción predeterminada del evento.
         login();
     });
 }
-
 function validate_login() {
     var error = false;
 
@@ -87,10 +90,10 @@ function register() {
         //console.log(data);
 
         ajaxPromise('?module=login&op=register', 'POST', 'JSON', data)
-            .then(function (result) {
-                if (result == "error_email_reg") {
+            .then(function (data) {
+                if (data == "error_email_reg") {
                     document.getElementById('error_email_reg').innerHTML = "El email ya esta en uso, asegurate de no tener ya una cuenta"
-                } else if (result == "error_user_exist") {
+                } else if (data == "error_user_exist") {
                     document.getElementById('error_username_reg').innerHTML = "El usuario ya esta en uso, intentalo con otro"
                 } else {
                     toastr.options = {
@@ -116,7 +119,6 @@ function register() {
             });
     }
 }
-
 function key_register() {
     $("#register").keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which); //comprobamos si se ha pulsado la tecla enter
@@ -126,7 +128,6 @@ function key_register() {
         }
     });
 }
-
 function button_register() {
     $('#register').on('click', function (e) {
 
@@ -134,7 +135,6 @@ function button_register() {
         register();
     });
 }
-
 function validate_register() {
     var username_exp = /^(?=.{5,}$)(?=.*[a-zA-Z0-9]).*$/;
     var mail_exp = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
@@ -210,7 +210,6 @@ function validate_register() {
         return 0;
     }
 }
-
 function load_form_recover_password() {
     $(".login-wrap").hide();
     $(".forget_html").show();
@@ -361,6 +360,7 @@ function send_new_password(token_email) {
                 toastr.success('New password changed');
                 setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
             } else {
+
                 toastr.options.timeOut = 3000;
                 toastr.error('Error seting new password');
             }

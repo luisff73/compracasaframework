@@ -23,9 +23,14 @@ function ajaxPromise(sUrl, sType, sTData, sData = undefined) {
             // console.log("VALOR DE sType: ", sType);
             // console.log("VALOR DE sTdata: ", sTData);
             // console.log("VALOR DE sData: ", sData);
-            // console.log("Respuesta del servidor en el promise responsetext : ", jqXHR.responseText);
-            // console.log("Respuesta del servidor en el promise log : ", jqXHR.log);
-            //console.log('fail'.textStatus);
+            // console.log("Importante Respuesta del servidor en el promise responsetext : ", jqXHR.responseText);
+            // console.log('fail ', textStatus);
+
+            // console.log("Código de estado HTTP: ", jqXHR.status);
+            // console.log("Descripción del estado HTTP: ", jqXHR.statusText);
+            // console.log("Cuerpo de la respuesta: ", jqXHR.responseText);
+            // console.log("Cuerpo de la respuesta como JSON: ", jqXHR.responseJSON);
+            // console.log("Tipo de error: ", textStatus);
             reject(errorThrow);
         });
     });
