@@ -21,7 +21,14 @@ class login_model {
     public function login($args) {
         return $this -> bll -> get_login_BLL($args);
     }
-    
+    //////////////////////////////////////////////////////////////////////
+
+    public function verify_email($args) {
+        //return 'fail';
+        return $this -> bll -> get_verify_email_BLL($args);
+    }
+        
+    /////////////////////////////////////////////////////////////////////
     public function data_user($args) {
         return $this -> bll -> get_data_user_BLL($args);
     }
@@ -35,11 +42,7 @@ class login_model {
     public function social_login($args) {
         return $this -> bll -> get_social_login_BLL($args);
     }
-    
-    public function verify_email($args) {
-        return $this -> bll -> get_verify_email_BLL($args);
-    }
-      
+
     public function recover_email($args) {
         return $this -> bll -> get_recover_email_BBL($args);
     }

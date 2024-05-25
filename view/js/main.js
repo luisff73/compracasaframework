@@ -15,12 +15,16 @@ function ajaxPromises(sUrl, sType, sTData, sData = undefined) {
                 $("#overlay").fadeIn(300); // Muestra el loader EN EL MENU
             }
         }).done((data) => {
+            console.log('data ok en el promise: ' + data);
             setTimeout(function () {
                 $("#overlay").fadeOut(300); // Oculta el loader EN EL MENU
             }, 500);
             resolve(data);
 
-        }).fail((jqXHR, textStatus, errorThrow) => {
+        }).fail((data, jqXHR, textStatus, errorThrow) => {
+            console.log('data error en el promise: ' + data);
+            console.log('data error en el promise: ', jqXHR);
+            console.log('data error en el promise: ', jqXHR.responseText);
             reject(errorThrow);
         });
     });
@@ -70,48 +74,6 @@ function load_menu() {
 
     }
 }
-
-/* ========================== LOAD MENU ============================*/
-function load_menunew() {
-
-    // $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=home&op=view") + '" class="nav_link">Home</a>').appendTo('.nav_list');
-    // $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=shop&op=view") + '" class="nav_link">Shop</a>').appendTo('.nav_list');
-    // //$('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=contact&op=view") + '" class="nav_link">Contact us</a>').appendTo('.nav_list');
-    //$('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=contact") + '" class="nav_link">Contact us</a>').appendTo('.nav_list');
-
-    // ajaxPromise(friendlyURL('?module=login&op=data_user'), 'POST', 'JSON', { token: localStorage.getItem('accestoken') })
-    //     //ajaxPromises('?module/login/controller/ctrl_login.php?op=data_user', 'POST', 'JSON', { 'accestoken': accestoken })
-
-    //     .then(function (data) {
-    //         alert('data: ' + data[0].user_type);
-    //         if (data.type_user == "client") {
-    //             console.log("Cliente logeado");
-    //             $('#login-register').empty();
-    //             // $('.opc_CRUD').empty();
-    //             // $('.opc_exceptions').empty();
-    //         } else {
-    //             console.log("Admin loged");
-    //             // $('.opc_CRUD').show();
-    //             // $('.opc_exceptions').show();
-    //         }
-
-    //             $('.log-icon').empty();
-    //             $('#user_info').empty();
-    //             $('login-register').empty();
-    //             $('<img src="' + data.avatar + '"alt="Robot">').appendTo('.log-icon');
-    //             $('<p></p>').attr({ 'id': 'username' }).appendTo('#des_inf_user')
-    //                 .html('<a>' + data.username + '<a/>&nbsp;&nbsp;' +
-    //                     '<a id="logout"><i id="icon-logout" class="fa-solid fa-right-from-bracket"></i></a>'
-    //                 )
-
-
-    //         //click_profile(data[0]);
-    //     }).catch(function () {
-    //         alert('Error al cargar los datos del usuario');
-    //         $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=login&op=view") + '" class="nav_link" data-tr="Log in">Log in</a>').appendTo('.nav_list');
-    //     });
-}
-
 
 
 //================CLICK-LOGUT================
@@ -168,32 +130,43 @@ function friendlyURL(url) {
 
 function load_content() {
 
-    let path = window.location.pathname.split('/');
+    let path = window.location.pathname.split('/'); //split para separar la url por el caracter "/" y lo asignamos al array path
     //console.log(path);
 
     if (path[3] === 'recover_email') {
         //console.log('recover_email');
         // window.location.href = friendlyURL("?module=login&op=recover_view");
         window.location.href = "?module=login&op=recover_view";
-        localStorage.setItem("token_email", path[4]);
+        localStorage.setItem('token_email', path[4]);
 
     } else if (path[3] === 'verify_email') {
-        console.log('data del token: ' + path[4]);
-        ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { token_email: path[4] })
+        let $token_email = path[4];
+
+        ajaxPromises("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': $token_email })
 
             .then(function (data) {
+                console.log('data en verify_email: ' + data);
 
-                console.log('data: ' + data);
                 toastr.options.timeOut = 3000;
                 toastr.success('Email verified');
                 setTimeout('window.location.href = "?module=home&op=view"', 1000);
             })
-            .catch(function (error) {
-                alert('error data: ' + JSON.stringify(error.message));
-                console.log('error data: ' + JSON.stringify(error.responseText));
+            .catch(function (data, jqXHR, textStatus, errorThrow, url, type, dataType) {
+                // console.log('data en verify_email error: ' + data);
+                // console.log("Error en el promise, Valor de sUrl: ", url);
+                // console.log("VALOR DE sType: ", type);
+                // console.log("VALOR DE sTdata: ", dataType);
+                // console.log("VALOR DE sData: ", data);
+                // console.log("Importante Respuesta del servidor en el promise responsetext : ", jqXHR.responseText);
+                // console.log("Código de estado HTTP: ", jqXHR.status);
+                // console.log("Descripción del estado HTTP: ", jqXHR.statusText);
+                // console.log("Cuerpo de la respuesta como JSON: ", jqXHR.responseJSON);
+                console.log("Tipo de error: ", textStatus);
+
                 toastr.options.timeOut = 3000;
                 toastr.error('Email no verificado');
             });
+
     } else if (path[4] === 'view') {
         $(".login-wrap").show();
         $(".forget_html").hide();

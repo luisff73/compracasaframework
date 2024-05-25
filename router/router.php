@@ -39,9 +39,9 @@
                 $this -> uriModule = 'home';
             }
 
-            if(isset($_GET['op'])){
+            if(isset($_GET['op'])){ // si en la direccion url existe la variable op (si es true)
                 
-                if ($_GET['op'] === 'verify_email' ){
+                if ($_GET['op'] === 'verify_email' ){ 
                 $this ->uriFunction ='view';
                 } else if ($_GET['op'] === 'recover_email') {
                     $this -> uriFunction = 'recover_view';

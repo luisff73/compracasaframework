@@ -19,8 +19,11 @@ include_once("C:/xampp/htdocs/compracasaframework/model/middleware_auth.inc.php"
         }
         function login() {
             echo json_encode(common::load_model('login_model', 'login', [$_POST['username_log'], $_POST['passwd_log']]));
+        }                        
+        function verify_email() {
+           echo json_encode(common::load_model('login_model', 'verify_email', [$_POST['token_email']]));        
         }
-        
+
         function logout() {
             unset($_SESSION['username']); //unset destruye la variable, con lo que borramos el usuario
             unset($_SESSION['tiempo']); //unset destruye la variable, con lo que borramos el tiempo
@@ -46,12 +49,7 @@ include_once("C:/xampp/htdocs/compracasaframework/model/middleware_auth.inc.php"
         function social_login() {
             echo json_encode(common::load_model('login_model', 'social_login', [$_POST['id'], $_POST['username'], $_POST['email'], $_POST['avatar']]));
         } 
-                 
-        function verify_email() {
 
-             echo json_encode(common::load_model('login_model', 'verify_email', $_POST['token_email']));
-               
-        }
 
         function recover_email() {
 

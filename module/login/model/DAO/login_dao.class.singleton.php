@@ -22,31 +22,33 @@
 
         public function insert_user($db, $username, $email, $hashed_pass, $avatar, $token_email) {
 
-            //$sql ="   INSERT INTO `users`(`username`, `password`, `email`, `type_user`, `avatar`, `token_email`, `activate`) 
-            $sql ="INSERT INTO users('username', 'password', 'email', 'type_user', 'avatar', 'token_email', 'activate') 
-            
+            $sql ="INSERT INTO `users`(`username`, `password`, `email`, `type_user`, `avatar`, `token_email`, `activate`) 
             VALUES ('$username','$hashed_pass','$email','client','$avatar','$token_email',0)";
             return $stmt = $db->ejecutar($sql);
         }
        
         public function select_user($db, $username){
            $sql = "SELECT `username`, `password`, `email`, `type_user`, `avatar`, `token_email`,`activate` FROM `users` WHERE activate=1 and username='$username'";
-      		
-			//$sql = "SELECT * FROM users WHERE activate=1 and username='$username'";
-            //return $sql;
+ 
             $stmt = $db->ejecutar($sql);
             return $db->listar_object($stmt);  //devuelve un objeto no un array
-            
-            
-            // if ($resultado) { // si el usuario existe
-            //     //return json_encode($resultado);
-            //     //return $resultado; 
-            //     echo json_encode($resultado);
-            //     //print_r ($resultado);
-            // }else {
-            //     return "error_select_user";
-            //     //return $resultado; 
-            // }
+        }
+
+        public function select_verify_email($db, $token_email){
+
+			$sql = "SELECT `token_email` FROM `users` WHERE `token_email` = '$token_email'";
+            return $sql;
+            exit;
+
+            $stmt = $db->ejecutar($sql);
+            return $db->listar_object($stmt);
+        } 
+
+        public function update_verify_email($db, $token_email){
+
+            $sql = "UPDATE `users` SET activate = 1, token_email= '' WHERE token_email = '$token_email'";
+            $stmt = $db->ejecutar($sql);
+            return "update";
         }
 
         public function select_data_user($db, $username){
@@ -69,23 +71,10 @@
             $sql ="INSERT INTO users (id, username, password, email, user_type, avatar, token_email, activate)     
                 VALUES ('$id', '$username', '', '$email', 'client', '$avatar', '', 1)";
 
+
             return $stmt = $db->ejecutar($sql);
         }
 
-        public function select_verify_email($db, $token_email){
-
-			$sql = "SELECT token_email FROM users WHERE token_email = '$token_email'";
-            $stmt = $db->ejecutar($sql);
-            return $db->listar($stmt);
-
-        } 
-
-        public function update_verify_email($db, $token_email){
-
-            $sql = "UPDATE users SET activate = 1, token_email= '' WHERE token_email = '$token_email'";
-            $stmt = $db->ejecutar($sql);
-            return "update";
-        }
 
         public function select_recover_password($db, $email){
 			$sql = "SELECT `email` FROM `users` WHERE email = '$email' AND password NOT LIKE ('')";

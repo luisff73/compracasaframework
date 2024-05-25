@@ -26,7 +26,7 @@ function login() {
                     localStorage.setItem("refreshtoken", refreshtoken);
 
                     toastr.success("Loged succesfully");
-                    setTimeout(' window.location.href = "?module=shop&op=list"; ', 3000);
+                    setTimeout(' window.location.href = "?module=shop&op=view"; ', 3000);
 
                 }
             }).catch(function (textStatus, sData, errorThrown, jqXHR, data) {
@@ -80,17 +80,14 @@ function validate_login() {
 }
 function register() {
     if (validate_register() != 0) {
-        var data = [];
-        data.push({ name: 'username_reg', value: document.getElementById('username_reg').value });
-        data.push({ name: 'passwd1_reg', value: document.getElementById('passwd1_reg').value });
-        data.push({ name: 'passwd2_reg', value: document.getElementById('passwd2_reg').value });
-        data.push({ name: 'email_reg', value: document.getElementById('email_reg').value });
+        var username_reg = document.getElementById('username_reg').value;
+        var passwd1_reg = document.getElementById('passwd1_reg').value;
+        var passwd2_reg = document.getElementById('passwd2_reg').value;
+        var email_reg = document.getElementById('email_reg').value;
 
-
-        //console.log(data);
-
-        ajaxPromise('?module=login&op=register', 'POST', 'JSON', data)
+        ajaxPromise('?module=login&op=register', 'POST', 'JSON', { 'username_reg': username_reg, 'passwd1_reg': passwd1_reg, 'passwd2_reg': passwd2_reg, 'email_reg': email_reg })
             .then(function (data) {
+                console.log('Data: ', data);
                 if (data == "error_email_reg") {
                     document.getElementById('error_email_reg').innerHTML = "El email ya esta en uso, asegurate de no tener ya una cuenta"
                 } else if (data == "error_user_exist") {
@@ -180,7 +177,6 @@ function validate_register() {
             error = true;
         } else {
             if (!pssswd_exp.test(document.getElementById('passwd1_reg').value)) {
-                console.log(document.getElementById('passwd1_reg').value);
                 document.getElementById('error_passwd1_reg').innerHTML = "Debe de contener minimo 7 caracteres, mayusculas, minusculas y simbolos especiales";
                 error = true;
             } else {

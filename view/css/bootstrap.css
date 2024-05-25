@@ -5052,8 +5052,8 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 }
 
 .navbar-inverse {
-  /*background-color: #8d8c8c;*/
-  background-color: transparent;
+  background-color: #8d8c8c;
+  /*background-color: transparent;*/
   /*luis quitar transparencia */
   border-color: #080808;
   width: 100%;
