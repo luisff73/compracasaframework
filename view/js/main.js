@@ -143,8 +143,8 @@ function load_content() {
 
     if (path[3] === 'recover_email') {
         //console.log('recover_email');
-        // window.location.href = friendlyURL("?module=login&op=recover_view");
-        window.location.href = "?module=login&op=recover_view";
+        window.location.href = friendlyURL("?module=login&op=recover_view");
+        //window.location.href = "?module=login&op=recover_view";
         localStorage.setItem('token_email', path[4]);
 
     } else if (path[3] === 'verify_email') {
@@ -152,7 +152,7 @@ function load_content() {
         console.log('token_email en verify_email: ' + token_email);
 
         //ajaxPromise(friendlyURL("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': $token_email }))
-        ajaxPromise('?module=login&op=verify_email', 'POST', 'JSON', { 'token_email': token_email })
+        ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': token_email })
 
             .then(function (data) {//data es lo que devuelve el php
                 console.log('Data: ', data);

@@ -51,18 +51,18 @@
             return bin2hex(openssl_random_pseudo_bytes(($longitud - ($longitud % 2)) / 2)); //genera un token seguro
         }
 
-        function friendlyURL_php($url) {
-            $link = "";
-            if (URL_FRIENDLY) {
-                $url = explode("&", str_replace("?", "", $url));
-                foreach ($url as $key => $value) {
-                    $aux = explode("=", $value);
-                    $link .=  $aux[1]."/";
-                }
-            } else {
-                $link = "index.php?" . $url;
-            }
-            return SITE_PATH . $link;
-        }
+        // function friendlyURL_php($url) {
+        //     $link = "";
+        //     if (URL_FRIENDLY) {
+        //         $url = explode("&", str_replace("?", "", $url));
+        //         foreach ($url as $key => $value) {
+        //             $aux = explode("=", $value);
+        //             $link .=  $aux[1]."/";
+        //         }
+        //     } else {
+        //         $link = "index.php?" . $url;
+        //     }
+        //     return SITE_PATH . $link;
+        // }
     }
 ?>

@@ -4,11 +4,11 @@ function login() {
         var username_log = document.getElementById('username_log').value;
         var passwd_log = document.getElementById('passwd_log').value;
 
-        ajaxPromise('?module=login&op=login', 'POST', 'JSON', { 'username_log': username_log, 'passwd_log': passwd_log }) //data lleva el usuario y la contraseña
+        ajaxPromise("?module=login&op=login", 'POST', 'JSON', { 'username_log': username_log, 'passwd_log': passwd_log }) //data lleva el usuario y la contraseña
 
             .then(function (data) {//data es lo que devuelve el php
-                console.log('Data: ', data);
-                return;
+                // console.log('Data: ', data);
+                // return;
                 var accestoken = data.accestoken; //accestoken es el token que devuelve el php EN UN ARRAY
                 var refreshtoken = data.refreshtoken; //refreshtoken es el token que devuelve el php EN UN ARRAY
 
@@ -23,7 +23,7 @@ function login() {
                     localStorage.setItem("refreshtoken", refreshtoken);
 
                     toastr.success("Loged succesfully");
-                    setTimeout(' window.location.href = friendlyURL("?module=shop&op=view"); ', 3000);
+                    //setTimeout(' window.location.href = friendlyURL("?module=shop&op=view"); ', 3000);
 
                 }
             }).catch(function (textStatus, sData, errorThrown, jqXHR, data) {
@@ -81,7 +81,7 @@ function register() {
         var passwd2_reg = document.getElementById('passwd2_reg').value;
         var email_reg = document.getElementById('email_reg').value;
 
-        ajaxPromise('?module=login&op=register', 'POST', 'JSON', { 'username_reg': username_reg, 'passwd1_reg': passwd1_reg, 'passwd2_reg': passwd2_reg, 'email_reg': email_reg })
+        ajaxPromise("?module=login&op=register", 'POST', 'JSON', { 'username_reg': username_reg, 'passwd1_reg': passwd1_reg, 'passwd2_reg': passwd2_reg, 'email_reg': email_reg })
             .then(function (data) {
                 console.log('Data: ', data);
                 if (data == "error_email_reg") {
@@ -248,33 +248,40 @@ function validate_recover_password() {
 function send_recover_password() {
     if (validate_recover_password() != 0) { // Si el resultado es distinto de 0
 
-        var mail = $('#email_forg').serialize();
+        //var mail = $('#email_forg').serialize();
+        var mail = document.getElementById('email_forg').value;
 
         console.log('email recover: ', mail);
-        $.ajax({
-            url: friendlyURL('?module=login&op=recover_email'),
-            //url: '?module=login&op=recover_email',
-            dataType: 'JSON',
-            type: "POST",
-            data: mail,
-        }).done(function (data) {
-            console.log('Data recover: ', data.message);
-            return;
-            if (data == "error") {
-                $("#error_email_forg").html("The email doesn't exist");
-            } else {
-                console.log(data);
-                toastr.options.timeOut = 3000;
-                toastr.success("Email sended");
-                setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
-            }
-        }).fail(function (jqXHR, textStatus, errorThrown) {
 
-            //console.log('Error: ' + textStatus);
-            //console.log('Error: ' + errorThrown);
-            console.log('Response: ' + jqXHR.responseText);
-            console.log('Error: Recover password error ' + textStatus);
-        });
+        ajaxPromise("?module=login&op=recover_email", 'POST', 'JSON', { 'email_forg': mail }) //data lleva el usuario y la contraseña
+
+            // $.ajax({
+            //     //url: friendlyURL("?module=login&op=recover_email"),
+            //     url: "?module=login&op=recover_email",
+            //     dataType: 'JSON',
+            //     type: "POST",
+            //     data: mail,
+            // }).done(function (data) {
+
+            .then(function (data) {
+                console.log('Data recover: ', data.message);
+                return;
+                if (data == "error") {
+                    $("#error_email_forg").html("The email doesn't exist");
+                } else {
+                    console.log(data);
+                    toastr.options.timeOut = 3000;
+                    toastr.success("Email sended");
+                    setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
+                }
+            }).catch(function (error) {
+
+                console.log('Error: ' + error.message);
+                // console.log('Error: ' + errorThrown);
+                // console.log('url: ' + url);
+                // console.log('Response: ' + jqXHR.responseText);
+                // console.log('Error: Recover password error ' + textStatus);
+            });
     }
     else {
         console.log('Error: Recover password error');
@@ -363,6 +370,73 @@ function send_new_password(token_email) {
     }
 } // Path: module/login/view/js/ctrl_login.js
 
+function social_login(param) {
+    authService = firebase_config();
+    authService.signInWithPopup(provider_config(param))
+        .then(function (result) {
+            console.log('Hemos autenticado al usuario ', result.user);
+            email_name = result.user.email;
+            let username = email_name.split('@');
+            console.log(username[0]);
+
+            social_user = { id: result.user.uid, username: username[0], email: result.user.email, avatar: result.user.photoURL };
+            if (result) {
+                ajaxPromise(friendlyURL("?module=login&op=social_login"), 'POST', 'JSON', social_user)
+                    .then(function (data) {
+                        localStorage.setItem("token", data);
+                        toastr.options.timeOut = 3000;
+                        toastr.success("Inicio de sesión realizado");
+                        if (localStorage.getItem('likes') == null) {
+                            setTimeout('window.location.href = friendlyURL("?module=home&op=view")', 1000);
+                        } else {
+                            setTimeout('window.location.href = friendlyURL("?module=shop&op=view")', 1000);
+                        }
+                    })
+                    .catch(function () {
+                        console.log('Error: Social login error');
+                    });
+            }
+        })
+        .catch(function (error) {
+            var errorCode = error.code;
+            console.log(errorCode);
+            var errorMessage = error.message;
+            console.log(errorMessage);
+            var email = error.email;
+            console.log(email);
+            var credential = error.credential;
+            console.log(credential);
+        });
+}
+
+function firebase_config() {
+    var config = {
+        apiKey: "AIzaSyDzaMB7Om42JuxeZ6PqIOYhp3iuww5QlVE",
+        authDomain: "compracasaframework.firebaseapp.com",
+        databaseURL: "https://compracasaframework.firebaseio.com",
+        projectId: "compracasaframework",
+        storageBucket: "compracasaframework.appspot.com",
+        messagingSenderId: "525136586549",
+        // appId: "1:495514694215:web:b183cd7f513ce8b0d6f762",
+        // measurementId: "G-JXEGLTGLTC"
+    };
+    if (!firebase.apps.length) {
+        firebase.initializeApp(config);
+    } else {
+        firebase.app();
+    }
+    return authService = firebase.auth();
+}
+
+function provider_config(param) {
+    if (param === 'google') {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('email');
+        return provider;
+    } else if (param === 'github') {
+        return provider = new firebase.auth.GithubAuthProvider();
+    }
+}
 
 $(document).ready(function () {
     key_login();

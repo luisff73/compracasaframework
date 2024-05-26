@@ -49,8 +49,6 @@
         <name>social_login</name>
         <uri>social_login</uri>
     </function>
-
-
     <function>
         <name>recover_email</name>
         <uri>recover_email</uri>

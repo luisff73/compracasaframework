@@ -1,7 +1,7 @@
 function protecturl() {
     var accestoken = localStorage.getItem('accestoken');
     //console.log("Control activity recogemos el token EN PROTECTURL: " + accestoken);
-    ajaxPromise(friendlyURL('?module=login&op=controluser'), 'POST', 'JSON', { 'accestoken': accestoken })
+    ajaxPromise(friendlyURL("?module=login&op=controluser"), 'POST', 'JSON', { 'accestoken': accestoken })
         .then(function (data) {
             if (data == "Correct_User") {
                 console.log("CORRECTO-->El usario coincide con la session");

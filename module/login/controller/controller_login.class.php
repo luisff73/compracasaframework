@@ -21,13 +21,7 @@ include_once("C:/xampp/htdocs/compracasaframework/model/middleware_auth.inc.php"
             echo json_encode(common::load_model('login_model', 'login', [$_POST['username_log'], $_POST['passwd_log']]));
         }                        
         function verify_email() {
-          //print_r($_POST['token_email']);
-          //  echo json_encode('hola');
-          // echo json_encode ($_POST['token_email']);
-         echo json_encode(common::load_model('login_model', 'verify_email', $_POST['token_email']));   
-         error_log("argumentos controller login class : " . [$_POST['token_email']]);     
-         //echo json_encode(common::load_model('login_model', 'verify_email', 'cf27642bb19851dc4cbf'));        
-        
+         echo json_encode(common::load_model('login_model', 'verify_email', $_POST['token_email']));        
         }
 
         function verify_emailSSS() {
@@ -69,9 +63,8 @@ include_once("C:/xampp/htdocs/compracasaframework/model/middleware_auth.inc.php"
         } 
 
 
-        function aaarecover_email() {
-            return 'hola';
-            ///echo json_encode(common::load_model('login_model', 'recover_email', [$_POST['email_forg']]));
+        function recover_email() {
+            echo json_encode(common::load_model('login_model', 'recover_email', $_POST['email_forg']));
         }
 
         function verify_token() {

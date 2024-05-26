@@ -214,7 +214,7 @@ function clicks_details() {
         var id_vivienda = this.getAttribute('id');
         loadDetails(id_vivienda);
         // parece que da problemas ajaxPromise(friendlyURL('?module=shop&op=incrementa_visita&id=') + id_vivienda), 'POST', 'JSON') 
-        ajaxPromise('?module=shop&op=incrementa_visita&id=' + id_vivienda, 'POST', 'JSON')
+        ajaxPromise("?module=shop&op=incrementa_visita&id=" + id_vivienda, 'POST', 'JSON')
 
             .then(function () {
                 console.log('Visita incrementada con éxito');
@@ -226,7 +226,7 @@ function clicks_details() {
 function loadDetails(id_vivienda) {
     //alert('?module=shop&op=details_viviendas&id=');
     // parece que da problemas ajaxPromise(friendlyURL('?module=shop&op=details_viviendas&id=' + id_vivienda), 'GET', 'JSON')
-    ajaxPromise('?module=shop&op=details_viviendas&id=' + id_vivienda, 'GET', 'JSON')
+    ajaxPromise("?module=shop&op=details_viviendas&id=" + id_vivienda, 'GET', 'JSON')
 
         .then(function (data) {
 
@@ -744,7 +744,7 @@ function viviendas_related(offset = 0, id_city, total_items) {
 function more_viviendas_related(id_city) {
     var id_city = id_city;
     var items_page = 0;
-    ajaxPromise('?module=shop&op=count_viviendas_related', 'POST', 'JSON', { 'id_city': id_city })
+    ajaxPromise("?module=shop&op=count_viviendas_related", 'POST', 'JSON', { 'id_city': id_city })
         //ajaxPromise(friendlyURL('?module=shop&op=count_viviendas_related'), 'POST', 'JSON', { 'id_city': id_city })
         .then(function (data) {
             var total_items = data[0].num_viviendas;
@@ -769,7 +769,7 @@ function clicks_details_related() {
 
         alert('has entrado en more viviendas related con el id de city ' + id_vivienda);
         loadDetails(id_vivienda);
-        ajaxPromise('?module=shop&op=incrementa_visita&id=' + id_vivienda, 'POST', 'JSON')
+        ajaxPromise("?module=shop&op=incrementa_visita&id=" + id_vivienda, 'POST', 'JSON')
             //ajaxPromise(friendlyURL('?module=shop&op=incrementa_visita&id=') + id_vivienda, 'POST', 'JSON')
             .then(function () {
                 console.log('Visita incrementada con éxito');

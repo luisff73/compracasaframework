@@ -20,10 +20,10 @@
             return $db->listar($stmt);
         }
 
-        public function insert_user($db, $username, $email, $hashed_pass, $avatar, $token_email) {
+        public function insert_user($db, $username, $email, $hashed_pass, $avatar, $token_email,$tipo_login) {
 
-            $sql ="INSERT INTO `users`(`username`, `password`, `email`, `type_user`, `avatar`, `token_email`, `activate`) 
-            VALUES ('$username','$hashed_pass','$email','client','$avatar','$token_email',0)";
+            $sql ="INSERT INTO `users`(`username`, `password`, `email`, `type_user`, `avatar`, `token_email`, `activate`,`tipo_login`) 
+            VALUES ('$username','$hashed_pass','$email','client','$avatar','$token_email',0,$tipo_login)";
             return $stmt = $db->ejecutar($sql);
         }
        
@@ -66,20 +66,19 @@
             return $db->listar($stmt);
         }
 
-        public function insert_social_login($db, $id, $username, $email, $avatar){
-
-            $sql ="INSERT INTO users (id, username, password, email, user_type, avatar, token_email, activate)     
-                VALUES ('$id', '$username', '', '$email', 'client', '$avatar', '', 1)";
-
-
+        public function insert_social_login($db, $username, $email, $hashed_pass, $avatar, $token_email,$tipo_login){
+    
+            $sql ="INSERT INTO `users`(`username`, `password`, `email`, `type_user`, `avatar`, `token_email`, `activate`,`tipo_login`) 
+            VALUES ('$username','$hashed_pass','$email','client','$avatar','$token_email',0,$tipo_login)";
             return $stmt = $db->ejecutar($sql);
+
         }
 
 
         public function select_recover_password($db, $email){
 			$sql = "SELECT `email` FROM `users` WHERE email = '$email' AND password NOT LIKE ('')";
-            echo 'valor de select_verify_email';
-            echo $sql;
+            //echo 'valor de select_verify_email';
+            //echo $sql;
             $stmt = $db->ejecutar($sql);
             return $db->listar($stmt);
         }
