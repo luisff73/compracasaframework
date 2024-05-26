@@ -23,6 +23,6 @@
     <module>
         <name>login</name>
         <uri>login</uri>
-        <!-- <uri>register</uri> -->
+        <uri>register</uri>
     </module>
 </modules>

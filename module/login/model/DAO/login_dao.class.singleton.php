@@ -37,8 +37,8 @@
         public function select_verify_email($db, $token_email){
 
 			$sql = "SELECT `token_email` FROM `users` WHERE `token_email` = '$token_email'";
-            return $sql;
-            exit;
+            // return $sql;
+            // exit;
 
             $stmt = $db->ejecutar($sql);
             return $db->listar_object($stmt);

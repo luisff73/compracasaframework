@@ -1,7 +1,8 @@
 
 //htaccess 
 
-function ajaxPromises(sUrl, sType, sTData, sData = undefined) {
+
+function ajaxPromise(sUrl, sType, sTData, sData = undefined) {
 
     return new Promise((resolve, reject) => {
         $.ajax({
@@ -11,20 +12,18 @@ function ajaxPromises(sUrl, sType, sTData, sData = undefined) {
             data: sData,
 
 
-            beforeSend: function () {
-                $("#overlay").fadeIn(300); // Muestra el loader EN EL MENU
-            }
+            // beforeSend: function () {
+            //     $("#overlay").fadeIn(300); // Muestra el loader EN EL MENU
+            // }
         }).done((data) => {
             console.log('data ok en el promise: ' + data);
-            setTimeout(function () {
-                $("#overlay").fadeOut(300); // Oculta el loader EN EL MENU
-            }, 500);
+            // setTimeout(function () {
+            //     $("#overlay").fadeOut(300); // Oculta el loader EN EL MENU
+            // }, 500);
             resolve(data);
 
         }).fail((data, jqXHR, textStatus, errorThrow) => {
-            console.log('data error en el promise: ' + data);
-            console.log('data error en el promise: ', jqXHR);
-            console.log('data error en el promise: ', jqXHR.responseText);
+            console.log('fail en ajaxpromise data ' + data);
             reject(errorThrow);
         });
     });
@@ -32,10 +31,18 @@ function ajaxPromises(sUrl, sType, sTData, sData = undefined) {
 
 //================LOAD-HEADER================
 function load_menu() {
+
+    document.getElementById('home-link').href = friendlyURL("?module=home&op=view");
+    document.getElementById('shop-link').href = friendlyURL("?module=shop&op=view");
+    document.getElementById('login-register').href = friendlyURL("?module=login&op=view");
+
+
     var accestoken = localStorage.getItem('accestoken');
     if (accestoken) { //si hay un valor en token
-
+        //console.log('accestoken en load menu: ' + accestoken);
+        //ajaxPromise(friendlyURL('?module=login&op=data_user', 'POST', 'JSON', { 'accestoken': accestoken }))
         ajaxPromise('?module=login&op=data_user', 'POST', 'JSON', { 'accestoken': accestoken })
+
             .then(function (data) {
                 //console.log('valor de data en main js: ');
                 //console.log(data);
@@ -89,14 +96,14 @@ function click_logout() {
 
 //================LOG-OUT================
 function logout() {
-    ajaxPromise('?module=login&op=logout', 'POST', 'JSON')
+    ajaxPromise(friendlyURL('?module=login&op=logout', 'POST', 'JSON'))
         .then(function (data) {
             //localStorage.removeItem('token');
             localStorage.removeItem('accestoken');   /// usamos siempre el accestoken
             localStorage.removeItem('refreshtoken');
             localStorage.removeItem('total_prod');
             console.log('Logout succesfully');
-            window.location.href = "?module=home&op=list";
+            window.location.href = friendlyURL("?module=home&op=list");
         }).catch(function () {
             console.log('No se ha podido cerrar la sesión');
         });
@@ -125,6 +132,7 @@ function friendlyURL(url) {
             link += "/" + aux[1];
         }
     }
+    //alert("http://localhost/compracasaframework" + link);
     return "http://localhost/compracasaframework" + link;
 }
 
@@ -140,20 +148,27 @@ function load_content() {
         localStorage.setItem('token_email', path[4]);
 
     } else if (path[3] === 'verify_email') {
-        let $token_email = path[4];
+        var token_email = path[4];
+        console.log('token_email en verify_email: ' + token_email);
 
-        ajaxPromises("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': $token_email })
+        //ajaxPromise(friendlyURL("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': $token_email }))
+        ajaxPromise('?module=login&op=verify_email', 'POST', 'JSON', { 'token_email': token_email })
 
-            .then(function (data) {
+            .then(function (data) {//data es lo que devuelve el php
+                console.log('Data: ', data);
+                return;
+
                 console.log('data en verify_email: ' + data);
 
                 toastr.options.timeOut = 3000;
                 toastr.success('Email verified');
-                setTimeout('window.location.href = "?module=home&op=view"', 1000);
+                setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
             })
-            .catch(function (data, jqXHR, textStatus, errorThrow, url, type, dataType) {
+            .catch(function (data, jqXHR, textStatus, errorThrow, url, sUrl, type, dataType) {
+                console.log('data en verify_email error: ' + data);
+
                 // console.log('data en verify_email error: ' + data);
-                // console.log("Error en el promise, Valor de sUrl: ", url);
+                console.log("Error en el promise, Valor de Url: ", url);
                 // console.log("VALOR DE sType: ", type);
                 // console.log("VALOR DE sTdata: ", dataType);
                 // console.log("VALOR DE sData: ", data);

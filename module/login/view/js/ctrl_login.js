@@ -4,14 +4,11 @@ function login() {
         var username_log = document.getElementById('username_log').value;
         var passwd_log = document.getElementById('passwd_log').value;
 
-        // console.log(data);
-        //return;
-
         ajaxPromise('?module=login&op=login', 'POST', 'JSON', { 'username_log': username_log, 'passwd_log': passwd_log }) //data lleva el usuario y la contraseña
 
             .then(function (data) {//data es lo que devuelve el php
                 console.log('Data: ', data);
-                //return;
+                return;
                 var accestoken = data.accestoken; //accestoken es el token que devuelve el php EN UN ARRAY
                 var refreshtoken = data.refreshtoken; //refreshtoken es el token que devuelve el php EN UN ARRAY
 
@@ -26,7 +23,7 @@ function login() {
                     localStorage.setItem("refreshtoken", refreshtoken);
 
                     toastr.success("Loged succesfully");
-                    setTimeout(' window.location.href = "?module=shop&op=view"; ', 3000);
+                    setTimeout(' window.location.href = friendlyURL("?module=shop&op=view"); ', 3000);
 
                 }
             }).catch(function (textStatus, sData, errorThrown, jqXHR, data) {
@@ -36,7 +33,6 @@ function login() {
             });
     }
 }
-
 function key_login() {
     $("#login").keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -107,7 +103,7 @@ function register() {
                     };
 
                     toastr.success("Registro satisfactorio, porfavor comprueba tu correo para activar la cuenta");
-                    setTimeout(' window.location.href = "?module=login&op=login_register_view"; ', 4000);
+                    setTimeout(' window.location.href = friendlyURL("?module=login&op=login_register_view"); ', 4000);
                 }
             }).catch(function (textStatus) {
                 if (console && console.log) {
@@ -213,6 +209,8 @@ function load_form_recover_password() {
     click_recover_password();
 }
 function click_recover_password() {
+
+
     $(".forget_html").keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
@@ -248,40 +246,38 @@ function validate_recover_password() {
     }
 }
 function send_recover_password() {
-    if (validate_recover_password() != 0) {
+    if (validate_recover_password() != 0) { // Si el resultado es distinto de 0
 
-        var data = $('#email_forg').serialize();
-        //var data = $('#form_recover_password').serialize();
+        var mail = $('#email_forg').serialize();
 
+        console.log('email recover: ', mail);
         $.ajax({
-            //url: friendlyURL('?module=login&op=recover_email'),
-            url: '?module=login&op=recover_email',
+            url: friendlyURL('?module=login&op=recover_email'),
+            //url: '?module=login&op=recover_email',
             dataType: 'JSON',
             type: "POST",
-            data: data,
+            data: mail,
         }).done(function (data) {
-
+            console.log('Data recover: ', data.message);
+            return;
             if (data == "error") {
                 $("#error_email_forg").html("The email doesn't exist");
             } else {
                 console.log(data);
                 toastr.options.timeOut = 3000;
                 toastr.success("Email sended");
-                //setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
-                setTimeout('window.location.href = "?module=login&op=view"', 1000);
+                setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
             }
         }).fail(function (jqXHR, textStatus, errorThrown) {
 
-            console.log('Error: ' + textStatus);
-            console.log('Error: ' + errorThrown);
+            //console.log('Error: ' + textStatus);
+            //console.log('Error: ' + errorThrown);
             console.log('Response: ' + jqXHR.responseText);
             console.log('Error: Recover password error ' + textStatus);
-        })
-            .always(function () {
-                // Esta función se ejecuta cuando la llamada AJAX se completa, independientemente del éxito o el fracaso.
-                console.log('AJAX call completed');
-            });
-
+        });
+    }
+    else {
+        console.log('Error: Recover password error');
     }
 }
 function load_form_new_password() {

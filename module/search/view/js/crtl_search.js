@@ -12,13 +12,14 @@ function launch_search() {
 }
 function load_operations() {
     ajaxPromise("?module=search&op=search_operation", 'POST', 'JSON')
+        //ajaxPromise(friendlyURL("?module=search&op=search_operation"), 'POST', 'JSON')
         .then(function (data) {
             $('<option>Tipo de operación</option>').attr('selected', true).attr('disabled', true).appendTo('#search_operation') // opcion por defecto del select
             for (row in data) {
                 $('<option value="' + data[row].id_operation + '">' + data[row].operation_name + '</option>').appendTo('#search_operation')
             }
         }).catch(function () {
-            //window.location.href = "view/inc/error404.php";
+            //window.location.href = friendlyURL("view/inc/error404.php");
         });
 }
 function load_category(operation) {
@@ -28,14 +29,14 @@ function load_category(operation) {
     if (operation == undefined) { //si no hemos rellenado operation
 
         ajaxPromise("?module=search&op=search_category_null", 'POST', 'JSON')
-
+            //ajaxPromise(friendlyURL("?module=search&op=search_category_null"), 'POST', 'JSON')
             .then(function (data) {
                 $('<option>Tipo de Inmueble</option>').attr('selected', true).attr('disabled', true).appendTo('#search_category') // opcion por defecto del select
                 for (row in data) {
                     $('<option value="' + data[row].id_category + '">' + data[row].category_name + '</option>').appendTo('#search_category')
                 }
             }).catch(function () {
-                //window.location.href = "index.php?module=exception&op=503&error=fail_search_category&type=503";
+                //window.location.href = friendlyURL("index.php?module=exception&op=503&error=fail_search_category&type=503");
             });
     }
     else {
@@ -47,7 +48,7 @@ function load_category(operation) {
                     $('<option value="' + data[row].id_category + '">' + data[row].category_name + '</option>').appendTo('#search_category')
                 }
             }).catch(function () {
-                //window.location.href = "index.php?module=exception&op=503&error=fail_load_category_2&type=503";
+                //window.location.href = friendlyURL("index.php?module=exception&op=503&error=fail_load_category_2&type=503");
             });
     }
 }
@@ -133,7 +134,7 @@ function button_search() {
             //localStorage.setItem('filters_search', JSON.stringify(search)); //guardamos en el localstorage los filtros de busqueda
             localStorage.setItem('filters_shop', JSON.stringify(search)); // hacemos esto para que la pagina de shop pueda coger los datos
         }
-        window.location.href = '?module=shop&op=view';
+        window.location.href = friendlyURL('?module=shop&op=view');
     });
 }
 

@@ -71,7 +71,7 @@ public function get_register_BLL($args) {
 }
 
 public function get_login_BLL($args) { 
-	//return "hola login";
+	return "hola login";
 	//return $args;
 
      try { 
@@ -123,22 +123,28 @@ public function get_login_BLL($args) {
     } 
 } 
 
-public function get_verify_email_BLL($args) {
-	
 
-	//echo json_encode($args[0]); //aqui llega el token
-	//exit;
-	//if($this -> dao -> select_verify_email($this->db, $args[0]['token_email'])){
-	//	$this -> dao -> update_verify_email($this->db, $args[0]['token_email']);
-							if($this -> dao -> select_verify_email($this->db, $args)){
-								$this -> dao -> update_verify_email($this->db, $args);
-								return 'verify' ;
-							} else {
-								return 'fail';
-	//echo json_encode("error fail");
-	//exit;
-	}		
+public function get_verify_email_BLL($args) {
+	return "hola verify";
+	
+	//return $args[0];
+
+    // if($this->dao->select_verify_email($this->db,$args[0])){
+    //     $this->dao->update_verify_email($this->db,$args[0]);
+    //     $result = 'verify';
+    // } else {
+    //     $result = 'fail';
+    // }
+
+    // // Registra el resultado en el archivo de registro de errores de PHP
+    // error_log("Resultado de get_verify_email_BLL: $result");
+	// error_log("argumentos recibiods get_verify_email_BLL: $args");
+
+    // //return $result;
+	// echo json_encode($result);
 }
+
+
 
 public function get_data_user_BLL($args) {
 	// $token = explode('"', $args);
@@ -220,21 +226,28 @@ public function get_social_login_BLL($args) {
 
 
 public function get_recover_email_BBL($email) {
-	$user = $this -> dao -> select_recover_password($this->db, $email);
-	$token = common::generate_Token_secure(20);
+	//echo 'hola';
 
-	if (!empty($user)) {
-		$this -> dao -> update_recover_password($this->db, $email, $token);
-		$message = ['type' => 'recover', 
-					'token' => $token, 
-					'toEmail' => $email];
-		$email = json_decode(mail::send_email($message), true);
-		if (!empty($email)) {
-			return;  
-		}   
-	}else{
-		return 'error';
-	}
+	//return json_encode(["message" => "hola recover email "]);
+	return 'hola';
+
+	
+	
+	// $user = $this -> dao -> select_recover_password($this->db, $email);
+	// $token = common::generate_Token_secure(20);
+
+	// if (!empty($user)) {
+	// 	$this -> dao -> update_recover_password($this->db, $email, $token);
+	// 	$message = ['type' => 'recover', 
+	// 				'token' => $token, 
+	// 				'toEmail' => $email];
+	// 	$email = json_decode(mail::send_email($message), true);
+	// 	if (!empty($email)) {
+	// 		return;  
+	// 	}   
+	// }else{
+	// 	return 'error';
+	// }
 }
 public function get_verify_token_BLL($args) {
 	// if($this -> dao -> select_verify_email($this->db, $args)){

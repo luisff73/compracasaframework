@@ -21,6 +21,10 @@
         <uri>register</uri>
     </function>
     <function>
+        <name>verify_email</name>
+        <uri>verify_email</uri>
+    </function>
+    <function>
         <name>logout</name>
         <uri>logout</uri>
     </function>
@@ -46,10 +50,7 @@
         <uri>social_login</uri>
     </function>
 
-    <function>
-        <name>verify_email</name>
-        <uri>verify_email</uri>
-    </function>
+
     <function>
         <name>recover_email</name>
         <uri>recover_email</uri>

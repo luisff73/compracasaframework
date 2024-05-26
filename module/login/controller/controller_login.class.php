@@ -21,7 +21,25 @@ include_once("C:/xampp/htdocs/compracasaframework/model/middleware_auth.inc.php"
             echo json_encode(common::load_model('login_model', 'login', [$_POST['username_log'], $_POST['passwd_log']]));
         }                        
         function verify_email() {
-           echo json_encode(common::load_model('login_model', 'verify_email', [$_POST['token_email']]));        
+          //print_r($_POST['token_email']);
+          //  echo json_encode('hola');
+          // echo json_encode ($_POST['token_email']);
+         echo json_encode(common::load_model('login_model', 'verify_email', $_POST['token_email']));   
+         error_log("argumentos controller login class : " . [$_POST['token_email']]);     
+         //echo json_encode(common::load_model('login_model', 'verify_email', 'cf27642bb19851dc4cbf'));        
+        
+        }
+
+        function verify_emailSSS() {
+            if (isset($_POST['token_email'])) {
+                // Procesa el token_email aquí (por ejemplo, verifica si es válido).
+                // Luego, devuelve una respuesta JSON apropiada.
+                $response = ['message' => 'Token de email válido'];
+                echo json_encode($response);
+            } else {
+                $response = ['error' => 'Token de email no proporcionado'];
+                echo json_encode($response);
+            }
         }
 
         function logout() {
@@ -51,10 +69,9 @@ include_once("C:/xampp/htdocs/compracasaframework/model/middleware_auth.inc.php"
         } 
 
 
-        function recover_email() {
-
-            echo json_encode(common::load_model('login_model', 'recover_email', $_POST['email_forg']));
-
+        function aaarecover_email() {
+            return 'hola';
+            ///echo json_encode(common::load_model('login_model', 'recover_email', [$_POST['email_forg']]));
         }
 
         function verify_token() {
