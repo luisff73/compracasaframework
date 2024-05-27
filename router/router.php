@@ -31,7 +31,7 @@
             return self::$_instance;
         }
     
-        function __construct() {   
+        function __construct() {   // esta funcion se llama automaticamente.
             if(isset($_GET['module'])){ //comprueba si existe el modulo
                 $this -> uriModule = $_GET['module'];  //module es el nombre del modulo que viene del loadmenu en el main.js
                 //error_log($this -> uriModule);
@@ -64,6 +64,7 @@
                 //Llama a la función 'call_user_func' con un array que contiene 
                 //el resultado de 'loadModule' y 'loadFunction'
                 call_user_func(array($this -> loadModule(), $this -> loadFunction()));
+
             }catch(Exception $e) {
                 //Si se produce una excepción, llamar al método 'load_error' de la clase 'common'
                 common::load_error();

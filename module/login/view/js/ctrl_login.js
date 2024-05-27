@@ -379,14 +379,24 @@ function send_new_password(token_email) {
 } // Path: module/login/view/js/ctrl_login.js
 
 
-function social_login(param) {
+function social_login(param) {  // aqui recibe el tipo de red social GOOGLE o GITHUB
     authService = firebase_config();
     authService.signInWithPopup(provider_config(param))
         .then(function (result) {
+            alert('login  satisfactorio')
             console.log('Hemos autenticado al usuario ', result.user);
             email_name = result.user.email;
             let username = email_name.split('@');
             console.log(username[0]);
+
+            //social_user = { id: result.user.uid, username: username[0], email: result.user.email, avatar: result.user.photoURL };
+            console.log(result.user.uid) //jvrluis
+            console.log(username[0]); //jvrluis
+            console.log(result.user.mail); //undefined
+            console.log(result.user.photoURL); //ok
+            console.log(email_name.split('@')); // jvrluis  /  gmail.com
+            console.log(result.accestoken); //undefined
+            console.log(result.avatar); //undefined
 
             social_user = { id: result.user.uid, username: username[0], email: result.user.email, avatar: result.user.photoURL };
             if (result) {
@@ -447,9 +457,72 @@ function provider_config(param) {
     }
 }
 
+function load_content() {
+
+    let path = window.location.pathname.split('/'); //split para separar la url por el caracter "/" y lo asignamos al array path
+    //console.log(path);
+
+    if (path[3] === 'recover_email') {
+        //console.log('recover_email');
+        window.location.href = friendlyURL("?module=login&op=recover_view");
+        //window.location.href = "?module=login&op=recover_view";
+        localStorage.setItem('token_email', path[4]);
+
+    } else if (path[3] === 'verify_email') {
+        var token_email = path[4];
+        console.log('token_email en verify_email: ' + token_email);
+
+        //ajaxPromise(friendlyURL("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': $token_email }))
+        //ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': token_email })
+        $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: "?module=login&op=verify_email",
+            data: { 'token_email': token_email },
+        })
+
+            .done(function (response) {//data es lo que devuelve el php
+                //.then(function (data) {//data es lo que devuelve el php
+                console.log('Data: ', response);
+                return;
+
+                console.log('data en verify_email: ' + data);
+
+                toastr.options.timeOut = 3000;
+                toastr.success('Email verified');
+                setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
+            })
+            .fail(function (response, jqXHR, textStatus, errorThrow, url, type, dataType) {
+                console.log('data en verify_email error: ' + response);
+                console.log(JSON.stringify(response));
+                console.log("Error en el promise, Valor de Url: ", url);
+                console.log("VALOR DE sType: ", type);
+                console.log("VALOR DE sTdata: ", dataType);
+                console.log("VALOR DE sData: ", data);
+                console.log("Importante Respuesta del servidor en el promise responsetext : ", jqXHR.responseText);
+                console.log("Código de estado HTTP: ", jqXHR.status);
+                console.log("Descripción del estado HTTP: ", jqXHR.statusText);
+                console.log("Cuerpo de la respuesta como JSON: ", jqXHR.responseJSON);
+                console.log("Tipo de error: ", textStatus, errorThrown);
+
+                toastr.options.timeOut = 3000;
+                toastr.error('Email no verificado');
+            });
+
+    } else if (path[4] === 'view') {
+        $(".login-wrap").show();
+        $(".forget_html").hide();
+    } else if (path[3] === 'recover_view') {
+        load_form_new_password();
+    }
+}
+
+
 $(document).ready(function () {
+    load_content();
     key_login();
     key_register();
     button_register();
     click_recover_password()
+
 });

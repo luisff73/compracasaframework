@@ -20,19 +20,21 @@ include_once("C:/xampp/htdocs/compracasaframework/model/middleware_auth.inc.php"
         function login() {
             echo json_encode(common::load_model('login_model', 'login', [$_POST['username_log'], $_POST['passwd_log']]));
         }                        
-        function verify_email() {
+        function verify_emailsss() {
          echo json_encode(common::load_model('login_model', 'verify_email', $_POST['token_email']));        
         }
 
-        function verify_emailSSS() {
+        function verify_email() {
             if (isset($_POST['token_email'])) {
+                echo json_encode ("hola token");
                 // Procesa el token_email aquí (por ejemplo, verifica si es válido).
                 // Luego, devuelve una respuesta JSON apropiada.
-                $response = ['message' => 'Token de email válido'];
-                echo json_encode($response);
+                //$response = ['message' => 'Token de email válido'];
+                //cho json_encode($response);
             } else {
-                $response = ['error' => 'Token de email no proporcionado'];
-                echo json_encode($response);
+                echo json_encode ("no hola token");
+               ///$response = ['error' => 'Token de email no proporcionado'];
+               // echo json_encode($response);
             }
         }
 

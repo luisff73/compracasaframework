@@ -12,14 +12,14 @@ function ajaxPromise(sUrl, sType, sTData, sData = undefined) {
             data: sData,
 
 
-            // beforeSend: function () {
-            //     $("#overlay").fadeIn(300); // Muestra el loader EN EL MENU
-            // }
+            beforeSend: function () {
+                $("#overlay").fadeIn(300); // Muestra el loader EN EL MENU
+            }
         }).done((data) => {
             console.log('data ok en el promise: ' + data);
-            // setTimeout(function () {
-            //     $("#overlay").fadeOut(300); // Oculta el loader EN EL MENU
-            // }, 500);
+            setTimeout(function () {
+                $("#overlay").fadeOut(300); // Oculta el loader EN EL MENU
+            }, 500);
             resolve(data);
 
         }).fail((data, jqXHR, textStatus, errorThrow) => {
@@ -136,64 +136,12 @@ function friendlyURL(url) {
     return "http://localhost/compracasaframework" + link;
 }
 
-function load_content() {
 
-    let path = window.location.pathname.split('/'); //split para separar la url por el caracter "/" y lo asignamos al array path
-    //console.log(path);
-
-    if (path[3] === 'recover_email') {
-        //console.log('recover_email');
-        window.location.href = friendlyURL("?module=login&op=recover_view");
-        //window.location.href = "?module=login&op=recover_view";
-        localStorage.setItem('token_email', path[4]);
-
-    } else if (path[3] === 'verify_email') {
-        var token_email = path[4];
-        console.log('token_email en verify_email: ' + token_email);
-
-        //ajaxPromise(friendlyURL("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': $token_email }))
-        ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': token_email })
-
-            .then(function (data) {//data es lo que devuelve el php
-                console.log('Data: ', data);
-                return;
-
-                console.log('data en verify_email: ' + data);
-
-                toastr.options.timeOut = 3000;
-                toastr.success('Email verified');
-                setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
-            })
-            .catch(function (data, jqXHR, textStatus, errorThrow, url, sUrl, type, dataType) {
-                console.log('data en verify_email error: ' + data);
-
-                // console.log('data en verify_email error: ' + data);
-                console.log("Error en el promise, Valor de Url: ", url);
-                // console.log("VALOR DE sType: ", type);
-                // console.log("VALOR DE sTdata: ", dataType);
-                // console.log("VALOR DE sData: ", data);
-                // console.log("Importante Respuesta del servidor en el promise responsetext : ", jqXHR.responseText);
-                // console.log("Código de estado HTTP: ", jqXHR.status);
-                // console.log("Descripción del estado HTTP: ", jqXHR.statusText);
-                // console.log("Cuerpo de la respuesta como JSON: ", jqXHR.responseJSON);
-                console.log("Tipo de error: ", textStatus);
-
-                toastr.options.timeOut = 3000;
-                toastr.error('Email no verificado');
-            });
-
-    } else if (path[4] === 'view') {
-        $(".login-wrap").show();
-        $(".forget_html").hide();
-    } else if (path[3] === 'recover_view') {
-        load_form_new_password();
-    }
-}
 
 
 $(document).ready(function () {
     load_menu();
     click_logout();
     click_shop();
-    load_content();
+
 });
