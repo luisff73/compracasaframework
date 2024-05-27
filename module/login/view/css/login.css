@@ -211,7 +211,7 @@ a {
     text-align: center;
 }
 
-.error {
+/* .error {
     color: red;
 }
 
@@ -221,7 +221,7 @@ a {
 
 #wrapper {
     background-color: rgb(255, 255, 255);
-}
+} */
 
 /* Añade estilos para la nueva pestaña "ThirdForm" */
 .login-html .third-form {
@@ -237,4 +237,65 @@ a {
 .login-html .third-form:checked+.tab {
     color: #fff;
     border-color: #373737;
+}
+
+.social_login {
+    display: block;
+    margin-top: 30px;
+    margin-bottom: 150px;
+    border: 2px solid transparent;
+}
+
+.google_login {
+    display: block;
+    float: left;
+    margin-left: 100px;
+    border: 2px solid transparent;
+}
+
+.google_title {
+    text-align: center;
+    color: white;
+    font-size: 15px;
+    border: 2px solid transparent;
+}
+
+.google_img {
+    display: inline-block;
+    height: 60px;
+    width: 60px;
+    border-style: none;
+    border-radius: 0px;
+    background-image: url(../img/google.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+
+}
+
+.github_login {
+    display: block;
+    float: right;
+    margin-right: 100px;
+    border-color: transparent;
+    border: 2px solid transparent;
+}
+
+.github_title {
+    text-align: center;
+    color: white;
+    font-size: 15px;
+}
+
+.github_img {
+    display: inline-block;
+    height: 60px;
+    width: 60px;
+    background-image: url(../img/github.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-color: transparent;
+}
+
+.social_login * {
+    border: 2px solid transparent;
 }

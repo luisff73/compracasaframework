@@ -41,12 +41,20 @@ function key_login() {
             login();
         }
     });
-}
-function button_login() {
+
     $('#login').on('click', function (e) {
         e.preventDefault();//evita que se recargue la pagina, en JavaScript se utiliza para prevenir la ejecución de la acción predeterminada del evento.
         login();
     });
+
+    $('#google').on('click', function (e) {
+        social_login('google');
+    });
+
+    $('#github').on('click', function (e) {
+        social_login('github');
+    });
+
 }
 function validate_login() {
     var error = false;
@@ -370,6 +378,7 @@ function send_new_password(token_email) {
     }
 } // Path: module/login/view/js/ctrl_login.js
 
+
 function social_login(param) {
     authService = firebase_config();
     authService.signInWithPopup(provider_config(param))
@@ -440,7 +449,6 @@ function provider_config(param) {
 
 $(document).ready(function () {
     key_login();
-    button_login();
     key_register();
     button_register();
     click_recover_password()
