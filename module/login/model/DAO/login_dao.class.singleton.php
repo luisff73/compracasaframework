@@ -66,10 +66,10 @@
             return $db->listar($stmt);
         }
 
-        public function insert_social_login($db, $username, $email, $hashed_pass, $avatar, $token_email,$tipo_login){
+        public function insert_social_login($db, $username, $email, $avatar, $tipo_login){
     
-            $sql ="INSERT INTO `users`(`username`, `password`, `email`, `type_user`, `avatar`, `token_email`, `activate`,`tipo_login`) 
-            VALUES ('$username','$hashed_pass','$email','client','$avatar','$token_email',0,$tipo_login)";
+            $sql ="INSERT INTO `users`(`username`, `password`, `email`, `type_user`, `avatar`, `activate`,`tipo_login`) 
+            VALUES ('$username','','$email','client','$avatar',1,$tipo_login)";
             return $stmt = $db->ejecutar($sql);
 
         }

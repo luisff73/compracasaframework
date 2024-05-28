@@ -61,7 +61,8 @@ include_once("C:/xampp/htdocs/compracasaframework/model/middleware_auth.inc.php"
         ///////////////////////////////////////////////////////////
 
         function social_login() {
-            echo json_encode(common::load_model('login_model', 'social_login', [$_POST['id'], $_POST['username'], $_POST['email'], $_POST['avatar']]));
+            // echo json_encode ('hola'); // funciona
+            echo json_encode(common::load_model('login_model', 'social_login', [$_POST['id'], $_POST['username'], $_POST['email'], $_POST['avatar'], $_POST['tipo_login']]));
         } 
 
 

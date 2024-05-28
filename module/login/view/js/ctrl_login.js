@@ -383,25 +383,23 @@ function social_login(param) {  // aqui recibe el tipo de red social GOOGLE o GI
     authService = firebase_config();
     authService.signInWithPopup(provider_config(param))
         .then(function (result) {
-            alert('login  satisfactorio')
             console.log('Hemos autenticado al usuario ', result.user);
             email_name = result.user.email;
             let username = email_name.split('@');
-            console.log(username[0]);
-
-            //social_user = { id: result.user.uid, username: username[0], email: result.user.email, avatar: result.user.photoURL };
-            console.log(result.user.uid) //jvrluis
             console.log(username[0]); //jvrluis
-            console.log(result.user.mail); //undefined
+            console.log(result.user.uid) //ujKODRPDJaLVdaxS6Lkrph2
+            console.log(username[0]); //jvrluis
+            console.log(username[1]); //gmail.com
+            console.log(result.user.email); //jvrluis@gmail.com
             console.log(result.user.photoURL); //ok
             console.log(email_name.split('@')); // jvrluis  /  gmail.com
-            console.log(result.accestoken); //undefined
-            console.log(result.avatar); //undefined
 
-            social_user = { id: result.user.uid, username: username[0], email: result.user.email, avatar: result.user.photoURL };
             if (result) {
-                ajaxPromise(friendlyURL("?module=login&op=social_login"), 'POST', 'JSON', social_user)
+                ajaxPromise(friendlyURL("?module=login&op=social_login"), 'POST', 'JSON', { 'id': result.user.uid, 'username': username[0], 'email': result.user.email, 'avatar': result.user.photoURL, 'tipo_login': username[1] })
+
                     .then(function (data) {
+                        console.log(data);
+
                         localStorage.setItem("token", data);
                         toastr.options.timeOut = 3000;
                         toastr.success("Inicio de sesión realizado");
@@ -411,12 +409,14 @@ function social_login(param) {  // aqui recibe el tipo de red social GOOGLE o GI
                             setTimeout('window.location.href = friendlyURL("?module=shop&op=view")', 1000);
                         }
                     })
-                    .catch(function () {
+                    .catch(function (data) {
+                        console.log(data);
                         console.log('Error: Social login error');
                     });
             }
         })
         .catch(function (error) {
+            console.log(error);
             var errorCode = error.code;
             console.log(errorCode);
             var errorMessage = error.message;
