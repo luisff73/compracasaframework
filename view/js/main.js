@@ -1,6 +1,4 @@
 
-//htaccess 
-
 
 function ajaxPromise(sUrl, sType, sTData, sData = undefined) {
 

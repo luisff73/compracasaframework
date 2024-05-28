@@ -6,7 +6,6 @@ require($path . "model/JWT.php"); // INCLUIMOS LA LIBRERIA JWT
 class middleware{
 
     public static function decode_token($token){
-        //$jwt = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/model/jwt.ini');
         $jwt = parse_ini_file(UTILS . "jwt.ini");
         $secret = $jwt['secret'];
         $JWT = new JWT;
@@ -14,10 +13,9 @@ class middleware{
         $rt_token = json_decode($token_dec, TRUE);
         //json_decode en una funcion de php que convierte un string json en un array asociativo
         return $rt_token;
-    
+
     }
     public static function create_accestoken($username){
-        //$jwt = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/model/jwt.ini');
         $jwt = parse_ini_file(UTILS . "jwt.ini");
         $header = $jwt['header']; // OBTENEMOS EL HEADER DEL ARCHIVO INI
         $secret = $jwt['secret']; // OBTENEMOS EL SECRET DEL ARCHIVO INI
@@ -27,7 +25,6 @@ class middleware{
         return $token;
     }
     public static function create_refreshtoken($username){
-        //$jwt = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/model/jwt.ini');
         $jwt = parse_ini_file(UTILS . "jwt.ini");
         $header = $jwt['header'];
         $secret = $jwt['secret'];

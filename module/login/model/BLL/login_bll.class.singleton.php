@@ -211,24 +211,26 @@ public function get_controluser_BLL($args) {
 }
 public function get_social_login_BLL($args) {
 
-	//return ($args);
-
-
-	if (!empty($this -> dao -> select_user($this->db, $args[1], $args[2]))) {
-		$user = $this -> dao -> select_user($this->db, $args[1], $args[2]);
+	//return 'hola';  //funciona
+	if (!empty($user = $this -> dao -> select_user($this->db, $args[1], $args[2]))) {
 		$jwt = middleware::create_accestoken($user[0]['username']);
-		return json_encode($jwt);
+			return json_encode($jwt);
 			} else {
+				//return 'hola';
 				//return json_encode ( $args[0], $args[1], $args[2], $args[3]);
 				//return $args[0]; // id user ok jsdflksjdflsjdfl
 				//return $args[1]; // username jvrluis
 				//return $args[2]; // email jvrluis@gmail.com
 				//return $args[3]; // imagen ok
-			    $this -> dao -> insert_social_login($this->db, $args[0], $args[2], $args[3], $args[3]);
-				// $user = $this -> dao -> select_user($this->db, $args[1], $args[2]);
-				// $jwt = middleware::create_accestoken($user[0]['username']);
-				// return json_encode($jwt);
-			}
+				//return $args[4]; // gmail.com
+				
+			    $this -> dao -> insert_social_login($this->db, $args[1], $args[2], $args[3], $args[4]);		
+				$user = $this -> dao -> select_user($this->db, $args[1], $args[2]);
+				$jwt = middleware::create_accestoken($user[0]['username']);
+				return json_encode($jwt);
+				//return $user;
+				//return 'adios';
+	 		}
 }
 
 

@@ -436,8 +436,7 @@ function firebase_config() {
         projectId: "compracasaframework",
         storageBucket: "compracasaframework.appspot.com",
         messagingSenderId: "525136586549",
-        // appId: "1:495514694215:web:b183cd7f513ce8b0d6f762",
-        // measurementId: "G-JXEGLTGLTC"
+
     };
     if (!firebase.apps.length) {
         firebase.initializeApp(config);
@@ -474,23 +473,31 @@ function load_content() {
 
         //ajaxPromise(friendlyURL("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': $token_email }))
         //ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': token_email })
+        // $.ajax({
+        //     type: "POST",
+        //     dataType: "JSON",
+        //     url: "?module=login&op=verify_email",
+        //     data: { 'token_email': token_email },
+        // })
+
         $.ajax({
-            type: "POST",
+            type: "GET",
             dataType: "JSON",
             url: "?module=login&op=verify_email",
             data: { 'token_email': token_email },
         })
 
+
             .done(function (response) {//data es lo que devuelve el php
                 //.then(function (data) {//data es lo que devuelve el php
                 console.log('Data: ', response);
-                return;
+                // return;
 
-                console.log('data en verify_email: ' + data);
+                // console.log('data en verify_email: ' + data);
 
-                toastr.options.timeOut = 3000;
-                toastr.success('Email verified');
-                setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
+                // toastr.options.timeOut = 3000;
+                // toastr.success('Email verified');
+                // setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
             })
             .fail(function (response, jqXHR, textStatus, errorThrow, url, type, dataType) {
                 console.log('data en verify_email error: ' + response);

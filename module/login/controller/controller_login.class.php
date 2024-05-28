@@ -25,17 +25,18 @@ include_once("C:/xampp/htdocs/compracasaframework/model/middleware_auth.inc.php"
         }
 
         function verify_email() {
-            if (isset($_POST['token_email'])) {
-                echo json_encode ("hola token");
-                // Procesa el token_email aquí (por ejemplo, verifica si es válido).
-                // Luego, devuelve una respuesta JSON apropiada.
-                //$response = ['message' => 'Token de email válido'];
-                //cho json_encode($response);
-            } else {
-                echo json_encode ("no hola token");
-               ///$response = ['error' => 'Token de email no proporcionado'];
-               // echo json_encode($response);
-            }
+            echo json_encode ("hola token");
+            // if (isset($_POST['token_email'])) {
+            //     echo json_encode ("hola token");
+            //     // Procesa el token_email aquí (por ejemplo, verifica si es válido).
+            //     // Luego, devuelve una respuesta JSON apropiada.
+            //     //$response = ['message' => 'Token de email válido'];
+            //     //cho json_encode($response);
+            // } else {
+            //     echo json_encode ("no hola token");
+            //    ///$response = ['error' => 'Token de email no proporcionado'];
+            //    // echo json_encode($response);
+            // }
         }
 
         function logout() {

@@ -31,7 +31,7 @@
            $sql = "SELECT `username`, `password`, `email`, `type_user`, `avatar`, `token_email`,`activate` FROM `users` WHERE activate=1 and username='$username'";
  
             $stmt = $db->ejecutar($sql);
-            return $db->listar_object($stmt);  //devuelve un objeto no un array
+            return $db->listar($stmt);  
         }
 
         public function select_verify_email($db, $token_email){
@@ -62,18 +62,15 @@
 
 			$sql = "SELECT * FROM users WHERE id='$id'";
             $stmt = $db->ejecutar($sql);
-
             return $db->listar($stmt);
         }
 
-        public function insert_social_login($db, $username, $email, $avatar, $tipo_login){
-    
+        public function insert_social_login($db, $username, $email, $avatar, $tipo_login){   
             $sql ="INSERT INTO `users`(`username`, `password`, `email`, `type_user`, `avatar`, `activate`,`tipo_login`) 
-            VALUES ('$username','','$email','client','$avatar',1,$tipo_login)";
+            VALUES ('$username',' ','$email','client','$avatar',1,'$tipo_login')";
             return $stmt = $db->ejecutar($sql);
-
+            //return $sql;
         }
-
 
         public function select_recover_password($db, $email){
 			$sql = "SELECT `email` FROM `users` WHERE email = '$email' AND password NOT LIKE ('')";
