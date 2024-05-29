@@ -7,16 +7,15 @@ function login() {
         ajaxPromise("?module=login&op=login", 'POST', 'JSON', { 'username_log': username_log, 'passwd_log': passwd_log }) //data lleva el usuario y la contraseña
 
             .then(function (data) {//data es lo que devuelve el php
-                // console.log('Data: ', data);
-                // return;
+                console.log('Data: ', data);
+                //return;
                 var accestoken = data.accestoken; //accestoken es el token que devuelve el php EN UN ARRAY
                 var refreshtoken = data.refreshtoken; //refreshtoken es el token que devuelve el php EN UN ARRAY
 
-
-                if (data == "error_select_user") {
-                    document.getElementById('error_username_log').innerHTML = "El usario no existe en la base de datos o no es activo"
-                } else if (data == "error_password") {
-                    document.getElementById('error_passwd_log').innerHTML = "La contraseña es incorrecta"
+                if (data == "Usuario_inexistente") {
+                    document.getElementById('error_username_log').innerHTML = "El usario no existe en la base de datos o no esta activo"
+                } else if (data.Password_incorrecta == "Password_incorrecta") {
+                    document.getElementById('error_passwd_log').innerHTML = "La contraseña es incorrecta, dispone de " + data.attempts + " intentos para hacer login";
                 } else {
 
                     localStorage.setItem("accestoken", accestoken);
@@ -26,9 +25,9 @@ function login() {
                     //setTimeout(' window.location.href = friendlyURL("?module=shop&op=view"); ', 3000);
 
                 }
-            }).catch(function (textStatus, sData, errorThrown, jqXHR, data) {
+            }).catch(function (error, textStatus, sData, errorThrown, jqXHR, data) {
                 if (console && console.log) {
-                    reject(errorThrow);
+                    console.log(error);
                 }
             });
     }
@@ -383,34 +382,39 @@ function social_login(param) {  // aqui recibe el tipo de red social GOOGLE o GI
     authService = firebase_config();
     authService.signInWithPopup(provider_config(param))
         .then(function (result) {
-            console.log('Hemos autenticado al usuario ', result.user);
+            // console.log('Hemos autenticado al usuario ', result.user);
             email_name = result.user.email;
             let username = email_name.split('@');
-            console.log(username[0]); //jvrluis
-            console.log(result.user.uid) //ujKODRPDJaLVdaxS6Lkrph2
-            console.log(username[0]); //jvrluis
-            console.log(username[1]); //gmail.com
-            console.log(result.user.email); //jvrluis@gmail.com
-            console.log(result.user.photoURL); //ok
-            console.log(email_name.split('@')); // jvrluis  /  gmail.com
+            // console.log(username[0]); //jvrluis
+            // console.log(result.user.uid) //ujKODRPDJaLVdaxS6Lkrph2
+            // console.log(username[0]); //jvrluis
+            // console.log(username[1]); //gmail.com
+            // console.log(result.user.email); //jvrluis@gmail.com
+            // console.log(result.user.photoURL); //ok
+            // console.log(email_name.split('@')); // jvrluis  /  gmail.com
 
             if (result) {
                 ajaxPromise(friendlyURL("?module=login&op=social_login"), 'POST', 'JSON', { 'id': result.user.uid, 'username': username[0], 'email': result.user.email, 'avatar': result.user.photoURL, 'tipo_login': username[1] })
 
                     .then(function (data) {
-                        console.log(data);
+                        // console.log(data);
 
-                        localStorage.setItem("token", data);
+                        localStorage.setItem("accestoken", data);
+                        localStorage.setItem("refreshtoken", data);
                         toastr.options.timeOut = 3000;
                         toastr.success("Inicio de sesión realizado");
+
+                        $('<img src="' + data.avatar + '"alt="Robot">').appendTo('.log-icon');
+                        $('<p></p>').attr('id', data.username).appendTo('#des_inf_user')
+
                         if (localStorage.getItem('likes') == null) {
-                            setTimeout('window.location.href = friendlyURL("?module=home&op=view")', 1000);
+                            setTimeout('window.location.href = friendlyURL("?module=home&op=view")', 4000);
                         } else {
-                            setTimeout('window.location.href = friendlyURL("?module=shop&op=view")', 1000);
+                            setTimeout('window.location.href = friendlyURL("?module=shop&op=view")', 6000);
                         }
                     })
                     .catch(function (data) {
-                        console.log(data);
+                        // console.log(data);
                         console.log('Error: Social login error');
                     });
             }
@@ -429,17 +433,18 @@ function social_login(param) {  // aqui recibe el tipo de red social GOOGLE o GI
 }
 
 function firebase_config() {
-    var config = {
-        apiKey: "AIzaSyDzaMB7Om42JuxeZ6PqIOYhp3iuww5QlVE",
-        authDomain: "compracasaframework.firebaseapp.com",
-        databaseURL: "https://compracasaframework.firebaseio.com",
-        projectId: "compracasaframework",
-        storageBucket: "compracasaframework.appspot.com",
-        messagingSenderId: "525136586549",
+    // var config = {
+    //     apiKey: "AIzaSyDzaMB7Om42JuxeZ6PqIOYhp3iuww5QlVE",
+    //     authDomain: "compracasaframework.firebaseapp.com",
+    //     databaseURL: "https://compracasaframework.firebaseio.com",
+    //     projectId: "compracasaframework",
+    //     storageBucket: "compracasaframework.appspot.com",
+    //     messagingSenderId: "525136586549",
 
-    };
+    // };
+    //alert(config)
     if (!firebase.apps.length) {
-        firebase.initializeApp(config);
+        firebase.initializeApp(config); // config es una variable global que tenemos en credentials.js
     } else {
         firebase.app();
     }

@@ -28,11 +28,17 @@
         }
        
         public function select_user($db, $username){
-           $sql = "SELECT `username`, `password`, `email`, `type_user`, `avatar`, `token_email`,`activate` FROM `users` WHERE activate=1 and username='$username'";
+           $sql = "SELECT `username`, `password`, `email`, `type_user`, `avatar`, `token_email`,`activate`,`attempts` FROM `users` WHERE `activate`=1 and `attempts`>0 and username='$username'";
  
             $stmt = $db->ejecutar($sql);
-            return $db->listar($stmt);  
+            return $db->listar_object($stmt);  
         }
+      
+        public function decrementa_attempts($db, $username) {
+            $sql = "UPDATE `users` SET `attempts` = `attempts` - 1 WHERE `username` = '$username'";
+            return $stmt = $db->ejecutar($sql);
+        }
+        
 
         public function select_verify_email($db, $token_email){
 
@@ -58,11 +64,12 @@
             return $db->listar($stmt);
         }
 
-        public function select_social_login($db, $id){
+        public function select_social_login($db, $username){
 
-			$sql = "SELECT * FROM users WHERE id='$id'";
+            $sql = "SELECT `username`, `password`, `email`, `type_user`, `avatar`, `token_email`,`activate` FROM `users` WHERE activate=1 and username='$username'";
+ 
             $stmt = $db->ejecutar($sql);
-            return $db->listar($stmt);
+            return $db->listar($stmt);  
         }
 
         public function insert_social_login($db, $username, $email, $avatar, $tipo_login){   

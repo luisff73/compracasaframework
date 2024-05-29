@@ -18,6 +18,7 @@ include_once("C:/xampp/htdocs/compracasaframework/model/middleware_auth.inc.php"
             echo json_encode(common::load_model('login_model', 'register', [$_POST['username_reg'], $_POST['passwd1_reg'], $_POST['passwd2_reg'],$_POST['email_reg']]));
         }
         function login() {
+            //echo json_encode ('hola'); // funciona
             echo json_encode(common::load_model('login_model', 'login', [$_POST['username_log'], $_POST['passwd_log']]));
         }                        
         function verify_emailsss() {

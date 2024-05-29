@@ -67,7 +67,7 @@ function load_menu() {
             }).catch(function () {
                 //console.log('valor de data en el main error js: ' + data);
                 console.log("Error al cargar los datos del user");
-                console.log(data);
+                //console.log(data);
             });
     } else {
         //console.log("No hay token disponible");
@@ -96,8 +96,7 @@ function click_logout() {
 function logout() {
     ajaxPromise(friendlyURL('?module=login&op=logout', 'POST', 'JSON'))
         .then(function (data) {
-            //localStorage.removeItem('token');
-            localStorage.removeItem('accestoken');   /// usamos siempre el accestoken
+            localStorage.removeItem('accestoken');
             localStorage.removeItem('refreshtoken');
             localStorage.removeItem('total_prod');
             console.log('Logout succesfully');

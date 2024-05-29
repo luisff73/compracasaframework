@@ -1,6 +1,5 @@
 function protecturl() {
     var accestoken = localStorage.getItem('accestoken');
-    //console.log("Control activity recogemos el token EN PROTECTURL: " + accestoken);
     ajaxPromise(friendlyURL("?module=login&op=controluser"), 'POST', 'JSON', { 'accestoken': accestoken })
         .then(function (data) {
             if (data == "Correct_User") {
@@ -33,8 +32,8 @@ function control_activity() {
 }
 function refresh_cookie() {
     ajaxPromise(friendlyURL('?module=login&op=refresh_cookie'), 'POST', 'JSON')
-        //.then(function (response) {??RESPONSE NO SE USA??
-        .then(function (response) {
+
+        .then(function () {
             //console.log("Refresh cookie correctly");
         });
 }
@@ -43,7 +42,7 @@ function logout_auto() {
         .then(function (data) {
             localStorage.removeItem('accestoken');
             localStorage.removeItem('refreshtoken');
-            window.location.href = friendlyURL("index.php?module=ctrl_home&op=view");
+            window.location.href = friendlyURL("index.php?module=login&op=view");
         }).catch(function () {
             console.log('Something has occured');
         });

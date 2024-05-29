@@ -72,22 +72,20 @@ public function get_register_BLL($args) {
 }
 
 public function get_login_BLL($args) { 
-	//return "hola login";
+	//return "hola login bll";
 	//return $args;
 
-     try { 
+    try { 
         $resultado = $this->dao->select_user($this->db,$args[0]);
 		
-
-		//return $resultado;
 		
         if (!$resultado) { 
-            return "error_select_user";
-
+            return "Usuario_inexistente";
         } else { 
 			
 		$value=get_object_vars($resultado); //convierte el objeto en un array
-		//return $value;
+		// $value=$resultado;	
+		// return $value;
 
 			if (password_verify($args[1], $value['password'])) { 
 
@@ -96,9 +94,6 @@ public function get_login_BLL($args) {
                 $accestoken = middleware::create_accestoken($value['username']);
                 $refreshtoken = middleware::create_refreshtoken($value['username']);
 
-				//return $accestoken;
-
-                
                 $_SESSION['username'] = $value['username'];
                 $_SESSION['tiempo'] = time();
 
@@ -111,7 +106,15 @@ public function get_login_BLL($args) {
                 
                 exit;
             } else { 
-                echo json_encode("error_password");                 
+
+				$incrementa = $this->dao->decrementa_attempts($this->db,$args[0]);
+
+				//return $incrementa;
+				$response = array(
+                    'Password_incorrecta' => 'Password_incorrecta',
+                    'attempts' => $value['attempts']
+                );
+                echo json_encode($response);                 
                 exit;
             } 
         } 
@@ -212,11 +215,23 @@ public function get_controluser_BLL($args) {
 public function get_social_login_BLL($args) {
 
 	//return 'hola';  //funciona
-	if (!empty($user = $this -> dao -> select_user($this->db, $args[1], $args[2]))) {
-		$jwt = middleware::create_accestoken($user[0]['username']);
-			return json_encode($jwt);
+	if (!empty($user = $this -> dao -> select_social_login($this->db, $args[1], $args[2]))) {
+		 $accestokensocial = middleware::create_accestoken($user[0]['username']);
+         $refreshtokensocial = middleware::create_refreshtoken($user[0]['username']);
+		 $_SESSION['username'] = $user[0]['username']; // array 0 columna username.
+		 $_SESSION['tiempo'] = time();
+		//return $user[0]; //devuelve todo el array
+		$response = array(
+			'accestoken' => $accestokensocial,
+			'refreshtoken' => $refreshtokensocial,
+			'avatar' => $user[0]['avatar'],
+			'username' => $user[0]['username']
+		);
+		
+		return json_encode($response);
+
 			} else {
-				//return 'hola';
+				// return 'holaSS';
 				//return json_encode ( $args[0], $args[1], $args[2], $args[3]);
 				//return $args[0]; // id user ok jsdflksjdflsjdfl
 				//return $args[1]; // username jvrluis
@@ -225,15 +240,22 @@ public function get_social_login_BLL($args) {
 				//return $args[4]; // gmail.com
 				
 			    $this -> dao -> insert_social_login($this->db, $args[1], $args[2], $args[3], $args[4]);		
-				$user = $this -> dao -> select_user($this->db, $args[1], $args[2]);
-				$jwt = middleware::create_accestoken($user[0]['username']);
-				return json_encode($jwt);
+				$user = $this -> dao -> select_social_login($this->db, $args[1], $args[2]);
+				$accestokensocial = middleware::create_accestoken($user[0]['username']);
+				$refreshtokensocial = middleware::create_refreshtoken($user[0]['username']);
+		
+				$response = array(
+					'accestoken' => $accestokensocial,
+					'refreshtoken' => $refreshtokensocial,
+					'avatar' => $user[0]['avatar'],
+					'username' => $user[0]['username']
+				);
+				
+				return json_encode($response);
 				//return $user;
 				//return 'adios';
 	 		}
 }
-
-
 public function get_recover_email_BBL($email) {
 	//echo 'hola';
 

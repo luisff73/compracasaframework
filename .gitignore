@@ -2,3 +2,4 @@
 ./.htaccess
 /utils/vendor
 composer.lock
+view/js/credentials.js
