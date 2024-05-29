@@ -93,24 +93,8 @@
             echo json_encode(common::load_model('shop_model', 'get_viviendas_related', [$_POST['id_city'],$_POST['offset'],$_POST['items_page']]));
         }
 
-        function incrementa_like() {
-           
-            $token_dec = (middleware::decode_token($_POST['accestoken'])); //decodificamos el token
-            //echo json_encode($token_dec ['username']); //devolvemos el token decodificado
-            //echo json_encode($_POST['id_vivienda']);
-            //exit();
-   
-           try {
-               //$json = decode_token($_POST['accestoken']);
-               //var_dump($_POST['id']);
-               //var_dump($token_dec['username']);
-               echo json_encode(common::load_model('shop_model', 'get_incrementa_like', $_POST['id_vivienda'], $token_dec['username']));
-
-               //echo json_encode("Like incrementado con éxitoA");  
-           } catch (Exception $e) {
-               echo json_encode("Error incrementando el like: " . $e->getMessage());
-               
-           }
+        function incrementa_like() {                                                                
+            echo json_encode(common::load_model('shop_model', 'get_incrementa_like',[$_POST['id_vivienda'],$_POST['accestoken']]));
         }
     }
 ?>

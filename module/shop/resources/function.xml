@@ -76,4 +76,9 @@
         <name>incrementa_like</name>
         <uri>incrementa_like</uri>
     </function>
+    <function>
+        <name>envia_whatsapp</name>
+        <uri>envia_whatsapp</uri>
+    </function>
+
 </functions>

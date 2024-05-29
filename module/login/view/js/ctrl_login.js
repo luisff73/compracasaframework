@@ -16,6 +16,22 @@ function login() {
                     document.getElementById('error_username_log').innerHTML = "El usario no existe en la base de datos o no esta activo"
                 } else if (data.Password_incorrecta == "Password_incorrecta") {
                     document.getElementById('error_passwd_log').innerHTML = "La contraseña es incorrecta, dispone de " + data.attempts + " intentos para hacer login";
+
+                    if (data.attempts == 1) {
+                        alert('demasiados intentos')
+                        $.ajax({
+                            url: 'utils/ultrmsg.inc.php',
+                            type: 'POST',
+                            dataType: "JSON",
+                            //url: "?module=login&op=envia_whatsapp",
+                        })
+                            .done(function (response) {
+                                console.log(response);
+                            })
+                            .fail(function (response) {
+                                console.log(response);
+                            })
+                    }
                 } else {
 
                     localStorage.setItem("accestoken", accestoken);
@@ -33,6 +49,7 @@ function login() {
     }
 }
 function key_login() {
+
     $("#login").keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
@@ -41,16 +58,37 @@ function key_login() {
         }
     });
 
+    $("#register").keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which); //comprobamos si se ha pulsado la tecla enter
+        if (code == 13) {
+            e.preventDefault(); //El método .preventDefault() es un método en JavaScript que se utiliza para prevenir la acción predeterminada del navegador en respuesta a un evento.
+            register();
+        }
+    });
+
+    $('#register').on('click', function (e) {
+        e.preventDefault();
+        register();
+    });
+
     $('#login').on('click', function (e) {
         e.preventDefault();//evita que se recargue la pagina, en JavaScript se utiliza para prevenir la ejecución de la acción predeterminada del evento.
         login();
     });
 
+    $('#logout_btn').on('click', function (e) {
+        e.preventDefault();
+        toastr.success("Logout exitoso");
+        setTimeout('logout(); ', 1000);
+    });
+
     $('#google').on('click', function (e) {
+        e.preventDefault();
         social_login('google');
     });
 
     $('#github').on('click', function (e) {
+        e.preventDefault();
         social_login('github');
     });
 
@@ -118,22 +156,6 @@ function register() {
                 }
             });
     }
-}
-function key_register() {
-    $("#register").keypress(function (e) {
-        var code = (e.keyCode ? e.keyCode : e.which); //comprobamos si se ha pulsado la tecla enter
-        if (code == 13) {
-            e.preventDefault(); //El método .preventDefault() es un método en JavaScript que se utiliza para prevenir la acción predeterminada del navegador en respuesta a un evento.
-            register();
-        }
-    });
-}
-function button_register() {
-    $('#register').on('click', function (e) {
-
-        e.preventDefault();
-        register();
-    });
 }
 function validate_register() {
     var username_exp = /^(?=.{5,}$)(?=.*[a-zA-Z0-9]).*$/;
@@ -375,14 +397,12 @@ function send_new_password(token_email) {
 
         });
     }
-} // Path: module/login/view/js/ctrl_login.js
-
-
+}
 function social_login(param) {  // aqui recibe el tipo de red social GOOGLE o GITHUB
     authService = firebase_config();
     authService.signInWithPopup(provider_config(param))
         .then(function (result) {
-            // console.log('Hemos autenticado al usuario ', result.user);
+
             email_name = result.user.email;
             let username = email_name.split('@');
             // console.log(username[0]); //jvrluis
@@ -431,18 +451,8 @@ function social_login(param) {  // aqui recibe el tipo de red social GOOGLE o GI
             console.log(credential);
         });
 }
-
 function firebase_config() {
-    // var config = {
-    //     apiKey: "AIzaSyDzaMB7Om42JuxeZ6PqIOYhp3iuww5QlVE",
-    //     authDomain: "compracasaframework.firebaseapp.com",
-    //     databaseURL: "https://compracasaframework.firebaseio.com",
-    //     projectId: "compracasaframework",
-    //     storageBucket: "compracasaframework.appspot.com",
-    //     messagingSenderId: "525136586549",
 
-    // };
-    //alert(config)
     if (!firebase.apps.length) {
         firebase.initializeApp(config); // config es una variable global que tenemos en credentials.js
     } else {
@@ -450,7 +460,6 @@ function firebase_config() {
     }
     return authService = firebase.auth();
 }
-
 function provider_config(param) {
     if (param === 'google') {
         var provider = new firebase.auth.GoogleAuthProvider();
@@ -460,7 +469,6 @@ function provider_config(param) {
         return provider = new firebase.auth.GithubAuthProvider();
     }
 }
-
 function load_content() {
 
     let path = window.location.pathname.split('/'); //split para separar la url por el caracter "/" y lo asignamos al array path
@@ -486,7 +494,7 @@ function load_content() {
         // })
 
         $.ajax({
-            type: "GET",
+            type: "POST",
             dataType: "JSON",
             url: "?module=login&op=verify_email",
             data: { 'token_email': token_email },
@@ -505,20 +513,20 @@ function load_content() {
                 // setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
             })
             .fail(function (response, jqXHR, textStatus, errorThrow, url, type, dataType) {
-                console.log('data en verify_email error: ' + response);
-                console.log(JSON.stringify(response));
-                console.log("Error en el promise, Valor de Url: ", url);
-                console.log("VALOR DE sType: ", type);
+                // console.log('data en verify_email error: ' + response);
+                // console.log(JSON.stringify(response));
+                // console.log("Error en el promise, Valor de Url: ", url);
+                // console.log("VALOR DE sType: ", type);
                 console.log("VALOR DE sTdata: ", dataType);
-                console.log("VALOR DE sData: ", data);
-                console.log("Importante Respuesta del servidor en el promise responsetext : ", jqXHR.responseText);
-                console.log("Código de estado HTTP: ", jqXHR.status);
-                console.log("Descripción del estado HTTP: ", jqXHR.statusText);
-                console.log("Cuerpo de la respuesta como JSON: ", jqXHR.responseJSON);
-                console.log("Tipo de error: ", textStatus, errorThrown);
+                // console.log("VALOR DE sData: ", data);
+                // console.log("Importante Respuesta del servidor en el promise responsetext : ", jqXHR.responseText);
+                // console.log("Código de estado HTTP: ", jqXHR.status);
+                // console.log("Descripción del estado HTTP: ", jqXHR.statusText);
+                // console.log("Cuerpo de la respuesta como JSON: ", jqXHR.responseJSON);
+                // console.log("Tipo de error: ", textStatus, errorThrown);
 
-                toastr.options.timeOut = 3000;
-                toastr.error('Email no verificado');
+                // toastr.options.timeOut = 3000;
+                // toastr.error('Email no verificado');
             });
 
     } else if (path[4] === 'view') {
@@ -533,8 +541,8 @@ function load_content() {
 $(document).ready(function () {
     load_content();
     key_login();
-    key_register();
-    button_register();
+    //key_register();
+    //button_register();
     click_recover_password()
 
 });

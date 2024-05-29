@@ -104,7 +104,8 @@
 			return $this -> dao -> select_count_viviendas_related($this -> db, $args[0], $args[1], $args[2]);
 		}
 		public function get_incrementa_like_BLL($args) {
-			return $this -> dao -> select_incrementa_like($this -> db, $args[0], $args[1]);
+            $token_dec = (middleware::decode_token($_POST['accestoken'])); //decodificamos el token
+			return $this -> dao -> incrementa_like($this -> db, $token_dec['username'], $_POST['id_vivienda']);
 		}
 	}
 ?>

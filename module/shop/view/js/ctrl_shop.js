@@ -813,7 +813,6 @@ function click_like() {
 
         let accestoken = localStorage.getItem('accestoken');  //obtenemos el token de acceso del localstorage
 
-        // Hacemos una promesa y le paso el id de la vivienda y el token de acceso al servidor
         ajaxPromise('?module=shop&op=incrementa_like', 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken })
             //ajaxPromise(friendlyURL('?module=shop&op=incrementa_like'), 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken })
 
@@ -821,7 +820,7 @@ function click_like() {
                 console.log(data);
                 console.log('Like incrementado con éxito');
             })
-            .catch(function () {
+            .catch(function (data) {
                 console.log(data)
                 console.log('Error al incrementar el like');
             });

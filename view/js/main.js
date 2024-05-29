@@ -84,9 +84,9 @@ function load_menu() {
 //================CLICK-LOGUT================
 function click_logout() {
 
-    $(document).on('click', '#logout', function () {
+    $(document).on('click', '#logout_btn', function () {
 
-        toastr.success("Logout succesfully");
+        toastr.success("Logout Exitoso");
 
         setTimeout('logout(); ', 1000);
     });
@@ -94,13 +94,12 @@ function click_logout() {
 
 //================LOG-OUT================
 function logout() {
-    ajaxPromise(friendlyURL('?module=login&op=logout', 'POST', 'JSON'))
+    ajaxPromise(friendlyURL("?module=login&op=logout", 'POST', 'JSON'))
         .then(function (data) {
             localStorage.removeItem('accestoken');
             localStorage.removeItem('refreshtoken');
             localStorage.removeItem('total_prod');
-            console.log('Logout succesfully');
-            window.location.href = friendlyURL("?module=home&op=list");
+            window.location.href = friendlyURL("?module=home&op=view");
         }).catch(function () {
             console.log('No se ha podido cerrar la sesión');
         });

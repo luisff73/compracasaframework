@@ -13,8 +13,6 @@
             }
             return self::$_instance;
         }
-
-        ///////////////////////////////////////////////////////////////////
         
         public function select_all_viviendas($db, $offset, $items_page) {
 
@@ -266,7 +264,7 @@
             $sql = "UPDATE most_visited SET visitas = visitas + 1 WHERE id_vivienda = '$id';";
 
             $stmt = $db -> ejecutar($sql);
-            return $db -> listar($stmt);
+            //return $db -> listar($stmt);
             
         }      
         public function select_viviendas_related($db,$id_city,$offset,$items) {
@@ -302,20 +300,23 @@
             return $db -> listar($stmt);
             
         }      
-        public function select_incrementa_like($db,$id_vivienda,$id_user) {
+        public function incrementa_like($db,$username,$id_vivienda) {
 
-            $sql = "CALL ACTUALIZA_LIKES('$id_vivienda', '$id_user');";
+            $sql = "CALL ACTUALIZA_LIKES('$id_vivienda', '$username');";
 
             $stmt = $db -> ejecutar($sql);
-            return $db -> listar($stmt);
-            
+
+            $count = "SELECT COUNT(*) as total_likes from likes where id_vivienda = '$id_vivienda'";
+
+            return $db -> listar_objects($count);
+            //return $sql;
+            //echo json_encode ($sql);
         }   
 
         public function select_price($db) { // PENDIENTE
 
             $sql = "SELECT DISTINCT v.vivienda_price FROM viviendas v";
-
-            $stmt = $db -> ejecutar($sql);
+            $stmt = $db -> ejecutar($sql);      
             return $db -> listar($stmt);
             
         }
