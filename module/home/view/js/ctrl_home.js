@@ -10,9 +10,7 @@ function carousel_operation() {
                         "<img class='carousel__img' id='' src='http://localhost/compracasaframework/" + data[row].image_name + "' alt='' >" +
                         "<h5>" + data[row].operation_name + "</h5>"
                     )
-
             }
-
             new Glider(document.querySelector('.carousel_operaciones'), {
                 slidesToShow: 6,
                 slidesToScroll: 1,
@@ -42,7 +40,8 @@ function loadCategories() {
                         "<li class='portfolio-item'>" +
                         "<div class='item-main'>" +
                         "<div class='portfolio-image'>" +
-                        "<img src = " + data[row].image_name + " alt='foto' </img> " +
+                        "<img src='http://localhost/compracasaframework/" + data[row].image_name + "' alt='foto' </img> " +
+
                         "</div>" +
                         "<h5>" + data[row].category_name + "</h5>" +
                         "</div>" +
@@ -65,7 +64,7 @@ function loadcatcity() {
                         "<li class='portfolio-item'>" +
                         "<div class='item-main2'>" +
                         "<div class='portfolio-image'>" +
-                        "<img src = " + data[row].image_name + " alt='foto' </img> " +
+                        "<img src = 'http://localhost/compracasaframework/" + data[row].image_name + "' alt='foto' </img> " +
                         "</div>" +
                         "<h5>" + data[row].city_name + "</h5>" +
                         "</div>" +
@@ -85,7 +84,7 @@ function loadCatTypes() {
                         "<li class='portfolio-item'>" +
                         "<div class='item-main3'>" +
                         "<div class='portfolio-image'>" +
-                        "<img src = " + data[row].image_name + " alt='foto' </img> " +
+                        "<img src = 'http://localhost/compracasaframework/" + data[row].image_name + "' alt='foto' </img> " +
                         "</div>" +
                         //"<h5>" + data[row].type_name + "</h5>" +
                         "</div>" +
@@ -106,7 +105,7 @@ function loadoperation() {
                         "<li class='portfolio-item'>" +
                         "<div class='item-main'>" +
                         "<div class='portfolio-image'>" +
-                        "<img src = " + data[row].image_name + " alt='foto' </img> " +
+                        "<img src = 'http://localhost/compracasaframework/" + data[row].image_name + "'alt='foto' </img> " +
                         "</div>" +
                         "<h5>" + data[row].operation_name + "</h5>" +
                         "</div>" +
@@ -126,7 +125,7 @@ function mas_visitadas() {
                         "<li class='portfolio-item'>" +
                         "<div class='item-main'>" +
                         "<div class='portfolio-image'>" +
-                        "<img src = " + data[row].image_name + " alt='foto' </img> " +
+                        "<img src = 'http://localhost/compracasaframework/" + data[row].image_name + "' alt='foto' </img> " +
                         "</div>" +
                         "<h5>" + data[row].city_name + "</h5>" +
                         "<p>Precio: " + data[row].vivienda_price + " Visitas: " + data[row].visitas + "</p>" +
@@ -151,7 +150,7 @@ function ultimas_busquedas() {
                         "<li class='portfolio-item'>" +
                         "<div class='item-main'>" +
                         "<div class='portfolio-image'>" +
-                        "<img src = " + data[row].image_name + " alt='foto' </img> " +
+                        "<img src = 'http://localhost/compracasaframework/" + data[row].image_name + "' alt='foto' </img> " +
                         "</div>" +
                         "<h5>" + data[row].state + "</h5>" +
                         "<p>Precio: " + data[row].vivienda_price + "</p>" +

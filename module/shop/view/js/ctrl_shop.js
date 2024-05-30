@@ -4,7 +4,6 @@ function ajaxForSearch(url, type, dataType, sData = undefined, offset = 0, items
     ajaxPromise(url, type, dataType, sData, { 'offset': offset, 'items_page': items_page })
 
         .then(function (data) {
-            //console.log(data); //ESTE ES IMPORTANTE PARA DEPURAR
             $('#content_shop_viviendas').empty();  //vacia el contenido de la página de shop.html
             $('.date_viviendas' && '.date_img').empty();//vacia el contenido de la página de shop.html
 
@@ -23,15 +22,15 @@ function ajaxForSearch(url, type, dataType, sData = undefined, offset = 0, items
                     var resultlike = "";
 
                     if (data[row].adapted) {
-                        imageAdapted = "<img src='img/logo_minusvalido_mini.png'>";
+                        imageAdapted = "<img src='http://localhost/compracasaframework/view/img/logo_minusvalido_mini.png'>";
                         resultAdapted = "<i id='col-ico' class='image'></i>&nbsp;&nbsp;&nbsp;" + imageAdapted + "</br> &nbsp;&nbsp;&nbsp; Vivienda " + data[row].adapted;
                     }
                     if (data[row].total_likes) {
-                        imagelike = "<img src='view/img/like.png'>";
+                        imagelike = "<img src='http://localhost/compracasaframework/view/img/like.png'>";
                         resultlike = "<i id='col-ico1' class='image'></i>&nbsp;&nbsp;&nbsp;" + imagelike + "</br> &nbsp;&nbsp;&nbsp;" + data[row].total_likes + " Likes ";
                     }
                     if (data[row].total_likes == 0) {
-                        imageunlike = "<img src='view/img/unlike.png'>";
+                        imageunlike = "<img src='http://localhost/compracasaframework/view/img/unlike.png'>";
                         resultlike = "<i id='col-ico2' class='image'></i>&nbsp;&nbsp;&nbsp;" + imageunlike + "</br> &nbsp;&nbsp;&nbsp;" + data[row].total_likes + " Likes ";
                     }
 
@@ -41,7 +40,7 @@ function ajaxForSearch(url, type, dataType, sData = undefined, offset = 0, items
                             "<div class='list_product'>" +
                             "<div class='img-description-container'>" +
                             "<div class='img-container'>" +
-                            "<img src='" + data[row].image_name + "' style='width: 100%;' />" +
+                            "<img src='http://localhost/compracasaframework/" + data[row].image_name + "' style='width: 100%;' />" +
                             "</div>" +
                             "<div class='description'>" + data[row].description + "</div>" +
                             "</div>" +
@@ -244,7 +243,7 @@ function loadDetails(id_vivienda) {
                 $('<div></div>').attr({ 'id': data[1][0].id_image, class: 'date_img_dentro' }).appendTo('.date_img')
                     .html(
                         "<div class='content-img-details'>" +
-                        "<img src= '" + data[1][0][row].image_name + "'" + "</img>" +
+                        "<img src= 'http://localhost/compracasaframework/" + data[1][0][row].image_name + "'" + "</img>" +
                         "</div>"
                     )
 
@@ -258,21 +257,21 @@ function loadDetails(id_vivienda) {
 
             if (data[0].adapted) {
                 console.log('adapted ', data[0].adapted);
-                imageAdapted = "<img src='img/logo_minusvalido_mini.png'>";
+                imageAdapted = "<img src='http://localhost/compracasaframework/view/img/logo_minusvalido_mini.png'>";
                 resultAdapted = "<i id='col-ico3' class='image'></i>&nbsp;&nbsp;&nbsp;" + imageAdapted + "</br> &nbsp;&nbsp;&nbsp; Vivienda "
             } else {
                 resultAdapted = "";
             }
             if (data[0].total_likes) {
                 console.log('total_likes ', data[0].total_likes);
-                imagelike = "<img src='view/img/like1.png'>";
+                imagelike = "<img src='http://localhost/compracasaframework/view/img/like1.png'>";
                 resultlike = "<i id='col-ico4' class='image'></i>&nbsp;&nbsp;&nbsp;" + imagelike + "</br> &nbsp;&nbsp;&nbsp; "
             } else {
                 resultlike = "";
             }
             if (data[0].total_likes == 0) {
                 console.log('unlike ', data[0].total_likes);
-                imageunlike = "<img src='view/img/unlike1.png'>";
+                imageunlike = "<img src='http://localhost/compracasaframework/view/img/unlike1.png'>";
                 resultlike = "<i id='col-ico4' class='image'></i>&nbsp;&nbsp;&nbsp;" + imageunlike + "</br> &nbsp;&nbsp;&nbsp; "
             } else {
                 resultlike = "";
@@ -405,7 +404,7 @@ function print_filters() {
             '</select>' +
             //'<div class="filter_button">' +
             '<button class="toggle-button" id="toggleButton">' +
-            '<img src="img/logo_minusvalido_mini.png" alt="Toggle Image">' +
+            '<img src="http://localhost/compracasaframework/view/img/logo_minusvalido_mini.png" alt="Toggle Image">' +
             '</button>' +
             //</div>' +
             '<div id="overlay">' +

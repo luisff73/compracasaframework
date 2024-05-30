@@ -42,11 +42,11 @@
             if(isset($_GET['op'])){ // si en la direccion url existe la variable op (si es true)
                 
                 if ($_GET['op'] === 'verify_email' ){ 
-                $this ->uriFunction ='view';
+                $this ->uriFunction ='views';
                 } else if ($_GET['op'] === 'recover_email') {
                     $this -> uriFunction = 'recover_view';
                 } else {
-                    $this -> uriFunction = ($_GET['op'] === "") ? 'view' : $_GET['op'];
+                    $this -> uriFunction = ($_GET['op'] === "") ? 'views' : $_GET['op'];
                 }
 
                 //error_log($this -> uriFunction);

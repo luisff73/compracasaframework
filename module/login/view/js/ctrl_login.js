@@ -38,7 +38,8 @@ function login() {
                     localStorage.setItem("refreshtoken", refreshtoken);
 
                     toastr.success("Loged succesfully");
-                    //setTimeout(' window.location.href = friendlyURL("?module=shop&op=view"); ', 3000);
+                    document.getElementById('btn_carrito').style.display = 'flex';
+                    setTimeout(' window.location.href = friendlyURL("?module=shop&op=view"); ', 3000);
 
                 }
             }).catch(function (error, textStatus, sData, errorThrown, jqXHR, data) {
@@ -423,7 +424,10 @@ function social_login(param) {  // aqui recibe el tipo de red social GOOGLE o GI
                         localStorage.setItem("refreshtoken", data);
                         toastr.options.timeOut = 3000;
                         toastr.success("Inicio de sesión realizado");
-
+                        $('.log-icon').empty();
+                        $('#user_info').empty();
+                        alert(data.avatar);
+                        alert(data.username);
                         $('<img src="' + data.avatar + '"alt="Robot">').appendTo('.log-icon');
                         $('<p></p>').attr('id', data.username).appendTo('#des_inf_user')
 

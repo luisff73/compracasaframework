@@ -1,6 +1,6 @@
 <?php
 
-    class shop_dao {
+    class cart_dao {
         
         static $_instance;
 

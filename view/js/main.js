@@ -38,8 +38,7 @@ function load_menu() {
     var accestoken = localStorage.getItem('accestoken');
     if (accestoken) { //si hay un valor en token
         //console.log('accestoken en load menu: ' + accestoken);
-        //ajaxPromise(friendlyURL('?module=login&op=data_user', 'POST', 'JSON', { 'accestoken': accestoken }))
-        ajaxPromise('?module=login&op=data_user', 'POST', 'JSON', { 'accestoken': accestoken })
+        ajaxPromise(friendlyURL('?module=login&op=data_user'), 'POST', 'JSON', { 'accestoken': accestoken })
 
             .then(function (data) {
                 //console.log('valor de data en main js: ');
@@ -57,7 +56,7 @@ function load_menu() {
 
                 $('.log-icon').empty();
                 $('#user_info').empty();
-                $('login-register').empty();
+                //$('login-register').empty();
                 $('<img src="' + data.avatar + '"alt="Robot">').appendTo('.log-icon');
                 $('<p></p>').attr({ 'id': 'username' }).appendTo('#des_inf_user')
                     .html('<a>' + data.username + '<a/>&nbsp;&nbsp;' +

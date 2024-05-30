@@ -23,8 +23,6 @@
         }
         
         public static function load_model($model, $function = null, $args = null) { //carga el modelo
-            //error_log('valor de $model '.$model); // home_model
-            //error_log('valor de $function '.$function); // get_carrusel
             $dir = explode('_', $model);
             $path = constant('MODEL_' . strtoupper($dir[0])) .  $model . '.class.singleton.php';
 
@@ -50,19 +48,5 @@
             }
             return bin2hex(openssl_random_pseudo_bytes(($longitud - ($longitud % 2)) / 2)); //genera un token seguro
         }
-
-        // function friendlyURL_php($url) {
-        //     $link = "";
-        //     if (URL_FRIENDLY) {
-        //         $url = explode("&", str_replace("?", "", $url));
-        //         foreach ($url as $key => $value) {
-        //             $aux = explode("=", $value);
-        //             $link .=  $aux[1]."/";
-        //         }
-        //     } else {
-        //         $link = "index.php?" . $url;
-        //     }
-        //     return SITE_PATH . $link;
-        // }
     }
 ?>

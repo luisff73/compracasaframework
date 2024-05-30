@@ -11,8 +11,7 @@ function launch_search() {
     });
 }
 function load_operations() {
-    ajaxPromise("?module=search&op=search_operation", 'POST', 'JSON')
-        //ajaxPromise(friendlyURL("?module=search&op=search_operation"), 'POST', 'JSON')
+    ajaxPromise(friendlyURL("?module=search&op=search_operation"), 'POST', 'JSON')
         .then(function (data) {
             $('<option>Tipo de operación</option>').attr('selected', true).attr('disabled', true).appendTo('#search_operation') // opcion por defecto del select
             for (row in data) {
@@ -137,6 +136,14 @@ function button_search() {
         window.location.href = friendlyURL('?module=shop&op=view');
     });
 }
+function button_cart() {
+    $('#btn_carrito').on('click', function () {
+
+        window.location.href = friendlyURL('?module=cart&op=view');
+
+    })
+
+}
 
 function remove_filters_search() {
     localStorage.removeItem('filters_home');
@@ -154,4 +161,5 @@ $(document).ready(function () {
     launch_search();
     autocomplete();
     button_search();
+    button_cart();
 });

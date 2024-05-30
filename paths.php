@@ -34,7 +34,7 @@
     define('JS_PATH', SITE_ROOT . 'view/js/');
     
     //IMG
-    define('IMG_PATH', SITE_ROOT . 'view/images/');
+    define('IMG_PATH', SITE_ROOT . 'view/img/');
     
     //MODEL_HOME
     define('UTILS_HOME', SITE_ROOT . 'module/home/utils/');
@@ -81,8 +81,8 @@
     define('BLL_CART', SITE_ROOT . 'module/cart/model/BLL/');
     define('MODEL_CART', SITE_ROOT . 'module/cart/model/model/');
     define('JS_VIEW_CART', SITE_PATH . 'module/cart/view/js/');
-    //define ('VIEW_PATH_CART', SITE_ROOT . 'module/cart/view/');
-    define ('VIEW_PATH_CART', SITE_ROOT . 'module/cart/');
+    define ('VIEW_PATH_CART', SITE_ROOT . 'module/cart/view/');
+    //define ('VIEW_PATH_CART', SITE_ROOT . 'module/cart/');
     
     //MODEL_LOGIN
     define('UTILS_LOGIN', SITE_ROOT . 'module/login/utils/');

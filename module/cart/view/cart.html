@@ -1,0 +1,44 @@
+<html>
+
+<body>
+
+  <table style="width:100%">
+    <tr>
+      <th>id_vivienda</th>
+      <th>username</th>
+      <th>cantidad</th>
+      <th>acciones</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Usuario1</td>
+      <td><span id="cantidad1">0</span></td>
+      <td>
+        <button onclick="incrementar('cantidad1')">+</button>
+        <button onclick="decrementar('cantidad1')">-</button>
+      </td>
+    </tr>
+    <!-- Repite el bloque <tr> para cada registro -->
+  </table>
+
+  <div style="text-align: right; margin-top: 20px;">
+    <button>Finalizar compra</button>
+  </div>
+
+  <script>
+    function incrementar(id) {
+      var cantidad = document.getElementById(id);
+      cantidad.innerText = parseInt(cantidad.innerText) + 1;
+    }
+
+    function decrementar(id) {
+      var cantidad = document.getElementById(id);
+      if (parseInt(cantidad.innerText) > 0) {
+        cantidad.innerText = parseInt(cantidad.innerText) - 1;
+      }
+    }
+  </script>
+
+</body>
+
+</html>
