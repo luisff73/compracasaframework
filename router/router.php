@@ -119,5 +119,5 @@
     // patron singleton para obtener una instancia de la clase router
     // luego llama al metodo routingStart que inicia el enrutamiento 
     // y determina que modulo y que funcion cargar
-    
+
     router::getInstance() -> routingStart();

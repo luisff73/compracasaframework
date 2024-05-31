@@ -2,7 +2,7 @@
 
 <body>
 
-  <table style="width:100%">
+  <table id="carrito" style="width:90%; margin:auto;">
     <tr>
       <th>id_vivienda</th>
       <th>username</th>
@@ -28,7 +28,9 @@
   <script>
     function incrementar(id) {
       var cantidad = document.getElementById(id);
-      cantidad.innerText = parseInt(cantidad.innerText) + 1;
+      if (parseInt(cantidad.innerText) < 3) {
+        cantidad.innerText = parseInt(cantidad.innerText) + 1;
+      }
     }
 
     function decrementar(id) {

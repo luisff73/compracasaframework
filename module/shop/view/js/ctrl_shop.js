@@ -804,7 +804,7 @@ function click_like() {
             }
 
             setTimeout(function () {
-                window.location.href = friendlyURL("index.php?page=ctrl_login&op=login-register_view");
+                window.location.href = friendlyURL("?module=login&op=view");
             }, 3000);
 
             return;

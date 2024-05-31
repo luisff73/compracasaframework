@@ -231,7 +231,7 @@ public function get_social_login_BLL($args) {
 		return json_encode($response);
 
 			} else {
-				// return 'holaSS';
+			
 				//return json_encode ( $args[0], $args[1], $args[2], $args[3]);
 				//return $args[0]; // id user ok jsdflksjdflsjdfl
 				//return $args[1]; // username jvrluis
@@ -253,7 +253,7 @@ public function get_social_login_BLL($args) {
 				
 				return json_encode($response);
 				//return $user;
-				//return 'adios';
+		
 	 		}
 }
 public function get_recover_email_BBL($email) {
@@ -278,17 +278,7 @@ public function get_recover_email_BBL($email) {
 		return 'error';
 	}
 }
-public function get_verify_token_BLL($args) {
-	// if($this -> dao -> select_verify_email($this->db, $args)){
-	// 	//if($this -> dao -> select_verify_email($this->db, $args)){
-	// 	//echo json_encode("verify");
-	// 	//exit;	
-	// 	return 'verify';
-	// }
-		echo json_decode("fail");
-		exit;
-		//return $this -> dao -> select_verify_email($this->db, $args);
-}
+
 public function get_new_password_BLL($args) {
 	$hashed_pass = password_hash($args[1], PASSWORD_DEFAULT, ['cost' => 12]);
 	if($this -> dao -> update_new_password($this->db, $args[0], $hashed_pass)){
@@ -296,24 +286,5 @@ public function get_new_password_BLL($args) {
 	}
 	return 'fail';
 }
-public function get_refresh_token_BLL($args) {
-	$token = explode('"', $args);
-	$void_email = "";
-	$decode = middleware::decode_token($token[1]);
-	$user = $this -> dao -> select_user($this->db, $decode, $void_email);
 
-	$new_token = middleware::create_accestoken($user[0]['username']);
-
-	return $new_token;
-}
-public function get_token_expires_BLL($args) {
-	$token = explode('"', $args);
-	$decode = middleware::decode_token($token[1]);
-	
-	if(time() >= $decode) {  
-		return "inactivo"; 
-	} else{
-		return "activo";
-	}
-}
 }
