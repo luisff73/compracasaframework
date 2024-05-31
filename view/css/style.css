@@ -785,10 +785,12 @@ footer {
   display: flex;
   align-items: center;
   height: 50px;
+  margin-right: 20px;
 }
 
 #btn_carrito img {
-  margin-right: 20px;
+  /* margin-right: 20px; */
+  height: 100%;
 }
 
 #item-count {
