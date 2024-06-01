@@ -278,7 +278,6 @@ public function get_recover_email_BBL($email) {
 		return 'error';
 	}
 }
-
 public function get_new_password_BLL($args) {
 	$hashed_pass = password_hash($args[1], PASSWORD_DEFAULT, ['cost' => 12]);
 	if($this -> dao -> update_new_password($this->db, $args[0], $hashed_pass)){

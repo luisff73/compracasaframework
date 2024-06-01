@@ -142,7 +142,6 @@ function button_cart() {
         window.location.href = friendlyURL('?module=cart&op=view');
 
     })
-
 }
 
 function remove_filters_search() {

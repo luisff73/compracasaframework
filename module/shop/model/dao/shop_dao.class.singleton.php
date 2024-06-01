@@ -306,11 +306,24 @@
 
             $stmt = $db -> ejecutar($sql);
 
-            $sql = "SELECT COUNT(*) as total_likes from likes where id_vivienda = '$id_vivienda'";
+            $sql1 = "SELECT COUNT(*) as total_likes from likes where id_vivienda = '$id_vivienda'";
 
-            $count_likes = $db -> listar_objects($sql);
-            return $count_likes;
-            //echo json_encode ($sql);
+            $stmt = $db -> ejecutar($sql1);
+            return $db -> listar($stmt);
+
+        }   
+
+        public function incrementa_carrito($db,$username,$id_vivienda) {
+
+            $sql = "CALL ACTUALIZA_LIKES('$id_vivienda', '$username');";
+
+            $stmt = $db -> ejecutar($sql);
+
+            $sql1 = "SELECT COUNT(*) as total_likes from likes where id_vivienda = '$id_vivienda'";
+
+            $stmt = $db -> ejecutar($sql1);
+            return $db -> listar($stmt);
+
         }   
 
         public function select_price($db) { // PENDIENTE
@@ -320,6 +333,5 @@
             return $db -> listar($stmt);
             
         }
-
      }
 ?>

@@ -431,11 +431,8 @@ function social_login(param) {  // aqui recibe el tipo de red social GOOGLE o GI
                         $('<img src="' + data.avatar + '"alt="Robot">').appendTo('.log-icon');
                         $('<p></p>').attr('id', data.username).appendTo('#des_inf_user')
 
-                        if (localStorage.getItem('likes') == null) {
-                            setTimeout('window.location.href = friendlyURL("?module=home&op=view")', 4000);
-                        } else {
-                            setTimeout('window.location.href = friendlyURL("?module=shop&op=view")', 6000);
-                        }
+                        setTimeout('window.location.href = friendlyURL("?module=shop&op=view")', 6000);
+
                     })
                     .catch(function (data) {
                         // console.log(data);

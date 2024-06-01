@@ -67,7 +67,8 @@ function ajaxForSearch(url, type, dataType, sData = undefined, offset = 0, items
                             "</table>" +
                             "<div class='buttons'>" +
                             "<button id='" + data[row].id_vivienda + "' class='detalles_inmueble button add' >Detalles</button>" +
-                            "<button class='button buy' >Comprar</button>" + "&nbsp;&nbsp;&nbsp;" +
+                            "<button id='" + data[row].id_vivienda + "' class='button_buy' >Añadir a la cesta</button>" +
+                            // "<button class='button buy' >Comprar</button>" + "&nbsp;&nbsp;&nbsp;" +
                             "<li id='boton_like' data-id-vivienda='" + data[row].id_vivienda + "'><i id='col-ico' class='image'></i>&nbsp;&nbsp;&nbsp;" + resultlike + "</li>" +
                             "<h1><b><span class='button' id='price'>" + data[row].vivienda_price + ' €' + "</span></b></h1>" +
 
@@ -317,7 +318,7 @@ function loadDetails(id_vivienda) {
                     "</br></br></br>" +
                     "<div class='buttons_details'>" +
                     "<span class='button add' href='#'>Añadir a la cesta</span>" +
-                    "<span class='button buy' href='#'>Compra directa</span>" +
+                    "<span class='button_buy' href='#'>Compra directa</span>" +
                     "<span class='button' id='price_details'>" + data[0].vivienda_price + "<i class='fa-solid fa-euro-sign'></i> </span>" +
                     "</td>" +
                     "</div>" +
@@ -812,12 +813,13 @@ function click_like() {
 
         let accestoken = localStorage.getItem('accestoken');  //obtenemos el token de acceso del localstorage
 
-        ajaxPromise('?module=shop&op=incrementa_like', 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken })
-            //ajaxPromise(friendlyURL('?module=shop&op=incrementa_like'), 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken })
+        //ajaxPromise('?module=shop&op=incrementa_like', 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken })
+        ajaxPromise(friendlyURL('?module=shop&op=incrementa_like'), 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken })
 
             .then(function (data) {
                 console.log(data);
                 console.log('Like incrementado con éxito');
+                // $("#boton_like").load(location.href + " #boton_like>*", "");
             })
             .catch(function (data) {
                 console.log(data)
@@ -825,6 +827,58 @@ function click_like() {
             });
     });
 }
+
+function click_compra() {
+    $(document).on("click", ".button_buy", function () {
+        var id_vivienda = $(this).data('id-vivienda');
+        localStorage.setItem('id_vivienda_cart', id_vivienda);
+        alert('hola')
+
+        if (localStorage.getItem('accestoken') == null) {
+            toastr["info"]("Debes estar logeado para comprar una vivienda", "Control de acceso")
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "100",
+                "hideDuration": "500",
+                "timeOut": "3000",
+                "extendedTimeOut": "2000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            setTimeout(function () {
+                window.location.href = friendlyURL("?module=login&op=view");
+            }, 3000);
+
+            return;
+        }
+
+        let accestoken = localStorage.getItem('accestoken');  //obtenemos el token de acceso del localstorage
+
+        ajaxPromise('?module=shop&op=agrega_carrito', 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken })
+            //ajaxPromise(friendlyURL('?module=shop&op=incrementa_like'), 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken })
+
+            .then(function (data) {
+                console.log(data);
+                console.log('Vivienda agregada correctamente al carrito');
+                // $("#boton_like").load(location.href + " #boton_like>*", "");
+            })
+            .catch(function (data) {
+                console.log(data)
+                console.log('Error al agregar la vivienda');
+            });
+    });
+}
+
 
 $(document).ready(function () {
     print_filters();
@@ -839,6 +893,7 @@ $(document).ready(function () {
     filter_button();
     pagination();
     click_like();
+    click_compra();
 
 });
 

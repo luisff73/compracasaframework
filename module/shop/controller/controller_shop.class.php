@@ -96,5 +96,8 @@
         function incrementa_like() {                                                                
             echo json_encode(common::load_model('shop_model', 'get_incrementa_like',[$_POST['id_vivienda'],$_POST['accestoken']]));
         }
+        function agrega_carrito() {                                                                
+            echo json_encode(common::load_model('shop_model', 'get_incrementa_carrito',[$_POST['id_vivienda'],$_POST['accestoken']]));
+        }
     }
 ?>
