@@ -1,19 +1,18 @@
 <?php
 require_once ('utils/vendor/autoload.php'); // if you use Composer
+require_once __DIR__ . '/vendor/autoload.php';
 
-function Envia_whatssapp() {
-    $ultramsg_token="9eb1ihhtg32yp38k"; // Ultramsg.com token
-    $instance_id="instance86860"; // Ultramsg.com instance id
+class ultramsg {
+
+public static function Envia_whatssapp($whats_token) {
+    $ultramsg = parse_ini_file(UTILS."jwt.ini");
+    $ultramsg_token=$ultramsg['ultramsg_token']; 
+    $instance_id=$ultramsg['instance_id'];
     $client = new UltraMsg\WhatsAppApi($ultramsg_token,$instance_id);
-    $to="678945132"; 
-    $body="Mensaje de recuperacion"; 
+    $to=$ultramsg['destinatario'];; 
+    $body="Su cuenta ha sido bloqueada temporalmente, para activarla introduzca el siguiente codigo en la aplicacion".$whats_token; 
     $api=$client->sendChatMessage($to,$body);
-    //print_r($api);
-    return($api);
+    return true;
 }
-
-    $response = Envia_whatssapp();
-    echo json_encode($response);
-
-
+}
 // funcion que ejecutamos cuando agotamos intentos de acceso.
