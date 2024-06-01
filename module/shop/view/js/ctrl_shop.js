@@ -133,7 +133,7 @@ function mapBox_all(data) {
         mapboxgl.window = window;
         minPopup.setHTML('<h5 style="text-align:center;">' + data[row].vivienda_name + '</h5><p style="text-align:center;">Inmueble: <b>' + data[row].category_name + '</b><br>' +
             '<style="text-align:center;">Precio: <b>' + data[row].vivienda_price + '€</b></p>' +
-            '<img id="imagen_vivienda_mapa"; src=" ' + data[row].image_name + '"/>' +
+            '<img id="imagen_vivienda_mapa" src="http://localhost/compracasaframework/' + data[row].image_name + '"/>' +
             '<a class="button button-primary-outline button-ujarak button-size-1 wow fadeInLeftSmall detalles_inmueble" data-wow-delay=".4s" id="' + data[row].id_vivienda + '">Detalles</a>')
 
         marker.setPopup(minPopup)

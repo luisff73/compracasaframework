@@ -1,6 +1,6 @@
 <?php
 
-//$path = $_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/';
+$path = $_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/';
 require($path . "model/JWT.php"); // INCLUIMOS LA LIBRERIA JWT  
 
 class middleware{

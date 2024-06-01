@@ -1,6 +1,8 @@
 <?php
-//include($path . "/module/login/model/DAO/login_dao.class.singleton.php");
-//include($path . "/model/middleware_auth.inc.php");
+
+require_once('utils/common.inc.php');
+require_once('paths.php');
+
     class controller_shop {
         static $_instance;
 

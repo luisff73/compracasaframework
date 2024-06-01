@@ -41,6 +41,7 @@
         }
 
         public function ejecutar($sql) { // Ejecuta una consulta sql
+             // return $sql;
             $this -> stmt = $this -> link -> query($sql); 
             return $this->stmt;
         }

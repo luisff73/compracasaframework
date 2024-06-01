@@ -2,12 +2,12 @@
 
     require 'autoload.php';
     //require __DIR__ . '/../vendor/autoload.php';
-
+      
     
     $path = $_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/';
     include($path . "utils/common.inc.php");
     //include($path . "utils/mail.inc.php");
-    require($path . "module/search/controller/controller_search.class.php");
+    require($path . "module/search/controller/controller_search.class.singleton.php");
     
 
 
@@ -34,7 +34,6 @@
         function __construct() {   // esta funcion se llama automaticamente.
             if(isset($_GET['module'])){ //comprueba si existe el modulo
                 $this -> uriModule = $_GET['module'];  //module es el nombre del modulo que viene del loadmenu en el main.js
-                //error_log($this -> uriModule);
             }else{
                 $this -> uriModule = 'home';
             }
@@ -77,15 +76,15 @@
                  $modules = simplexml_load_file('resources/modules.xml'); //carga el archivo modules.xml
                  foreach ($modules as $row) {   //recorre el archivo modules.xml
                      if (in_array($this -> uriModule, (Array) $row -> uri)) { //comprueba si el modulo existe
-                       echo $modules;
-                        //construye la ruta al archivo del controlador con la constante MODULES_PATH
-                         $path = MODULES_PATH . $row -> name . '/controller/controller_' . (String) $row -> name . '.class.php'; 
+                         //construye la ruta al archivo del controlador con la constante MODULES_PATH
+                         //$path = MODULES_PATH . $row -> name . '/controller/controller_' . (String) $row -> name . '.class.php'; 
+                         $path = MODULES_PATH . $row -> name . '/controller/controller_' . (String) $row -> name . '.class.singleton.php';
                          if (file_exists($path)) {  //comprueba si existe el archivo del controlador 
                              require_once($path);
                              $controllerName = 'controller_' . (String) $row -> name;
                              $this -> nameModule = (String) $row -> name;
-                             return new $controllerName;
-                             //return $controllerName::getInstance();;
+                             //return new $controllerName;
+                             return $controllerName::getInstance();;
                          }
                      }
                  } 
@@ -93,11 +92,11 @@
              throw new Exception('Not Module found.');
 
             // cargamos el controlador de la pagina de contacto
-            $path = 'module/contact/controller/controller_contact.class.php';
-            require_once($path);
+           // $path = 'module/contact/controller/controller_contact.class.php';
+           // require_once($path);
 
-            $controllerName = 'controller_contact';
-            return new $controllerName;
+            //$controllerName = 'controller_contact';
+           // return new $controllerName;
 
         }
         
