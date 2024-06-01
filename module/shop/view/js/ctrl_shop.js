@@ -67,7 +67,7 @@ function ajaxForSearch(url, type, dataType, sData = undefined, offset = 0, items
                             "</table>" +
                             "<div class='buttons'>" +
                             "<button id='" + data[row].id_vivienda + "' class='detalles_inmueble button add' >Detalles</button>" +
-                            "<button id='" + data[row].id_vivienda + "' class='button_buy' >Añadir a la cesta</button>" +
+                            "<button id='" + data[row].id_vivienda + "' data-id='" + data[row].id_vivienda + "' class='button_cesta' >Añadir a la cesta</button>" +
                             // "<button class='button buy' >Comprar</button>" + "&nbsp;&nbsp;&nbsp;" +
                             "<li id='boton_like' data-id-vivienda='" + data[row].id_vivienda + "'><i id='col-ico' class='image'></i>&nbsp;&nbsp;&nbsp;" + resultlike + "</li>" +
                             "<h1><b><span class='button' id='price'>" + data[row].vivienda_price + ' €' + "</span></b></h1>" +
@@ -76,13 +76,18 @@ function ajaxForSearch(url, type, dataType, sData = undefined, offset = 0, items
                             "</div>" +
                             "</div>" +
                             "</div>"
+
                         )
+                    //console.log(data[row].id_vivienda);  //RECUPERA EL ID DE LA VIVIENDA
                 }
             }
             mapBox_all(data);
         }).catch(function () {
             console.log('error catch');
         });
+
+
+
 }
 function loadviviendas() {  /// ACABADA
 
@@ -205,10 +210,6 @@ function pagination() {
 
         })
 }
-
-
-
-
 function clicks_details() {
     $(document).on("click", ".detalles_inmueble", function () {
         var id_vivienda = this.getAttribute('id');
@@ -343,6 +344,7 @@ function loadDetails(id_vivienda) {
             //window.location.href =friendlyURL("index.php?module=ctrl_exceptions&op=503&type=503&lugar=Load_Details SHOP");
         });
 }
+
 function print_filters() {
     // Creamos un nuevo elemento <div> con la clase "div-filters" y luego lo agregamos como un hijo al elemento con la clase "filters".
     $('<div class="div-filters"></div>').appendTo('.filters_shop_html') //añadimos un div con la clase div-filters a la clase filters
@@ -420,7 +422,6 @@ function print_filters() {
             '<button class="filter_button button_spinner" id="Button_filter">Filter</button>' +
             '<button class="filter_remove" id="Remove_filter">Remove</button>');
 }
-
 document.addEventListener('DOMContentLoaded', (event) => {
     var modal = document.getElementById("modal_estado");//obtenemos el modal
     var btn = document.getElementById("openModalEstado");//obtenemos el boton que abre el modal
@@ -672,7 +673,6 @@ function loadPricefilter() {
             console.error("Error al cargar los precios:", error);
         });
 }
-
 function viviendas_related(offset = 0, id_city, total_items) {
     let items_page = 3;
 
@@ -828,58 +828,6 @@ function click_like() {
     });
 }
 
-function click_compra() {
-    $(document).on("click", ".button_buy", function () {
-        var id_vivienda = $(this).data('id-vivienda');
-        localStorage.setItem('id_vivienda_cart', id_vivienda);
-        alert('hola')
-
-        if (localStorage.getItem('accestoken') == null) {
-            toastr["info"]("Debes estar logeado para comprar una vivienda", "Control de acceso")
-
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": true,
-                "positionClass": "toast-top-center",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "100",
-                "hideDuration": "500",
-                "timeOut": "3000",
-                "extendedTimeOut": "2000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-
-            setTimeout(function () {
-                window.location.href = friendlyURL("?module=login&op=view");
-            }, 3000);
-
-            return;
-        }
-
-        let accestoken = localStorage.getItem('accestoken');  //obtenemos el token de acceso del localstorage
-
-        ajaxPromise('?module=shop&op=agrega_carrito', 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken })
-            //ajaxPromise(friendlyURL('?module=shop&op=incrementa_like'), 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken })
-
-            .then(function (data) {
-                console.log(data);
-                console.log('Vivienda agregada correctamente al carrito');
-                // $("#boton_like").load(location.href + " #boton_like>*", "");
-            })
-            .catch(function (data) {
-                console.log(data)
-                console.log('Error al agregar la vivienda');
-            });
-    });
-}
-
-
 $(document).ready(function () {
     print_filters();
     loadCategoriesfilter();
@@ -893,7 +841,6 @@ $(document).ready(function () {
     filter_button();
     pagination();
     click_like();
-    click_compra();
 
 });
 

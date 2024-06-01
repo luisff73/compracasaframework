@@ -21,8 +21,10 @@
             common::load_view('top_page_cart.html', VIEW_PATH_CART . 'cart.html'); //cargamos la vista del carrito
         }
         
-        function incrementa_carrito() {                                                                
-            echo json_encode(common::load_model('cart_model', 'get_incrementa_vivienda',[$_POST['id_vivienda'],$_POST['accestoken']]));
+        function agrega_carrito() {   
+            //echo json_encode ('hola')   ;                                                          
+            //echo json_encode(common::load_model('shop_model', 'get_incrementa_carrito',[$_POST['id_vivienda'],$_POST['accestoken']]));
+            echo json_encode(common::load_model('shop_model', 'get_incrementa_carrito',[$_POST['id_vivienda'],$_POST['username']])); //temporal
         }
     }
 ?>

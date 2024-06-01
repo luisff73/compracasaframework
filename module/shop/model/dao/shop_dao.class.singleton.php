@@ -313,19 +313,6 @@
 
         }   
 
-        public function incrementa_carrito($db,$username,$id_vivienda) {
-
-            $sql = "CALL ACTUALIZA_LIKES('$id_vivienda', '$username');";
-
-            $stmt = $db -> ejecutar($sql);
-
-            $sql1 = "SELECT COUNT(*) as total_likes from likes where id_vivienda = '$id_vivienda'";
-
-            $stmt = $db -> ejecutar($sql1);
-            return $db -> listar($stmt);
-
-        }   
-
         public function select_price($db) { // PENDIENTE
 
             $sql = "SELECT DISTINCT v.vivienda_price FROM viviendas v";

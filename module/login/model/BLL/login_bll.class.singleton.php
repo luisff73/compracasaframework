@@ -93,7 +93,6 @@ public function get_login_BLL($args) {
 				
                 $accestoken = middleware::create_accestoken($value['username']);
                 $refreshtoken = middleware::create_refreshtoken($value['username']);
-
                 $_SESSION['username'] = $value['username'];
                 $_SESSION['tiempo'] = time();
 

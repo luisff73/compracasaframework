@@ -107,5 +107,6 @@
             $token_dec = (middleware::decode_token($_POST['accestoken'])); //decodificamos el token
 			return $this -> dao -> incrementa_like($this -> db, $token_dec['username'], $_POST['id_vivienda']);
 		}
+
 	}
 ?>

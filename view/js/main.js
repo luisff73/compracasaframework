@@ -81,30 +81,6 @@ function load_menu() {
 }
 
 
-//================CLICK-LOGUT================
-function click_logout() {
-
-    $(document).on('click', '#logout_btn', function () {
-
-        toastr.success("Logout Exitoso");
-
-        setTimeout('logout(); ', 1000);
-    });
-}
-
-//================LOG-OUT================
-function logout() {
-    ajaxPromise(friendlyURL("?module=login&op=logout", 'POST', 'JSON'))
-        .then(function (data) {
-            localStorage.removeItem('accestoken');
-            localStorage.removeItem('refreshtoken');
-            localStorage.removeItem('total_prod');
-            window.location.href = friendlyURL("?module=home&op=view");
-        }).catch(function () {
-            console.log('No se ha podido cerrar la sesión');
-        });
-}
-
 // Remove localstorage('page') with click in shop
 function click_shop() {
     $(document).on('click', '#opc_shop', function () {
@@ -137,7 +113,6 @@ function friendlyURL(url) {
 
 $(document).ready(function () {
     load_menu();
-    click_logout();
     click_shop();
 
 });

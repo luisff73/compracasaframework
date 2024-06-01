@@ -3,6 +3,7 @@ function login() {
 
         var username_log = document.getElementById('username_log').value;
         var passwd_log = document.getElementById('passwd_log').value;
+        localStorage.setItem('username', document.getElementById('username_log').value)
 
         ajaxPromise("?module=login&op=login", 'POST', 'JSON', { 'username_log': username_log, 'passwd_log': passwd_log }) //data lleva el usuario y la contraseña
 
@@ -18,12 +19,18 @@ function login() {
                     document.getElementById('error_passwd_log').innerHTML = "La contraseña es incorrecta, dispone de " + data.attempts + " intentos para hacer login";
 
                     if (data.attempts == 1) {
+
+                        var OTP = [];
+                        OTP.push({ name: 'otp', value: '5682' });
+
+
                         alert('demasiados intentos')
                         $.ajax({
                             url: 'utils/ultrmsg.inc.php',
                             type: 'POST',
                             dataType: "JSON",
-                            //url: "?module=login&op=envia_whatsapp",
+                            data: OTP, // codigo otp
+
                         })
                             .done(function (response) {
                                 console.log(response);
@@ -44,7 +51,8 @@ function login() {
                 }
             }).catch(function (error, textStatus, sData, errorThrown, jqXHR, data) {
                 if (console && console.log) {
-                    console.log(error);
+                    // console.log(error);
+
                 }
             });
     }
@@ -441,15 +449,15 @@ function social_login(param) {  // aqui recibe el tipo de red social GOOGLE o GI
             }
         })
         .catch(function (error) {
-            console.log(error);
-            var errorCode = error.code;
-            console.log(errorCode);
-            var errorMessage = error.message;
-            console.log(errorMessage);
-            var email = error.email;
-            console.log(email);
-            var credential = error.credential;
-            console.log(credential);
+            // console.log(error);
+            // var errorCode = error.code;
+            // console.log(errorCode);
+            // var errorMessage = error.message;
+            // console.log(errorMessage);
+            // var email = error.email;
+            // console.log(email);
+            // var credential = error.credential;
+            // console.log(credential);
         });
 }
 function firebase_config() {
@@ -537,7 +545,17 @@ function load_content() {
         load_form_new_password();
     }
 }
-
+function logout() {
+    ajaxPromise(friendlyURL("?module=login&op=logout", 'POST', 'JSON'))
+        .then(function (data) {
+            localStorage.removeItem('accestoken');
+            localStorage.removeItem('refreshtoken');
+            // localStorage.removeItem('total_prod');
+            window.location.href = friendlyURL("?module=home&op=view");
+        }).catch(function () {
+            console.log('No se ha podido cerrar la sesión');
+        });
+}
 
 $(document).ready(function () {
     load_content();

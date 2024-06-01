@@ -73,8 +73,6 @@
         public function get_incrementa_like($args) {
             return $this -> bll -> get_incrementa_like_BLL($args);
         }
-        public function get_incrementa_carrito($args) {
-            return $this -> bll -> get_incrementa_carrito($args);
-        }
+
     }
 ?>

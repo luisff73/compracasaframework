@@ -4,6 +4,10 @@
         <name>view</name>
         <uri>view</uri>
     </function>
+    <function>
+        <name>agrega_carrito</name>
+        <uri>agrega_carrito</uri>
+    </function>
 
 
 </functions>

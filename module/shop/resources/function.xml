@@ -80,9 +80,6 @@
         <name>envia_whatsapp</name>
         <uri>envia_whatsapp</uri>
     </function>
-    <function>
-        <name>agrega_carrito</name>
-        <uri>agrega_carrito</uri>
-    </function>
+
 
 </functions>

@@ -18,7 +18,7 @@ function ajaxPromise(sUrl, sType, sTData, sData = undefined) {
             //alert('Has salido del done en el resolve');
             //console.log("Respuesta del servidor en el promise: ", data)
             resolve(data);
-        }).fail((jqXHR, textStatus, errorThrow) => {
+        }).fail((sUrl, sType, sTData, jqXHR, textStatus, errorThrow) => {
             // console.log("Error en el promise, Valor de sUrl: ", sUrl);
             // console.log("VALOR DE sType: ", sType);
             // console.log("VALOR DE sTdata: ", sTData);

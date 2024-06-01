@@ -19,6 +19,12 @@
          public function get_all_viviendas($args) {
              return $this -> bll -> get_all_viviendas_BLL($args);
          }
+         public function get_incrementa_carrito($args) {
+            //return ('hola');
+            return $this -> bll -> get_incrementa_carrito_BLL($args);
+        }
+
+
 
     }
 ?>

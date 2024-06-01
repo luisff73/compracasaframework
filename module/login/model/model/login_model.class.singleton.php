@@ -21,6 +21,10 @@ class login_model {
     public function login($args) {
         return $this -> bll -> get_login_BLL($args);
     }
+    public function social_login($args) {
+        return $this -> bll -> get_social_login_BLL($args);
+    }
+
     //////////////////////////////////////////////////////////////////////
 
     public function verify_email($args) {
@@ -39,9 +43,7 @@ class login_model {
         return $this -> bll -> get_controluser_BLL($args);
     }
 
-    public function social_login($args) {
-        return $this -> bll -> get_social_login_BLL($args);
-    }
+
 
     public function recover_email($args) {
         return $this -> bll -> get_recover_email_BBL($args);

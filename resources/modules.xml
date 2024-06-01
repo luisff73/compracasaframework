@@ -27,6 +27,9 @@
     <module>
         <name>login</name>
         <uri>login</uri>
+    </module>
+    <module>
+        <name>register</name>
         <uri>register</uri>
     </module>
 </modules>
