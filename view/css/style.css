@@ -1117,11 +1117,12 @@ footer {
 }
 
 .increment-button,
-.decrement-button {
+.decrement-button,
+.delete-button {
   background-color: #5d5d5d;
   color: white;
   border: none;
-  padding: 15px 30px;
+  padding: 10px 10px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -1130,17 +1131,28 @@ footer {
   cursor: pointer;
   border-radius: 12px;
   box-shadow: 0 9px #999;
-  width: 50%;
+  width: 33%;
 }
 
 .increment-button:hover,
-.decrement-button:hover {
+.decrement-button:hover,
+.delete-button:hover {
   background-color: #454545;
 }
 
 .increment-button:active,
-.decrement-button:active {
+.decrement-button:active,
+.delete-button:active {
   background-color: #474747;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
+}
+
+.increment-button,
+.decrement-button {
+  font-size: 20px;
+}
+
+.delete-button {
+  color: rgb(232, 145, 145)
 }

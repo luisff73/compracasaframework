@@ -45,7 +45,7 @@
        }   
        public function lista_carrito($db,$username) {
 
-       $sql = "SELECT p.id_vivienda, p.vivienda_name, p.username, p.quantity, p.vivienda_price, v.image_name FROM purchase p, viviendas v where v.id_vivienda=p.id_vivienda and username = '$username'";
+       $sql = "SELECT p.id_vivienda, p.vivienda_name, p.username, p.quantity, p.vivienda_price, v.image_name, v.stock, v.status FROM purchase p, viviendas v where v.id_vivienda=p.id_vivienda and username = '$username'";
 
 
        //$sql = "SELECT * from purchase";
@@ -56,6 +56,12 @@
      
 
    }   
+   public function borra_vivienda($db,$id_vivienda,$username) {
+
+    $sql = "delete from purchase where id_vivienda='$id_vivienda' and username='$username';";
+    //return $sql;
+    $stmt = $db -> ejecutar($sql);
+    }   
 
      }
 ?>

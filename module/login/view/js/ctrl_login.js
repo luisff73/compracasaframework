@@ -44,8 +44,8 @@ function login() {
                     localStorage.setItem("accestoken", accestoken);
                     localStorage.setItem("refreshtoken", refreshtoken);
 
-                    toastr.success("Loged succesfully");
-                    document.getElementById('btn_carrito').style.display = 'flex';
+                    toastr.success("Login completado con exito");
+                    //document.getElementById('btn_carrito').style.display = 'flex';
 
                     $('.log-icon').empty();
                     $('#des_inf_user').empty();

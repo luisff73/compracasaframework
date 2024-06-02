@@ -27,6 +27,9 @@
             //return ('holagetlistacarrito');
             return $this -> bll -> get_lista_carrito_BLL($args);
         }
+        public function get_borra_vivienda($args) {
+            return $this -> bll -> get_borra_vivienda_BLL($args);
+        }
 
 
     }

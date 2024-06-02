@@ -13,31 +13,19 @@
         <th>Precio Vivienda</th>
         <th>Acciones</th> -->
       </tr>
+
     </thead>
     <tbody>
+
       <!-- Aquí se agregan las filas con JavaScript -->
+
     </tbody>
+    <br>
   </table>
 
   <div style="text-align: right; margin-top: 20px;">
-    <button>Finalizar compra</button>
+    <button id="cierra_carrito">Finalizar compra</button>
   </div>
-
-  <script>
-    function incrementar(id) {
-      var cantidad = document.getElementById(id);
-      if (parseInt(cantidad.innerText) < 3) {
-        cantidad.innerText = parseInt(cantidad.innerText) + 1;
-      }
-    }
-
-    function decrementar(id) {
-      var cantidad = document.getElementById(id);
-      if (parseInt(cantidad.innerText) > 0) {
-        cantidad.innerText = parseInt(cantidad.innerText) - 1;
-      }
-    }
-  </script>
 
 </body>
 

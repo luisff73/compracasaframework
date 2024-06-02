@@ -31,5 +31,9 @@
 			//return ($args); // funciona
 			return $this->dao->lista_carrito($this->db, $args);
 		}
+		public function get_borra_vivienda_BLL($args) {
+			//return ($args); // funciona
+			return $this->dao->borra_vivienda($this->db, $_POST['id_vivienda'],$_POST['username']);
+		}
 	}
 ?>

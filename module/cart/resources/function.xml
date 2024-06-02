@@ -12,6 +12,10 @@
         <name>lista_carrito</name>
         <uri>lista_carrito</uri>
     </function>
+    <function>
+        <name>borra_vivienda</name>
+        <uri>borra_vivienda</uri>
+    </function>
 
 
 </functions>

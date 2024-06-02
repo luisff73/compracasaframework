@@ -31,5 +31,10 @@
             //echo json_encode ($_POST['username'])   ;                                                          
             echo json_encode(common::load_model('cart_model', 'get_lista_carrito',$_POST['username'])); 
         }
+
+        function borra_vivienda() {   
+            //echo json_encode ($_POST['username'])   ;                                                          
+            echo json_encode(common::load_model('cart_model', 'get_borra_vivienda',$_POST['id_vivienda'],$_POST['username'])); 
+        }
     }
 ?>
