@@ -8,6 +8,10 @@
         <name>agrega_carrito</name>
         <uri>agrega_carrito</uri>
     </function>
+    <function>
+        <name>lista_carrito</name>
+        <uri>lista_carrito</uri>
+    </function>
 
 
 </functions>

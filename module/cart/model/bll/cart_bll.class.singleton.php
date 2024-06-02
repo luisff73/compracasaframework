@@ -27,5 +27,8 @@
 			//return ($_POST['username']);
 		
 		}
+		public function get_lista_carrito_BLL($args) {
+			return $this->dao->lista_carrito($this->db, $args[0], $args[1]);
+		}
 	}
 ?>

@@ -23,11 +23,7 @@ require_once('paths.php');
         }
         function recover_view() {
             common::load_view('top_page_login.html', VIEW_PATH_LOGIN . 'recover_pass.html');
-        }
-        function login_register_view() {
-            common::load_view('top_page_login.html', VIEW_PATH_LOGIN . 'login-register.html');
-
-        }    
+        }   
         function register() {
             echo json_encode(common::load_model('login_model', 'register', [$_POST['username_reg'], $_POST['passwd1_reg'], $_POST['passwd2_reg'],$_POST['email_reg']]));
         }
@@ -35,12 +31,14 @@ require_once('paths.php');
             //echo json_encode ('hola'); // funciona
             echo json_encode(common::load_model('login_model', 'login', [$_POST['username_log'], $_POST['passwd_log']]));
         }                        
-
-
         function verify_email() {
-         echo json_encode(common::load_model('login_model', 'verify_email', $_POST['token_email']));        
+            //echo json_encode ('hola');
+            echo json_encode(common::load_model('login_model', 'verify_email', $_POST['token_email']));        
+        }    
+        function recover_email() {
+            echo ('hola');
+            //echo json_encode(common::load_model('login_model', 'recover_email', $_POST['email_forg']));
         }
-
         function logout() {
             unset($_SESSION['username']); //unset destruye la variable, con lo que borramos el usuario
             unset($_SESSION['tiempo']); //unset destruye la variable, con lo que borramos el tiempo
@@ -69,9 +67,7 @@ require_once('paths.php');
         } 
 
 
-        function recover_email() {
-            echo json_encode(common::load_model('login_model', 'recover_email', $_POST['email_forg']));
-        }
+
 
         function verify_token() {
             echo json_encode(common::load_model('login_model', 'verify_token', $_POST['token_email']));

@@ -31,7 +31,10 @@ class login_model {
         //return 'fail';
         return $this -> bll -> get_verify_email_BLL($args);
     }
-        
+
+         public function recover_email($args) {
+        return $this -> bll -> get_recover_email_BBL($args);
+    }
     /////////////////////////////////////////////////////////////////////
     public function data_user($args) {
         return $this -> bll -> get_data_user_BLL($args);
@@ -45,9 +48,7 @@ class login_model {
 
 
 
-    public function recover_email($args) {
-        return $this -> bll -> get_recover_email_BBL($args);
-    }
+   
 
     public function new_password($args) {
         return $this -> bll -> get_new_password_BLL($args);

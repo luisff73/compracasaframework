@@ -23,8 +23,13 @@
         
         function agrega_carrito() {   
             //echo json_encode ('hola')   ;                                                          
-            //echo json_encode(common::load_model('shop_model', 'get_incrementa_carrito',[$_POST['id_vivienda'],$_POST['accestoken']]));
-            echo json_encode(common::load_model('shop_model', 'get_incrementa_carrito',[$_POST['id_vivienda'],$_POST['username']])); //temporal
+            //echo json_encode(common::load_model('cart_model', 'get_incrementa_carrito',[$_POST['id_vivienda'],$_POST['accestoken']]));
+            echo json_encode(common::load_model('cart_model', 'get_incrementa_carrito',[$_POST['id_vivienda'],$_POST['username']])); //temporal
+        }
+
+        function lista_carrito() {   
+            //echo json_encode ('hola')   ;                                                          
+            echo json_encode(common::load_model('cart_model', 'get_lista_carrito',[$_POST['username']])); 
         }
     }
 ?>

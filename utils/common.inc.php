@@ -1,6 +1,7 @@
 <?php
 
     class common {
+        
         public static function load_error() {  
 
             require_once (VIEW_PATH_INC . 'error404.html');
@@ -8,6 +9,8 @@
         }
         
         public static function load_view($topPage, $view) {
+
+            
             //funcion para cargar la vista del home
             //comprobamos que existen los archivos top_page_home.html y home.html
 
@@ -18,7 +21,7 @@
                 require_once ($view);
                 require_once (VIEW_PATH_INC . 'footer.html');
             }else {
-                self::load_error();
+               self::load_error();
             }
         }
         
@@ -49,18 +52,18 @@
             return bin2hex(openssl_random_pseudo_bytes(($longitud - ($longitud % 2)) / 2)); //genera un token seguro
         }
 
-        // function friendlyURL_php($url) {
-        //     $link = "";
-        //     if (URL_FRIENDLY) {
-        //         $url = explode("&", str_replace("?", "", $url));
-        //         foreach ($url as $key => $value) {
-        //             $aux = explode("=", $value);
-        //             $link .=  $aux[1]."/";
-        //         }
-        //     } else {
-        //         $link = "index.php?" . $url;
-        //     }
-        //     return SITE_PATH . $link;
-        // }
+        function friendlyURL_php($url) {
+            $link = "";
+            if (URL_FRIENDLY) {
+                $url = explode("&", str_replace("?", "", $url));
+                foreach ($url as $key => $value) {
+                    $aux = explode("=", $value);
+                    $link .=  $aux[1]."/";
+                }
+            } else {
+                $link = "index.php?" . $url;
+            }
+            return SITE_PATH . $link;
+        }
     }
 ?>

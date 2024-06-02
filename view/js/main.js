@@ -83,9 +83,12 @@ function load_menu() {
 
 // Remove localstorage('page') with click in shop
 function click_shop() {
-    $(document).on('click', '#opc_shop', function () {
-        localStorage.removeItem('page');
-        localStorage.removeItem('total_prod');
+    $(document).on('click', '#btn_carrito', function () {
+        // localStorage.removeItem('page');
+        // localStorage.removeItem('total_prod');
+
+
+
     });
 }
 

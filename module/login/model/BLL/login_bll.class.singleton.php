@@ -24,13 +24,10 @@ public static function getInstance() {
 public function get_register_BLL($args) {
 	// { 'username_reg': username_reg, 'passwd1_reg': passwd1_reg, 'passwd2_reg': passwd2_reg, 'email_reg': email_reg })
      
-	// return 'hola';
-	// exit;
-
     $hashed_pass = password_hash($args[1], PASSWORD_DEFAULT); //encripta la contraseña
     $hashavatar = md5(strtolower(trim($args[3]))); // genera un hash a partir del email
 	$avatar = "https://i.pravatar.cc/500?u=$hashavatar"; //genera un avatar aleatorio con el nombre de usuario
-    $token_email = common::generate_Token_secure(20); //genera un token de 20 caracteres
+    $token_email = common::generate_Token_secure(20); //genera un token de 20 caracteres                 HAY QUE CAMBIAR A JWT
 	$tipo_login="local";
 	
     try {
@@ -46,9 +43,12 @@ public function get_register_BLL($args) {
         exit;
     } else {
         try {
-            $rdo = $this -> dao -> insert_user($this -> db, $args[0], $args[3], $hashed_pass, $avatar, $token_email,$tipo_login);
+			// echo json_encode($tipo_login);
+			// exit;
+            $rdo = $this -> dao -> insert_user($this -> db, $args[0], $args[3], $hashed_pass, $avatar, $token_email, $tipo_login);
+			//echo json_encode($rdo);
         } catch (Exception $e) {
-            echo json_encode("error");
+            echo json_encode("error en insert user");
             exit;
         }
         if (!$rdo) { //si no se ha insertado
@@ -128,24 +128,55 @@ public function get_login_BLL($args) {
 
 
 public function get_verify_email_BLL($args) {
-	return "hola verify";
+	//return "hola verify";
 	
 	//return $args[0];
 
-    // if($this->dao->select_verify_email($this->db,$args[0])){
-    //     $this->dao->update_verify_email($this->db,$args[0]);
-    //     $result = 'verify';
-    // } else {
-    //     $result = 'fail';
-    // }
+    if($this->dao->select_verify_email($this->db,$args[0])){
+        $this->dao->update_verify_email($this->db,$args[0]);
+        $result = 'verify';
+    } else {
+        $result = 'fail';
+    }
 
     // // Registra el resultado en el archivo de registro de errores de PHP
     // error_log("Resultado de get_verify_email_BLL: $result");
 	// error_log("argumentos recibiods get_verify_email_BLL: $args");
 
-    // //return $result;
-	// echo json_encode($result);
+    return $result;
+	//echo json_encode($result);
 }
+
+public function get_recover_email_BBL($email) {
+	//echo 'hola';
+
+	//return json_encode(["message" => "hola recover email "]);
+	//return 'hola';
+	
+	$user = $this -> dao -> select_recover_password($this->db, $email);
+	$token = common::generate_Token_secure(20);
+
+	if (!empty($user)) {
+		$this -> dao -> update_recover_password($this->db, $email, $token);
+		$message = ['type' => 'recover', 
+					'token' => $token, 
+					'toEmail' => $email];
+		$email = json_decode(mail::send_email($message), true);
+		if (!empty($email)) {
+			return;  
+		}   
+	}else{
+		return 'error';
+	}
+}
+public function get_new_password_BLL($args) {
+	$hashed_pass = password_hash($args[1], PASSWORD_DEFAULT, ['cost' => 12]);
+	if($this -> dao -> update_new_password($this->db, $args[0], $hashed_pass)){
+		return 'done';
+	}
+	return 'fail';
+}
+
 public function get_data_user_BLL($args) {
 	// $token = explode('"', $args);
 	// $decode = middleware::decode_username($token[1]);
@@ -255,34 +286,6 @@ public function get_social_login_BLL($args) {
 		
 	 		}
 }
-public function get_recover_email_BBL($email) {
-	//echo 'hola';
 
-	//return json_encode(["message" => "hola recover email "]);
-	//return 'hola';
-	
-	$user = $this -> dao -> select_recover_password($this->db, $email);
-	$token = common::generate_Token_secure(20);
-
-	if (!empty($user)) {
-		$this -> dao -> update_recover_password($this->db, $email, $token);
-		$message = ['type' => 'recover', 
-					'token' => $token, 
-					'toEmail' => $email];
-		$email = json_decode(mail::send_email($message), true);
-		if (!empty($email)) {
-			return;  
-		}   
-	}else{
-		return 'error';
-	}
-}
-public function get_new_password_BLL($args) {
-	$hashed_pass = password_hash($args[1], PASSWORD_DEFAULT, ['cost' => 12]);
-	if($this -> dao -> update_new_password($this->db, $args[0], $hashed_pass)){
-		return 'done';
-	}
-	return 'fail';
-}
 
 }

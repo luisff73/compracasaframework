@@ -54,8 +54,41 @@ function click_compra() {
 
 }
 
-$(document).ready(function () {
+function lista_carrito() {
+    $(document).on('click', '#btn_carrito', function () {
 
+        let username = localStorage.getItem('username');
+
+        ajaxPromise(friendlyURL("?module=cart&op=lista_carrito"), 'GET', 'JSON', { 'username': username }) //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
+
+            .then(function (data) {
+                alert('hola');
+                console.log(data);
+                exit;
+                for (row in data) {
+                    let tr = $('<tr></tr>').appendTo("#carrito");
+                    $('<td></td>').text(data[row].id_vivienda).appendTo(tr);
+                    $('<td></td>').text(data[row].vivienda_name).appendTo(tr);
+                    $('<td></td>').text(data[row].username).appendTo(tr);
+                    $('<td></td>').text(data[row].quantity).appendTo(tr);
+                    $('<td></td>').text(data[row].vivienda_price).appendTo(tr);
+
+                    // .html(
+                    //     "<img class='carousel__img' id='' src='http://localhost/compracasaframework/" + data[row].image_name + "' alt='' >" +
+                    //     "<h5>" + data[row].operation_name + "</h5>"
+                    // )
+                }
+            })
+            .catch(function () {
+                alert('holaerror');
+                console.log('Error en la carga del carrito');
+            });
+    });
+}
+
+
+$(document).ready(function () {
+    lista_carrito();
     click_compra();
 
 });

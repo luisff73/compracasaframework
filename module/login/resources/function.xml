@@ -9,10 +9,6 @@
         <uri>recover_view</uri>
     </function>
     <function>
-        <name>login_register_view</name>
-        <uri>login_register_view</uri>
-    </function>
-    <function>
         <name>login</name>
         <uri>login</uri>
     </function>

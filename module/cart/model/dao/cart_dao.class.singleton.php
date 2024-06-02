@@ -43,6 +43,15 @@
            //return $username;
 
        }   
+       public function lista_carrito($db,$id_vivienda,$username) {
+
+       $sql = "SELECT * from purchase where username='$username";
+
+       $stmt = $db -> ejecutar($sql);
+       return $db -> listar($stmt);
+       //return $username;
+
+   }   
 
      }
 ?>

@@ -137,7 +137,7 @@ function register() {
 
         ajaxPromise("?module=login&op=register", 'POST', 'JSON', { 'username_reg': username_reg, 'passwd1_reg': passwd1_reg, 'passwd2_reg': passwd2_reg, 'email_reg': email_reg })
             .then(function (data) {
-                console.log('Data: ', data);
+                console.log('Data promise correcta: ', data);
                 if (data == "error_email_reg") {
                     document.getElementById('error_email_reg').innerHTML = "El email ya esta en uso, asegurate de no tener ya una cuenta"
                 } else if (data == "error_user_exist") {
@@ -157,7 +157,7 @@ function register() {
                     };
 
                     toastr.success("Registro satisfactorio, porfavor comprueba tu correo para activar la cuenta");
-                    setTimeout(' window.location.href = friendlyURL("?module=login&op=login_register_view"); ', 4000);
+                    setTimeout(' window.location.href = friendlyURL("?module=login&op=view"); ', 4000);
                 }
             }).catch(function (textStatus) {
                 if (console && console.log) {
@@ -302,8 +302,9 @@ function send_recover_password() {
             // }).done(function (data) {
 
             .then(function (data) {
+                console.log(data);
                 console.log('Data recover: ', data.message);
-                return;
+                //return;
                 if (data == "error") {
                     $("#error_email_forg").html("The email doesn't exist");
                 } else {
@@ -312,13 +313,13 @@ function send_recover_password() {
                     toastr.success("Email sended");
                     setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
                 }
-            }).catch(function (error) {
-
+            }).catch(function (error, textStatus, jqXHR, data) {
+                console.log(data);
                 console.log('Error: ' + error.message);
                 // console.log('Error: ' + errorThrown);
                 // console.log('url: ' + url);
-                // console.log('Response: ' + jqXHR.responseText);
-                // console.log('Error: Recover password error ' + textStatus);
+                console.log('Response: ' + jqXHR.responseText);
+                console.log('Error: Recover password error ' + textStatus);
             });
     }
     else {
@@ -494,48 +495,48 @@ function load_content() {
         console.log('token_email en verify_email: ' + token_email);
 
         //ajaxPromise(friendlyURL("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': $token_email }))
-        //ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': token_email })
-        // $.ajax({
-        //     type: "POST",
-        //     dataType: "JSON",
-        //     url: "?module=login&op=verify_email",
-        //     data: { 'token_email': token_email },
-        // })
+        ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': token_email })
+            // $.ajax({
+            //     type: "POST",
+            //     dataType: "JSON",
+            //     url: "?module=login&op=verify_email",
+            //     data: { 'token_email': token_email },
+            // })
 
-        $.ajax({
-            type: "POST",
-            dataType: "JSON",
-            url: "?module=login&op=verify_email",
-            data: { 'token_email': token_email },
-        })
+            // $.ajax({
+            //     type: "POST",
+            //     dataType: "JSON",
+            //     url: "?module=login&op=verify_email",
+            //     data: { 'token_email': token_email },
+            // })
 
 
-            .done(function (response) {//data es lo que devuelve el php
+            .then(function (response) {//data es lo que devuelve el php
                 //.then(function (data) {//data es lo que devuelve el php
                 console.log('Data: ', response);
                 // return;
 
                 // console.log('data en verify_email: ' + data);
 
-                // toastr.options.timeOut = 3000;
-                // toastr.success('Email verified');
-                // setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
+                toastr.options.timeOut = 3000;
+                toastr.success('Email verified');
+                //setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 4000);
             })
-            .fail(function (response, jqXHR, textStatus, errorThrow, url, type, dataType) {
-                // console.log('data en verify_email error: ' + response);
-                // console.log(JSON.stringify(response));
-                // console.log("Error en el promise, Valor de Url: ", url);
-                // console.log("VALOR DE sType: ", type);
+            .catch(function (response, jqXHR, textStatus, errorThrow, url, type, dataType) {
+                console.log('data en verify_email error: ' + response);
+                console.log(JSON.stringify(response));
+                console.log("Error en el promise, Valor de Url: ", url);
+                console.log("VALOR DE sType: ", type);
                 console.log("VALOR DE sTdata: ", dataType);
-                // console.log("VALOR DE sData: ", data);
                 // console.log("Importante Respuesta del servidor en el promise responsetext : ", jqXHR.responseText);
-                // console.log("Código de estado HTTP: ", jqXHR.status);
-                // console.log("Descripción del estado HTTP: ", jqXHR.statusText);
-                // console.log("Cuerpo de la respuesta como JSON: ", jqXHR.responseJSON);
-                // console.log("Tipo de error: ", textStatus, errorThrown);
+                console.log("Código de estado HTTP: ", jqXHR.status);
+                console.log("Descripción del estado HTTP: ", jqXHR.statusText);
+                console.log("Cuerpo de la respuesta como JSON: ", jqXHR.responseJSON);
+                console.log("Tipo de error: ", textStatus, errorThrown);
+                console.log(errorThrow);
 
-                // toastr.options.timeOut = 3000;
-                // toastr.error('Email no verificado');
+                toastr.options.timeOut = 3000;
+                toastr.error('Email no verificado');
             });
 
     } else if (path[4] === 'view') {

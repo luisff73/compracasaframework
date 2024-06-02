@@ -41,11 +41,11 @@
             if(isset($_GET['op'])){ // si en la direccion url existe la variable op (si es true)
                 
                 if ($_GET['op'] === 'verify_email' ){ 
-                $this ->uriFunction ='views';
+                $this ->uriFunction ='view';
                 } else if ($_GET['op'] === 'recover_email') {
                     $this -> uriFunction = 'recover_view';
                 } else {
-                    $this -> uriFunction = ($_GET['op'] === "") ? 'views' : $_GET['op'];
+                    $this -> uriFunction = ($_GET['op'] === "") ? 'view' : $_GET['op'];
                 }
 
                 //error_log($this -> uriFunction);
@@ -77,13 +77,18 @@
                  foreach ($modules as $row) {   //recorre el archivo modules.xml
                      if (in_array($this -> uriModule, (Array) $row -> uri)) { //comprueba si el modulo existe
                          //construye la ruta al archivo del controlador con la constante MODULES_PATH
-                         //$path = MODULES_PATH . $row -> name . '/controller/controller_' . (String) $row -> name . '.class.php'; 
                          $path = MODULES_PATH . $row -> name . '/controller/controller_' . (String) $row -> name . '.class.singleton.php';
+                         //echo $path;
                          if (file_exists($path)) {  //comprueba si existe el archivo del controlador 
                              require_once($path);
                              $controllerName = 'controller_' . (String) $row -> name;
                              $this -> nameModule = (String) $row -> name;
                              //return new $controllerName;
+                             
+                             
+                             //var_dump($controllerName::getInstance());
+                             
+
                              return $controllerName::getInstance();;
                          }
                      }

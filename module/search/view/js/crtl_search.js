@@ -18,7 +18,7 @@ function load_operations() {
                 $('<option value="' + data[row].id_operation + '">' + data[row].operation_name + '</option>').appendTo('#search_operation')
             }
         }).catch(function () {
-            //window.location.href = friendlyURL("view/inc/error404.php");
+
         });
 }
 function load_category(operation) {
