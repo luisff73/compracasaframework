@@ -1069,3 +1069,78 @@ footer {
   height: 30px;
   display: flex;
 }
+
+#carrito {
+  width: 80%;
+  border-collapse: collapse;
+}
+
+#carrito th,
+#carrito td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#carrito th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #525151;
+  color: white;
+}
+
+#carrito td img {
+  max-width: 200px;
+  height: auto;
+}
+
+.carrito-row {
+  border-bottom: 1px solid #ddd;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.carrito-img img {
+  max-width: 300px;
+  height: auto;
+}
+
+.carrito-name,
+.carrito-quantity,
+.carrito-price {
+  padding: 10px;
+}
+
+.carrito-actions {
+  display: flex;
+  justify-content: space-around;
+}
+
+.increment-button,
+.decrement-button {
+  background-color: #5d5d5d;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  box-shadow: 0 9px #999;
+  width: 50%;
+}
+
+.increment-button:hover,
+.decrement-button:hover {
+  background-color: #454545;
+}
+
+.increment-button:active,
+.decrement-button:active {
+  background-color: #474747;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}

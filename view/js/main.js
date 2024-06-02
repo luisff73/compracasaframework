@@ -47,19 +47,17 @@ function load_menu() {
                 if (data.type_user == "client") {
                     console.log("Cliente logeado");
                     $('#login-register').empty();
-                    // $('.opc_CRUD').empty();
-                    // $('.opc_exceptions').empty();
+
                 } else {
                     console.log("Admin loged");
-                    // $('.opc_CRUD').show();
-                    // $('.opc_exceptions').show();
+
                 }
 
                 $('.log-icon').empty();
-                $('#user_info').empty();
+                $('#des_inf_user').empty();
                 //$('login-register').empty();
-                $('<img src="' + data.avatar + '"alt="Robot">').appendTo('.log-icon');
-                $('<p></p>').attr({ 'id': 'username' }).appendTo('#des_inf_user')
+                $('<img src=' + data.avatar + '"alt="Robot">').appendTo('.log-icon');
+                $('<p></p>').attr({ 'id': data.username }).appendTo('#des_inf_user')
                     .html('<a>' + data.username + '<a/>&nbsp;&nbsp;' +
                         '<a id="logout"><i id="icon-logout" class="fa-solid fa-right-from-bracket"></i></a>'
                     )
@@ -71,9 +69,7 @@ function load_menu() {
             });
     } else {
         //console.log("No hay token disponible");
-        $('.opc_CRUD').empty();
-        $('.opc_exceptions').empty();
-        $('#user_info').hide();
+        $('#des_inf_user').hide();
         $('.log-icon').empty();
         $('<a href="?module=login&op=login"><i id="col-ico" class="fa-solid fa-user fa-2xl"></i></a>').appendTo('.log-icon'); //añadimos el icono de login
 

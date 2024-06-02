@@ -28,8 +28,8 @@
         }
 
         function lista_carrito() {   
-            //echo json_encode ('hola')   ;                                                          
-            echo json_encode(common::load_model('cart_model', 'get_lista_carrito',[$_POST['username']])); 
+            //echo json_encode ($_POST['username'])   ;                                                          
+            echo json_encode(common::load_model('cart_model', 'get_lista_carrito',$_POST['username'])); 
         }
     }
 ?>

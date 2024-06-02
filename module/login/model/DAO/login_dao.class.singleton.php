@@ -44,21 +44,18 @@
             $stmt = $db->ejecutar($sql);
             return $db->listar_object($stmt);
         } 
-
         public function update_verify_email($db, $token_email){
 
             $sql = "UPDATE `users` SET activate = 1, `token_email`= '' WHERE `token_email` = '$token_email'";
             $stmt = $db->ejecutar($sql);
             //return "update";
         }
-
         public function select_data_user($db, $username){
 
 			$sql = "SELECT * FROM users WHERE username='$username'";
             $stmt = $db->ejecutar($sql);
             return $db->listar($stmt);
         }
-
         public function select_social_login($db, $username){
 
             $sql = "SELECT `username`, `password`, `email`, `type_user`, `avatar`, `token_email`,`activate` FROM `users` WHERE activate=1 and username='$username'";
@@ -73,7 +70,6 @@
             return $stmt = $db->ejecutar($sql);
             //return $sql;
         }
-
         public function select_recover_password($db, $email){
 			$sql = "SELECT `email` FROM `users` WHERE email = '$email' AND password NOT LIKE ('')";
             //echo 'valor de select_verify_email';
@@ -81,7 +77,6 @@
             $stmt = $db->ejecutar($sql);
             return $db->listar($stmt);
         }
-
         public function update_recover_password($db, $email, $token_email){
 			$sql = "UPDATE `users` SET `token_email`= '$token_email' WHERE `email` = '$email'";
             $stmt = $db->ejecutar($sql);

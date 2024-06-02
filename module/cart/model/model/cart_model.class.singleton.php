@@ -24,7 +24,7 @@
             return $this -> bll -> get_incrementa_carrito_BLL($args);
         }
         public function get_lista_carrito($args) {
-            //return ('hola');
+            //return ('holagetlistacarrito');
             return $this -> bll -> get_lista_carrito_BLL($args);
         }
 

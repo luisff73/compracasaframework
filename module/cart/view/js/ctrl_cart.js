@@ -56,31 +56,28 @@ function click_compra() {
 
 function lista_carrito() {
     $(document).on('click', '#btn_carrito', function () {
-
         let username = localStorage.getItem('username');
 
-        ajaxPromise(friendlyURL("?module=cart&op=lista_carrito"), 'GET', 'JSON', { 'username': username }) //llamamos al ctr_home_ y ejecuta el DAO que nos devolverá la promesa
-
+        ajaxPromise(friendlyURL("?module=cart&op=lista_carrito"), 'POST', 'JSON', { 'username': username })
             .then(function (data) {
-                alert('hola');
-                console.log(data);
-                exit;
                 for (row in data) {
-                    let tr = $('<tr></tr>').appendTo("#carrito");
-                    $('<td></td>').text(data[row].id_vivienda).appendTo(tr);
-                    $('<td></td>').text(data[row].vivienda_name).appendTo(tr);
-                    $('<td></td>').text(data[row].username).appendTo(tr);
-                    $('<td></td>').text(data[row].quantity).appendTo(tr);
-                    $('<td></td>').text(data[row].vivienda_price).appendTo(tr);
+                    let columna1 = $('<tr class="carrito-row"></tr>').appendTo("#carrito");
+                    $('<td class="carrito-img" rowspan="4"><img src="http://localhost/compracasaframework/' + data[row].image_name + '" alt="Imagen de la vivienda"></td>').appendTo(columna1);
+                    $('<td class="carrito-name"></td>').text("Descripción: " + data[row].vivienda_name).appendTo(columna1);
 
-                    // .html(
-                    //     "<img class='carousel__img' id='' src='http://localhost/compracasaframework/" + data[row].image_name + "' alt='' >" +
-                    //     "<h5>" + data[row].operation_name + "</h5>"
-                    // )
-                }
+                    let columna2 = $('<tr class="carrito-row"></tr>').appendTo("#carrito");
+                    $('<td class="carrito-quantity"></td>').text("Cantidad: " + data[row].quantity).appendTo(columna2);
+
+                    let columna3 = $('<tr class="carrito-row"></tr>').appendTo("#carrito"); 2
+                    $('<td class="carrito-price"></td>').text("Precio : " + data[row].vivienda_price + " €").appendTo(columna3);
+
+                    let columna4 = $('<tr class="carrito-row"></tr>').appendTo("#carrito");
+                    $('<td class="carrito-actions"><button class="increment-button" onclick="incrementar(\'' + data[row].id_vivienda + '\')">+</button><button class="decrement-button" onclick="decrementar(\'' + data[row].id_vivienda + '\')">-</button></td>').appendTo(columna4);
+                }       // $('<td></td>').text(data[row].username).appendTo(tr);
+                // $('<td></td>').text(data[row].id_vivienda).appendTo(tr);
+
             })
             .catch(function () {
-                alert('holaerror');
                 console.log('Error en la carga del carrito');
             });
     });

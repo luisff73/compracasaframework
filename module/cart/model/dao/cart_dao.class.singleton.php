@@ -43,13 +43,17 @@
            //return $username;
 
        }   
-       public function lista_carrito($db,$id_vivienda,$username) {
+       public function lista_carrito($db,$username) {
 
-       $sql = "SELECT * from purchase where username='$username";
+       $sql = "SELECT p.id_vivienda, p.vivienda_name, p.username, p.quantity, p.vivienda_price, v.image_name FROM purchase p, viviendas v where v.id_vivienda=p.id_vivienda and username = '$username'";
+
+
+       //$sql = "SELECT * from purchase";
 
        $stmt = $db -> ejecutar($sql);
        return $db -> listar($stmt);
-       //return $username;
+       //return $sql;
+     
 
    }   
 

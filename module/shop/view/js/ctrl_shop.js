@@ -117,7 +117,7 @@ function mapBox(id) {  // ACABADA
     const minPopup = new mapboxgl.Popup()
     minPopup.setHTML('<h5>' + id.vivienda_name + '</h5>' +
         '<p>Precio: ' + id.vivienda_price + '€</p>' +
-        '<img id="imagen_vivienda_mapa"; src=" ' + id.image_name + '"/>')
+        '<img id="imagen_vivienda_mapa" src="http://localhost/compracasaframework/' + id.image_name + '"/>')
     marker.setPopup(minPopup)
         .setLngLat([id.long, id.lat])
         .addTo(map);
@@ -538,7 +538,6 @@ function filter_button() { //funcion para filtrar los productos
         var filter_array = [];
         remove_filters();
         if (filter_array == 0 || filter_array == undefined) {//si el array filter es igual a 0
-            alert(friendlyURL('?module=shop&op=all_viviendas'));
             ajaxForSearch(friendlyURL('?module=shop&op=all_viviendas'), 'POST', 'JSON', { 'offset': 0, 'items_page': 3 });
             location.reload();//recargamos la página
         }

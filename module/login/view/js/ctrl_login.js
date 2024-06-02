@@ -46,6 +46,13 @@ function login() {
 
                     toastr.success("Loged succesfully");
                     document.getElementById('btn_carrito').style.display = 'flex';
+
+                    $('.log-icon').empty();
+                    $('#des_inf_user').empty();
+                    $('<img src=' + data.avatar + '"alt="Robot">').appendTo('.log-icon');
+                    // $('<p></p>').attr('id', data.username).appendTo('#des_inf_user')
+                    $('#des_inf_user').text(data.username);
+
                     setTimeout(' window.location.href = friendlyURL("?module=shop&op=view"); ', 3000);
 
                 }
@@ -427,17 +434,16 @@ function social_login(param) {  // aqui recibe el tipo de red social GOOGLE o GI
                 ajaxPromise(friendlyURL("?module=login&op=social_login"), 'POST', 'JSON', { 'id': result.user.uid, 'username': username[0], 'email': result.user.email, 'avatar': result.user.photoURL, 'tipo_login': username[1] })
 
                     .then(function (data) {
-                        // console.log(data);
-
-                        localStorage.setItem("accestoken", data);
-                        localStorage.setItem("refreshtoken", data);
+                        data = JSON.parse(data);
+                        //console.log(data);
+                        localStorage.setItem("accestoken", data.accestoken);
+                        localStorage.setItem("refreshtoken", data.refreshtoken);
+                        localStorage.setItem("username", data.username)
                         toastr.options.timeOut = 3000;
                         toastr.success("Inicio de sesión realizado");
                         $('.log-icon').empty();
-                        $('#user_info').empty();
-                        alert(data.avatar);
-                        alert(data.username);
-                        $('<img src="' + data.avatar + '"alt="Robot">').appendTo('.log-icon');
+                        $('#des_inf_user').empty();
+                        $('<img src=' + data.avatar + '"alt="Robot">').appendTo('.log-icon');
                         $('<p></p>').attr('id', data.username).appendTo('#des_inf_user')
 
                         setTimeout('window.location.href = friendlyURL("?module=shop&op=view")', 6000);
