@@ -25,7 +25,7 @@
 			////return $this -> dao -> incrementa_carrito($this -> db,  $_POST['id_vivienda'],$token_dec['username']);
 			return $this -> dao -> incrementa_carrito($this -> db,  $_POST['id_vivienda'],$_POST['username']); //temporal
 			//return ($_POST['username']);
-		
+	
 		}
 		public function get_lista_carrito_BLL($args) {
 			//return ($args); // funciona
@@ -34,6 +34,10 @@
 		public function get_borra_vivienda_BLL($args) {
 			//return ($args); // funciona
 			return $this->dao->borra_vivienda($this->db, $_POST['id_vivienda'],$_POST['username']);
+		}
+		public function get_cierra_carrito_BLL($args) {
+			//return ($args); // funciona
+			return $this->dao->cierra_carrito($this->db, $_POST['username'],$_POST['id_vivienda'],$_POST['cantidad']);
 		}
 	}
 ?>

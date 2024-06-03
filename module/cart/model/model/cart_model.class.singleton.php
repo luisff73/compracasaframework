@@ -30,7 +30,9 @@
         public function get_borra_vivienda($args) {
             return $this -> bll -> get_borra_vivienda_BLL($args);
         }
-
+        public function get_cierra_carrito($args) {
+            return $this -> bll -> get_cierra_carrito_BLL($args);
+        }
 
     }
 ?>

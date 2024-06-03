@@ -16,6 +16,9 @@
         <name>borra_vivienda</name>
         <uri>borra_vivienda</uri>
     </function>
-
+    <function>
+        <name>cierra_carrito</name>
+        <uri>cierra_carrito</uri>
+    </function>
 
 </functions>
