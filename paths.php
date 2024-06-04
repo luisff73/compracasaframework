@@ -93,5 +93,14 @@
     define ('VIEW_PATH_LOGIN', SITE_ROOT . 'module/login/view/');
     //define ('VIEW_PATH_LOGIN', SITE_ROOT . 'module/login/');
 
+    //MODEL_PROFILE
+    define('UTILS_PROFILE', SITE_ROOT . 'module/profile/utils/');
+    define('DAO_PROFILE', SITE_ROOT . 'module/profile/model/DAO/');
+    define('BLL_PROFILE', SITE_ROOT . 'module/profile/model/bll/');
+    define('MODEL_PROFILE', SITE_ROOT . 'module/profile/model/model/');
+    define('JS_VIEW_PROFILE', SITE_PATH . 'module/profile/view/js/');
+    define ('VIEW_PATH_PROFILE', SITE_ROOT . 'module/profile/view/');
+
+
     // Friendly
     define('URL_FRIENDLY', TRUE);

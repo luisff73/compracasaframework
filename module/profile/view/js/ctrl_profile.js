@@ -37,13 +37,14 @@
 
 // }
 
-function lista_facturas() {
+function lista_factura() {
     $(document).on('click', '#des_inf_user', function () {
         let username = localStorage.getItem('username');
         //let total_facturas = 0
 
 
-        ajaxPromise(friendlyURL("?module=profile&op=lista_facturas"), 'POST', 'JSON', { 'username': username })
+
+        ajaxPromise(friendlyURL("?module=profile&op=listafacturas"), 'POST', 'JSON', { 'username': username })
             .then(function (data) {
                 $('#facturas').empty();
                 for (row in data) {
@@ -119,9 +120,6 @@ function friendlyURL(url) {
 
 $(document).ready(function () {
 
-    lista_facturas();
-    // click_compra();
-
-
+    lista_factura();
 });
 

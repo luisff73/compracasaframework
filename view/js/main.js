@@ -108,7 +108,7 @@ $(document).ready(function () {
         logout();
     });
     $('body').on('click', '#des_inf_user', function () {
-        lista_facturas();
+        lista_factura();
     });
 
     load_menu();

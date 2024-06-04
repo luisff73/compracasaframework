@@ -66,9 +66,6 @@ require_once('paths.php');
             echo json_encode(common::load_model('login_model', 'social_login', [$_POST['id'], $_POST['username'], $_POST['email'], $_POST['avatar'], $_POST['tipo_login']]));
         } 
 
-
-
-
         function verify_token() {
             echo json_encode(common::load_model('login_model', 'verify_token', $_POST['token_email']));
         }

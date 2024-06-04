@@ -40,6 +40,9 @@ function refresh_cookie() {
 function logout_auto() {
     ajaxPromise(friendlyURL('?module=login&op=logout'), 'POST', 'JSON')
         .then(function (data) {
+            localStorage.removeItem('username');
+            localStorage.removeItem('totalcarrito');
+            localStorage.removeItem('id_vivienda_cart');
             localStorage.removeItem('accestoken');
             localStorage.removeItem('refreshtoken');
             window.location.href = friendlyURL("index.php?module=login&op=view");

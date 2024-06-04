@@ -558,9 +558,9 @@ function logout() {
         .then(function (data) {
             localStorage.removeItem('username');
             localStorage.removeItem('totalcarrito');
+            localStorage.removeItem('id_vivienda_cart');
             localStorage.removeItem('accestoken');
             localStorage.removeItem('refreshtoken');
-
 
             window.location.href = friendlyURL("?module=home&op=view");
         }).catch(function () {

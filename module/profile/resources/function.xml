@@ -9,8 +9,8 @@
         <uri>agrega_carrito</uri>
     </function>
     <function>
-        <name>lista_carrito</name>
-        <uri>lista_carrito</uri>
+        <name>lista_facturas</name>
+        <uri>lista_facturas</uri>
     </function>
     <function>
         <name>borra_vivienda</name>
@@ -20,10 +20,4 @@
         <name>cierra_carrito</name>
         <uri>cierra_carrito</uri>
     </function>
-    <function>
-        <name>lista_facturas</name>
-        <uri>lista_facturas</uri>
-    </function>
-
-
 </functions>

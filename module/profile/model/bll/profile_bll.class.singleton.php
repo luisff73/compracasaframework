@@ -1,5 +1,5 @@
 <?php
-  require ('module/shop/model/DAO/shop_dao.class.singleton.php');
+  require ('module/profile/model/DAO/profile_dao.class.singleton.php');
 
 	class profile_bll {
 		private $dao;
