@@ -53,13 +53,13 @@
 
     // }   
 
-    // public function lista_carrito($db,$username) {
+    public function lista_facturas($db,$username) {
 
-    //     $sql = "SELECT p.id_vivienda, p.vivienda_name, p.username, p.quantity, p.vivienda_price, v.image_name, v.stock, v.status FROM purchase p, viviendas v where v.id_vivienda=p.id_vivienda and username = '$username' and operation_type ='VP'";
-    //     $stmt = $db -> ejecutar($sql);
-    //     return $db -> listar($stmt);
-    //     //return $sql;
-    // }   
+        $sql = "SELECT p.id_vivienda, p.vivienda_name, p.username, p.quantity, p.vivienda_price, p.contador, v.image_name, v.stock, v.status FROM purchase p, viviendas v where v.id_vivienda=p.id_vivienda and username = '$username' and operation_type ='VF'";
+        $stmt = $db -> ejecutar($sql);
+        return $db -> listar($stmt);
+        //return $sql;
+    }   
     // public function borra_vivienda($db,$id_vivienda,$username) {
 
     //     $sql = "delete from purchase where id_vivienda='$id_vivienda' and username='$username';";

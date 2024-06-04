@@ -21,8 +21,8 @@
         <uri>cierra_carrito</uri>
     </function>
     <function>
-        <name>lista_historico</name>
-        <uri>lista_historico</uri>
+        <name>lista_facturas</name>
+        <uri>lista_facturas</uri>
     </function>
 
 
