@@ -1177,3 +1177,48 @@ footer {
 .delete-button {
   color: rgb(232, 145, 145)
 }
+
+#facturas {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: #4a4a4d;
+  font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#facturas tr.facturas-row {
+  background: #f8f8f8;
+  border-top: 1px solid #e6e6e6;
+  border-radius: 3px;
+}
+
+#facturas td {
+  padding: 10px;
+  vertical-align: middle;
+}
+
+#facturas td.facturas-img img {
+  width: 50px;
+  height: 50px;
+  border-radius: 20%;
+}
+
+#facturas td.facturas-name,
+#facturas td.facturas-quantity,
+#facturas td.facturas-price,
+#facturas td.facturas-estado {
+  color: #4a4a4d;
+}
+
+#facturas td.facturas-actions button {
+  background-color: #e6e6e6;
+  color: #4a4a4d;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 10px;
+  margin-right: 5px;
+}
+
+#facturas td.facturas-actions button:hover {
+  background-color: #d4d4d4;
+}

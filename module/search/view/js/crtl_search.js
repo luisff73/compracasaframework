@@ -144,6 +144,14 @@ function button_cart() {
     })
 }
 
+function button_profile() {
+    $('#des_inf_user').on('click', function () {
+
+        window.location.href = friendlyURL('?module=profile&op=lista_facturas');
+
+    })
+}
+
 function remove_filters_search() {
     localStorage.removeItem('filters_home');
     localStorage.removeItem('filters_shop');
@@ -161,4 +169,5 @@ $(document).ready(function () {
     autocomplete();
     button_search();
     button_cart();
+    button_profile();
 });

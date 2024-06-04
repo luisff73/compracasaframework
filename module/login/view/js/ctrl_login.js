@@ -93,7 +93,6 @@ function key_login() {
     });
 
     $('#logout').on('click', function (e) {
-        alert('hola');
         e.preventDefault();
         toastr.success("Logout exitoso");
         setTimeout(logout, 1000); //llama la funcion logout
@@ -557,9 +556,12 @@ function load_content() {
 function logout() {
     ajaxPromise(friendlyURL("?module=login&op=logout", 'POST', 'JSON'))
         .then(function (data) {
+            localStorage.removeItem('username');
+            localStorage.removeItem('totalcarrito');
             localStorage.removeItem('accestoken');
             localStorage.removeItem('refreshtoken');
-            // localStorage.removeItem('total_prod');
+
+
             window.location.href = friendlyURL("?module=home&op=view");
         }).catch(function () {
             console.log('No se ha podido cerrar la sesión');
@@ -569,8 +571,5 @@ function logout() {
 $(document).ready(function () {
     load_content();
     key_login();
-    //key_register();
-    //button_register();
-    click_recover_password()
-
+    click_recover_password();
 });
