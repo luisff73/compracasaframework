@@ -54,7 +54,7 @@ function load_menu() {
 
                 $('.log-icon').empty();
                 $('#des_inf_user').empty();
-                $('<img src=' + data[0].avatar + '">').appendTo('.log-icon');
+                $('<img src=' + data[0].avatar + '>').appendTo('.log-icon');
                 $('<p></p>').attr({ 'id': data[0].username }).appendTo('#des_inf_user')
                     .html('<a>' + data[0].username + '<a/>&nbsp;&nbsp;' + '<a id="logout"><i id="icon-logout" class="fa-solid fa-right-from-bracket"></i></a>'
                     )
