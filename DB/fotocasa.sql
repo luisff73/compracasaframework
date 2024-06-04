@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 01-06-2024 a las 07:50:15
+-- Tiempo de generación: 04-06-2024 a las 07:26:36
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -25,6 +25,19 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ACTUALIZA_CARRITO` (IN `p_id_vivienda` INT, IN `p_username` VARCHAR(255))   BEGIN
+    IF NOT EXISTS (SELECT 1 FROM purchase WHERE id_vivienda = p_id_vivienda AND username = p_username) THEN
+        INSERT INTO `purchase`(`id_vivienda`, `vivienda_name`, `id_user`, `username`, `quantity`, `vivienda_price`, `operation_type`) 
+        SELECT v.id_vivienda, v.vivienda_name, u.id_user, u.username, 1, v.vivienda_price, 'VP' 
+        FROM viviendas v, users u 
+        WHERE v.id_vivienda = p_id_vivienda AND u.username = p_username;
+    ELSE
+        UPDATE purchase
+        SET quantity = quantity + 1
+        WHERE id_vivienda = p_id_vivienda AND username = p_username;
+    END IF;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ACTUALIZA_LIKES` (IN `id_vivienda_p` INT, IN `id_user_p` VARCHAR(50))   BEGIN
     DECLARE EXISTE INT;
     SET EXISTE=(SELECT COUNT(*) FROM LIKES WHERE ID_USERNAME=id_user_p AND ID_VIVIENDA=id_vivienda_p);
@@ -32,6 +45,30 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `ACTUALIZA_LIKES` (IN `id_vivienda_p
         DELETE FROM LIKES WHERE ID_USERNAME=id_user_p AND ID_VIVIENDA=id_vivienda_p;
     ELSE
         INSERT INTO LIKES (ID_USERNAME, ID_VIVIENDA) VALUES (id_user_p, id_vivienda_p);
+    END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CIERRA_CARRITO` (IN `p_username` VARCHAR(255), IN `p_id_vivienda` INT, IN `p_cantidad` INT)   BEGIN
+
+    -- Obtenemos el stock actual de la vivienda
+    DECLARE v_stock INT;
+    SELECT v.stock INTO v_stock
+    FROM viviendas v
+    WHERE v.id_vivienda = p_id_vivienda;
+
+    -- Comprobamos si la cantidad del carrito es menor o igual al stock de la vivienda
+    IF p_cantidad <= v_stock THEN
+        -- Actualizamos el campo operation_type en la tabla purchase para pasarlo a factura
+        UPDATE purchase p
+        SET p.operation_type = 'VF', p.vivienda_price=p_cantidad*p.vivienda_price, p.quantity=p_cantidad
+        WHERE p.username = p_username
+        AND p.id_vivienda = p_id_vivienda
+        AND p.operation_type = 'VP';
+
+        -- Descontamos la cantidad del stock en la tabla viviendas
+        UPDATE viviendas v
+        SET v.stock = v.stock - p_cantidad
+        WHERE v.id_vivienda = p_id_vivienda;
     END IF;
 END$$
 
@@ -184,6 +221,7 @@ INSERT INTO `likes` (`id_vivienda`, `id_username`, `like`) VALUES
 (4, 'luisito', 0),
 (5, 'antonio', 0),
 (5, 'josefina', 0),
+(5, 'luisito', 0),
 (5, 'paquito', 0),
 (7, 'antonio', 0),
 (7, 'fernandin', 0),
@@ -195,6 +233,7 @@ INSERT INTO `likes` (`id_vivienda`, `id_username`, `like`) VALUES
 (9, 'luisito', 0),
 (10, 'antonio', 0),
 (10, 'josefina', 0),
+(10, 'luisito', 0),
 (10, 'paquito', 0),
 (11, 'fernandin', 0),
 (11, 'paquito', 0),
@@ -362,9 +401,9 @@ CREATE TABLE `most_visited` (
 --
 
 INSERT INTO `most_visited` (`id_vivienda`, `visitas`) VALUES
-(4, 156),
+(4, 158),
 (5, 47),
-(4, 156),
+(4, 158),
 (5, 47),
 (6, 37),
 (7, 28),
@@ -408,8 +447,19 @@ CREATE TABLE `purchase` (
   `username` varchar(250) NOT NULL,
   `quantity` int(50) NOT NULL,
   `vivienda_price` int(50) NOT NULL,
-  `operation_type` varchar(10) NOT NULL
+  `operation_type` varchar(10) NOT NULL,
+  `contador` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `purchase`
+--
+
+INSERT INTO `purchase` (`id_vivienda`, `vivienda_name`, `id_user`, `username`, `quantity`, `vivienda_price`, `operation_type`, `contador`) VALUES
+(19, 'Chalet en la montaña', 12, 'luisito', 1, 200000, 'VF', 20004),
+(37, 'Parcela en Paterna', 12, 'luisito', 1, 14324, 'VF', 20001),
+(39, 'Local en Ontinyent', 12, 'luisito', 1, 3435, 'VF', 20002),
+(44, 'Duplex en Valencia', 12, 'luisito', 2, 211500, 'VF', 20003);
 
 -- --------------------------------------------------------
 
@@ -456,12 +506,13 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `username`, `password`, `email`, `type_user`, `avatar`, `token_email`, `activate`, `attempts`, `tipo_login`) VALUES
-(12, 'luisito', '$2y$12$NpNteudxVguB8zBk/86xL.5eKCSiOyoeFNa5rWzJ3.jjAXuIZgzMa', '1jvrluis@hotmail.com', 'client', 'https://i.pravatar.cc/500?u=e180ce24ee0680d10937341695b92bbe', '', 1, 3, 'local'),
+(12, 'luisito', '$2y$12$NpNteudxVguB8zBk/86xL.5eKCSiOyoeFNa5rWzJ3.jjAXuIZgzMa', '1jvrluis@hotmail.com', 'client', 'https://i.pravatar.cc/500?u=e180ce24ee0680d10937341695b92bbe', '', 1, 1, 'local'),
 (13, 'fernandin', '$2y$12$olnGKNANkqSZMG6NLsDmduzKSV20nTlo4Etl2SfTdjCVzPJkLtglW', 'fernandin@hotrmail.com', 'client', 'https://i.pravatar.cc/500?u=88e4eb8edb044b44c30e8784014c9a05', '', 1, 3, 'local'),
 (14, 'paquito', '$2y$12$PMhhFpZ3Q/C0PLFpDEHmo.Lbpsqi2fWrDeKTNxX8XuzVEvrnnLZC2', 'paquito@hotmail.com', 'client', 'https://i.pravatar.cc/500?u=8fd36194cbf128399e5b94634c6aaadd', '', 1, 3, 'local'),
 (79, 'antonio', '$2y$10$/A/22x.sK8dlSoAHI2YEbuTygoZC9kzKdIpdm6vxfeHJAiPnXMyhG', 'jvrluis@hotmail.com', 'client', 'https://i.pravatar.cc/500?u=2b2bc99149c1eb1b555598291e1008d8', '', 1, 3, 'local'),
 (100, 'antonios', '$2y$10$86hMTwlx1J2Tmy8ogryprup9KapztpPXNMxC0ua9wgnZjVOXxUhsK', 'jvrluis@hotmail.coms', 'client', 'https://i.pravatar.cc/500?u=2b2bc99149c1eb1b555598291e1008d8', 'cf27642bb19851dc4cbf', 0, 3, 'local'),
-(101, 'jvrluis', ' ', 'jvrluis@gmail.com', 'client', 'https://lh3.googleusercontent.com/a/ACg8ocJ0cMP9yG5YJsLYrPXVcBdry4cKnzZSevc8R1pKpWb7U-KPWDU7=s96-c', '', 1, 3, 'gmail.com');
+(101, 'jvrluis', ' ', 'jvrluis@gmail.com', 'client', 'https://lh3.googleusercontent.com/a/ACg8ocJ0cMP9yG5YJsLYrPXVcBdry4cKnzZSevc8R1pKpWb7U-KPWDU7=s96-c', '', 1, 3, 'gmail.com'),
+(103, 'josele', '$2y$10$n0alHsxG1IN2ETADH5EtMO/RpgIixbQPLY6lllMfwZ5EKz0eiNA0K', 'josele@hotmail.com', 'client', 'https://i.pravatar.cc/500?u=83326004f6b544b7b36e515a2d08eb93', '2f31bf0cb9c241a74b3e', 0, 3, 'local');
 
 -- --------------------------------------------------------
 
@@ -496,57 +547,57 @@ CREATE TABLE `viviendas` (
 
 INSERT INTO `viviendas` (`id_vivienda`, `vivienda_name`, `id_city`, `state`, `status`, `vivienda_price`, `description`, `image_name`, `m2`, `habitaciones`, `baños`, `long`, `lat`, `id_type`, `id_operation`, `id_category`, `id_image`, `stock`) VALUES
 (4, 'Piso en Albaida', 1, 'Valencia', 'Disponible', 138000, 'Encantador piso de 2 habitaciones con diseño moderno y luminoso. Cocina totalmente equipada, amplio salón con vistas panorámicas. Ubicación céntrica, cerca de servicios y transporte público. Ideal para aquellos que buscan comodidad y estilo en un hog', 'view/img/piso1.jpg', 90, 5, 2, -0.5791, 38.9098, 9, 13, 1, 1, 0),
-(5, 'Adosado en Albaida', 1, 'Valencia', 'Disponible', 256000, 'Agradable adosado de 3 dormitorios con diseño contemporáneo. Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/adosado1.jpg', 120, 2, 3, -0.5756, 38.9122, 8, 14, 2, 1, 0),
+(5, 'Adosado en Albaida', 1, 'Valencia', 'Disponible', 256000, 'Agradable adosado de 3 dormitorios con diseño contemporáneo. Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/adosado1.jpg', 120, 2, 3, -0.5756, 38.9122, 8, 14, 2, 1, 3),
 (6, 'Duplex en Bocairent', 4, 'Valencia', 'Disponible', 156000, 'Agradable duplex de 3 dormitorios con diseño contemporáneo. Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/duplex1.jpg', 139, 4, 2, -0.572052, 38.774, 7, 14, 9, 1, 0),
-(7, 'Chalet en Fontanars', 2, 'Valencia', 'Disponible', 132500, 'Agradable Chalet de 8 dormitorios con diseño moderno. Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/chalet1.jpg', 380, 6, 3, -0.696433, 38.8054, 9, 14, 6, 1, 0),
-(8, 'Trastero \n economico', 2, 'Valencia', 'Disponible', 20000, 'Trastero espacioso en venta.', 'view/img/trastero1.jpg', 10, 1, 0, -0.711086, 38.8191, 9, 14, 7, 1, 0),
-(9, 'Trastero a reformar', 1, 'Valencia', 'Disponible', 20000, 'Trastero espacioso en venta.', 'view/img/trastero2.jpg', 10, 1, 0, -5.66861, 37.4057, 9, 14, 7, 1, 0),
-(10, 'Trastero comunitario', 2, 'Valencia', 'Disponible', 18000, 'Trastero espacioso en venta.', 'view/img/trastero3.jpg', 120, 1, 0, -0.712631, 38.8091, 9, 15, 7, 1, 0),
-(11, 'Trastero con posiblidades', 3, 'Valencia', 'Disponible', 8000, 'Trastero espacioso en venta.', 'view/img/trastero4.jpg', 13, 1, 0, -0.604614, 38.8536, 9, 16, 7, 1, 0),
-(12, 'Amplio trastero', 4, 'Valencia', 'Disponible', 2500, 'Trastero espacioso en venta.', 'view/img/trastero5.jpg', 20, 1, 0, -0.559496, 38.7621, 9, 14, 7, 1, 0),
-(13, 'Trastero en venta', 5, 'Valencia', 'Disponible', 12000, 'Trastero espacioso en venta.', 'view/img/trastero6.jpg', 12, 1, 0, -0.547625, 38.8004, 9, 15, 7, 1, 0),
-(14, 'Nave Industrial totalmente reformada.', 1, 'Valencia', 'Disponible', 200000, 'Venta: Nave Industrial 1000m², zona industrial prime.', 'view/img/nave1.jpg', 1000, 1, 0, -5.68336, 37.4113, 9, 18, 8, 1, 0),
-(15, 'Nave Industrial en poligono Alcocer', 2, 'Valencia', 'Disponible', 180000, 'Venta: Nave Industrial 1000m², zona industrial prime.', 'view/img/nave2.jpg', 1200, 1, 0, -0.700119, 38.8141, 9, 18, 8, 1, 0),
-(16, 'Nave Industrial a reformar', 3, 'Valencia', 'Disponible', 80000, 'Venta: Nave Industrial 1000m², zona industrial prime.', 'view/img/nave3.jpg', 1300, 1, 0, -0.603982, 38.8344, 9, 18, 8, 1, 0),
-(17, 'Nave Industrial con estanterias', 4, 'Valencia', 'Disponible', 75000, 'Venta: Nave Industrial 1000m², zona industrial prime.', 'view/img/nave4.jpg', 2000, 1, 0, -0.58356, 38.7708, 9, 18, 8, 1, 0),
-(18, 'Nave Industrial adaptada.', 5, 'Valencia', 'Disponible', 120000, 'Venta: Nave Industrial 1000m², zona industrial prime.', 'view/img/nave5.jpg', 1200, 1, 0, -0.538627, 38.7997, 9, 18, 8, 1, 0),
-(19, 'Chalet en la montaña', 1, 'Valencia', 'Disponible', 200000, 'Venta: Chalet 300m², jardín amplio.', 'view/img/chalet7.jpg', 100, 4, 3, -5.68396, 37.4038, 9, 14, 6, 1, 0),
-(20, 'Chalet en la playa', 2, 'Valencia', 'Disponible', 180000, 'Venta: Chalet 300m², jardín amplio.', 'view/img/chalet2.jpg', 120, 3, 2, -0.718478, 38.8207, 9, 15, 6, 1, 0),
-(21, 'Chalet con muchas posiblilidades', 3, 'Valencia', 'Disponible', 80000, 'Venta: Chalet 4 hab., piscina', 'view/img/chalet3.jpg', 130, 8, 0, -0.580634, 38.8544, 9, 14, 6, 1, 0),
-(22, 'Chalet con piscina', 4, 'Valencia', 'Disponible', 75000, 'Venta: Chalet 4 hab., piscina', 'view/img/chalet6.jpg', 200, 4, 4, -0.58378, 38.7743, 9, 14, 6, 1, 0),
-(23, 'Chalet de ensueño', 5, 'Valencia', 'Disponible', 120000, 'Venta: Chalet exclusivo, vistas panorámicas.', 'view/img/chalet5.jpg', 2500, 5, 3, -0.549881, 38.8068, 9, 15, 6, 1, 0),
-(24, 'Adosado en Albaida', 1, 'Valencia', 'Preventa', 248000, 'Agradable adosado de 5 dormitorios con diseño contemporáneo. Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/adosado2.jpg', 234, 5, 2, -0.5533, 38.9167, 7, 14, 2, 1, 0),
-(25, 'Piso en Agullent', 5, 'Valencia', 'Disponible', 134000, 'Encantador piso de 5 habitaciones con diseño moderno y luminoso. Cocina totalmente equipada, amplio salón con vistas panorámicas. Ubicación céntrica, cerca de servicios y transporte público. Ideal para aquellos que buscan comodidad.', 'view/img/piso2.jpg', 88, 3, 1, -0.544702, 38.8091, 7, 14, 1, 1, 0),
+(7, 'Chalet en Fontanars', 2, 'Valencia', 'Disponible', 132500, 'Agradable Chalet de 8 dormitorios con diseño moderno. Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/chalet1.jpg', 380, 6, 3, -0.696433, 38.8054, 9, 14, 6, 1, 3),
+(8, 'Trastero \n economico', 2, 'Valencia', 'Disponible', 20000, 'Trastero espacioso en venta.', 'view/img/trastero1.jpg', 10, 1, 0, -0.711086, 38.8191, 9, 14, 7, 1, 3),
+(9, 'Trastero a reformar', 1, 'Valencia', 'Disponible', 20000, 'Trastero espacioso en venta.', 'view/img/trastero2.jpg', 10, 1, 0, -5.66861, 37.4057, 9, 14, 7, 1, 3),
+(10, 'Trastero comunitario', 2, 'Valencia', 'Disponible', 18000, 'Trastero espacioso en venta.', 'view/img/trastero3.jpg', 120, 1, 0, -0.712631, 38.8091, 9, 15, 7, 1, 3),
+(11, 'Trastero con posiblidades', 3, 'Valencia', 'Disponible', 8000, 'Trastero espacioso en venta.', 'view/img/trastero4.jpg', 13, 1, 0, -0.604614, 38.8536, 9, 16, 7, 1, 3),
+(12, 'Amplio trastero', 4, 'Valencia', 'Disponible', 2500, 'Trastero espacioso en venta.', 'view/img/trastero5.jpg', 20, 1, 0, -0.559496, 38.7621, 9, 14, 7, 1, 3),
+(13, 'Trastero en venta', 5, 'Valencia', 'Disponible', 12000, 'Trastero espacioso en venta.', 'view/img/trastero6.jpg', 12, 1, 0, -0.547625, 38.8004, 9, 15, 7, 1, 3),
+(14, 'Nave Industrial totalmente reformada.', 1, 'Valencia', 'Disponible', 200000, 'Venta: Nave Industrial 1000m², zona industrial prime.', 'view/img/nave1.jpg', 1000, 1, 0, -5.68336, 37.4113, 9, 18, 8, 1, 3),
+(15, 'Nave Industrial en poligono Alcocer', 2, 'Valencia', 'Disponible', 180000, 'Venta: Nave Industrial 1000m², zona industrial prime.', 'view/img/nave2.jpg', 1200, 1, 0, -0.700119, 38.8141, 9, 18, 8, 1, 3),
+(16, 'Nave Industrial a reformar', 3, 'Valencia', 'Disponible', 80000, 'Venta: Nave Industrial 1000m², zona industrial prime.', 'view/img/nave3.jpg', 1300, 1, 0, -0.603982, 38.8344, 9, 18, 8, 1, 2),
+(17, 'Nave Industrial con estanterias', 4, 'Valencia', 'Disponible', 75000, 'Venta: Nave Industrial 1000m², zona industrial prime.', 'view/img/nave4.jpg', 2000, 1, 0, -0.58356, 38.7708, 9, 18, 8, 1, 3),
+(18, 'Nave Industrial adaptada.', 5, 'Valencia', 'Disponible', 120000, 'Venta: Nave Industrial 1000m², zona industrial prime.', 'view/img/nave5.jpg', 1200, 1, 0, -0.538627, 38.7997, 9, 18, 8, 1, 3),
+(19, 'Chalet en la montaña', 1, 'Valencia', 'Disponible', 200000, 'Venta: Chalet 300m², jardín amplio.', 'view/img/chalet7.jpg', 100, 4, 3, -5.68396, 37.4038, 9, 14, 6, 1, 2),
+(20, 'Chalet en la playa', 2, 'Valencia', 'Disponible', 180000, 'Venta: Chalet 300m², jardín amplio.', 'view/img/chalet2.jpg', 120, 3, 2, -0.718478, 38.8207, 9, 15, 6, 1, 3),
+(21, 'Chalet con muchas posiblilidades', 3, 'Valencia', 'Disponible', 80000, 'Venta: Chalet 4 hab., piscina', 'view/img/chalet3.jpg', 130, 8, 0, -0.580634, 38.8544, 9, 14, 6, 1, 3),
+(22, 'Chalet con piscina', 4, 'Valencia', 'Disponible', 75000, 'Venta: Chalet 4 hab., piscina', 'view/img/chalet6.jpg', 200, 4, 4, -0.58378, 38.7743, 9, 14, 6, 1, 3),
+(23, 'Chalet de ensueño', 5, 'Valencia', 'Disponible', 120000, 'Venta: Chalet exclusivo, vistas panorámicas.', 'view/img/chalet5.jpg', 2500, 5, 3, -0.549881, 38.8068, 9, 15, 6, 1, 3),
+(24, 'Adosado en Albaida', 1, 'Valencia', 'Preventa', 248000, 'Agradable adosado de 5 dormitorios con diseño contemporáneo. Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/adosado2.jpg', 234, 5, 2, -0.5533, 38.9167, 7, 14, 2, 1, 3),
+(25, 'Piso en Agullent', 5, 'Valencia', 'Disponible', 134000, 'Encantador piso de 5 habitaciones con diseño moderno y luminoso. Cocina totalmente equipada, amplio salón con vistas panorámicas. Ubicación céntrica, cerca de servicios y transporte público. Ideal para aquellos que buscan comodidad.', 'view/img/piso2.jpg', 88, 3, 1, -0.544702, 38.8091, 7, 14, 1, 1, 3),
 (26, 'Piso en Bocairent', 4, 'Valencia', 'Disponible', 98000, 'Piso de 2 habitaciones con diseño moderno y luminoso. Cocina totalmente equipada, amplio salón con vistas panorámicas. Ubicación céntrica, cerca de servicios y transporte público. Ideal para aquellos que buscan comodidad y estilo.', 'view/img/piso3.jpg', 88, 3, 2, -0.581386, 38.7626, 9, 14, 1, 1, 0),
-(27, 'Piso en Bocairent', 4, 'Valencia', 'Disponible', 72000, 'Encantador piso de 3 habitaciones con diseño moderno y luminoso. Cocina totalmente equipada, amplio salón con vistas panorámicas. Ubicación céntrica, cerca de servicios y transporte público. Ideal para aquellos que buscan comodidad.', 'view/img/piso4.jpg', 65, 2, 1, -0.563904, 38.7796, 8, 14, 1, 1, 0),
-(28, 'Piso unifamiliar', 2, 'Valencia', 'Disponible', 56000, 'Pequeño piso de 2 habitaciones con diseño moderno y luminoso. Cocina totalmente equipada, amplio salón con vistas panorámicas. Ubicación céntrica, cerca de servicios y transporte público. Ideal para aquellos que buscan comodidad.', 'view/img/piso5.jpg', 65, 2, 1, -0.699907, 38.8198, 9, 14, 1, 1, 0),
-(29, 'Adosado con Jaquzzi', 3, 'Valencia', 'Preventa', 248000, 'Agradable adosado de 5 dormitorios con piscina, Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/adosado3.jpg', 159, 3, 2, -0.592714, 38.8477, 7, 14, 2, 1, 0),
-(30, 'Adosado con piscina.', 8, 'Valencia', 'Preventa', 135000, 'Estupendo adosado de 5 dormitorios con piscina, Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/adosado4.jpg', 125, 3, 2, -0.505588, 39.0196, 7, 15, 2, 1, 0),
-(31, 'Adosado en Paterna', 6, 'Valencia', 'Preventa', 98000, 'Estupendo adosado de 5 dormitorios con piscina, Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/adosado5.jpg', 132, 4, 2, -0.411096, 39.5289, 7, 15, 2, 1, 0),
-(32, 'Local en Albaida', 1, 'Valencia', 'Disponible', 25000, 'Local de 200 metros con diseño moderno y luminoso. ', 'view/img/local1.jpg', 30, 1, 0, -5.67501, 37.407, 9, 13, 4, 1, 0),
-(33, 'Parcela en Albaida', 1, 'Valencia', 'Disponible', 25000, 'Parcela de 2000 metros con arboles', 'view/img/parcela1.jpg', 2000, 0, 0, -5.6778, 37.3892, 9, 14, 3, 1, 0),
-(34, 'Parcela en Fontanars', 2, 'Valencia', 'Disponible', 78000, 'Parcela de 1820 metros con arboles', 'view/img/parcela2.jpg', 1820, 0, 0, -0.691834, 38.8243, 9, 14, 3, 1, 0),
-(35, 'Parcela en Xativa', 8, 'Valencia', 'Disponible', 56800, 'Parcela de 2000 metros urbanizable', 'view/img/parcela3.jpg', 2000, 0, 0, -0.500858, 39.0078, 9, 14, 3, 1, 0),
-(36, 'Parcela en Valencia', 7, 'Valencia', 'Disponible', 135800, 'Parcela de 2000 metros urbanizable en el extraradio de Valencia', 'view/img/parcela4.jpg', 2000, 0, 0, -0.3633, 39.527, 9, 14, 3, 1, 0),
-(37, 'Parcela en Paterna', 6, 'Valencia', 'Disponible', 12500, 'Parcela de 500 metros urbanizable en con muchas posibilidades', 'view/img/parcela5.jpg', 2000, 0, 0, -0.425729, 39.5213, 9, 14, 3, 1, 0),
-(38, 'Local en Paterna', 6, 'Valencia', 'Disponible', 32000, 'Local de 200 metros en zona comercial.', 'view/img/local2.jpg', 200, 1, 0, -0.411585, 39.5244, 9, 13, 4, 1, 0),
-(39, 'Local en Ontinyent', 3, 'Valencia', 'Disponible', 56000, 'Local de 200 en centro comercial', 'view/img/local3.jpg', 200, 1, 0, -0.582358, 38.8596, 9, 13, 4, 1, 0),
-(40, 'Local en Valencia', 7, 'Valencia', 'Disponible', 56000, 'Local de 200m2 en centro comercial', 'view/img/local4.jpg', 200, 1, 0, -0.351837, 39.5274, 9, 15, 4, 1, 0),
-(41, 'Local comercial', 7, 'Valencia', 'Disponible', 118000, 'Local de 200m2 en el centro de Valencia, apto para talleres de motos', 'view/img/local5.jpg', 90, 1, 0, -0.348506, 39.5091, 9, 15, 4, 1, 0),
-(42, 'Chalet con muchas posiblilidades', 3, 'Valencia', 'Disponible', 80000, 'Venta: Chalet 4 hab., piscina', 'view/img/chalet4.jpg', 130, 8, 0, -0.576871, 38.8254, 9, 14, 6, 1, 0),
-(43, 'Duplex a estrenar', 3, 'Valencia', 'Disponible', 320000, 'Agradable duplex de 3 dormitorios con diseño contemporáneo. Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/duplex2.jpg', 157, 3, 2, -0.56583, 38.8298, 7, 14, 9, 1, 0),
-(44, 'Duplex en Valencia', 7, 'Valencia', 'Disponible', 211500, 'Espectacular duplex de 3 dormitorios con diseño contemporáneo. Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/duplex3.jpg', 132, 3, 2, -0.308383, 39.5166, 7, 16, 9, 1, 0),
-(45, 'Espectacular Duplex', 7, 'Valencia', 'Disponible', 211500, 'Magnifico duplex de 3 dormitorios con diseño contemporáneo. Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/duplex4.jpg', 132, 3, 2, -0.376023, 39.5245, 8, 15, 9, 1, 0),
-(46, 'Duplex en Fontanars', 2, 'Valencia', 'Disponible', 211500, 'Duplex con cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/duplex5.jpg', 132, 3, 2, -0.705587, 38.8177, 8, 14, 9, 1, 0),
-(47, 'Duplex en Xativa', 8, 'Valencia', 'Disponible', 218000, 'Duplex con cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/duplex6.jpg', 156, 4, 3, -0.519411, 39.0169, 7, 14, 9, 1, 0),
-(48, 'Adosado unifamiliar.', 7, 'Valencia', 'Preventa', 13200, 'Estupendo adosado de 5 dormitorios con piscina, Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/adosado3.jpg', 150, 3, 2, -0.505568, 39.0196, 9, 14, 2, 1, 0),
-(59, 'Piso amueblado.', 7, 'Valencia', 'En Venta', 95000, 'Acogedor piso en el centro de la ciudad. Totalmente amueblado y con buenas conexiones de transporte público.', 'view/img/piso1.jpg', 80, 2, 1, -0.375177, 39.4699, 7, 14, 1, 1, 0),
-(60, 'Chalet con jardin.', 7, 'Valencia', 'En Venta', 300000, 'Amplio chalet con jardín y piscina privada. Zona tranquila y bien comunicada.', 'view/img/chalet1.jpg', 200, 4, 3, -0.398358, 39.4659, 7, 14, 6, 1, 0),
-(61, 'Adosado con garaje.', 7, 'Valencia', 'En Venta', 180000, 'Acogedor adosado con terraza y garaje. Cerca de colegios y supermercados.', 'view/img/adosado1.jpg', 120, 3, 2, -0.365857, 39.4592, 7, 15, 2, 1, 0),
-(62, 'Piso en el extraradio', 7, 'Valencia', 'En Venta', 105000, 'Piso luminoso con balcón en zona residencial. Cercano a parques y servicios.', 'view/img/piso2.jpg', 90, 3, 2, -0.373182, 39.4754, 7, 15, 1, 1, 0),
-(63, 'Chalet rustico.', 7, 'Valencia', 'En Venta', 320000, 'Chalet moderno con amplios espacios interiores y vistas panorámicas. Ideal para familias.', 'view/img/chalet2.jpg', 220, 5, 4, -0.412836, 39.4718, 7, 14, 6, 1, 0),
-(64, 'Adosado con barbacoa.', 7, 'Valencia', 'En Venta', 195000, 'Adosado luminoso con patio y zona de barbacoa. Bien comunicado y cerca de comercios.', 'view/img/adosado2.jpg', 130, 4, 3, -0.361936, 39.4567, 8, 17, 2, 1, 0),
-(65, 'Piso en el centro', 7, 'Valencia', 'En Venta', 98000, 'Piso reformado con cocina equipada. Cerca de transporte público y zonas de ocio.', 'view/img/piso3.jpg', 85, 2, 1, -0.389225, 39.4782, 9, 17, 1, 1, 0);
+(27, 'Piso en Bocairent', 4, 'Valencia', 'Disponible', 72000, 'Encantador piso de 3 habitaciones con diseño moderno y luminoso. Cocina totalmente equipada, amplio salón con vistas panorámicas. Ubicación céntrica, cerca de servicios y transporte público. Ideal para aquellos que buscan comodidad.', 'view/img/piso4.jpg', 65, 2, 1, -0.563904, 38.7796, 8, 14, 1, 1, 3),
+(28, 'Piso unifamiliar', 2, 'Valencia', 'Disponible', 56000, 'Pequeño piso de 2 habitaciones con diseño moderno y luminoso. Cocina totalmente equipada, amplio salón con vistas panorámicas. Ubicación céntrica, cerca de servicios y transporte público. Ideal para aquellos que buscan comodidad.', 'view/img/piso5.jpg', 65, 2, 1, -0.699907, 38.8198, 9, 14, 1, 1, 3),
+(29, 'Adosado con Jaquzzi', 3, 'Valencia', 'Preventa', 248000, 'Agradable adosado de 5 dormitorios con piscina, Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/adosado3.jpg', 159, 3, 2, -0.592714, 38.8477, 7, 14, 2, 1, 3),
+(30, 'Adosado con piscina.', 8, 'Valencia', 'Preventa', 135000, 'Estupendo adosado de 5 dormitorios con piscina, Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/adosado4.jpg', 125, 3, 2, -0.505588, 39.0196, 7, 15, 2, 1, 3),
+(31, 'Adosado en Paterna', 6, 'Valencia', 'Preventa', 98000, 'Estupendo adosado de 5 dormitorios con piscina, Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/adosado5.jpg', 132, 4, 2, -0.411096, 39.5289, 7, 15, 2, 1, 3),
+(32, 'Local en Albaida', 1, 'Valencia', 'Disponible', 25000, 'Local de 200 metros con diseño moderno y luminoso. ', 'view/img/local1.jpg', 30, 1, 0, -5.67501, 37.407, 9, 13, 4, 1, 3),
+(33, 'Parcela en Albaida', 1, 'Valencia', 'Disponible', 25000, 'Parcela de 2000 metros con arboles', 'view/img/parcela1.jpg', 2000, 0, 0, -5.6778, 37.3892, 9, 14, 3, 1, 3),
+(34, 'Parcela en Fontanars', 2, 'Valencia', 'Disponible', 78000, 'Parcela de 1820 metros con arboles', 'view/img/parcela2.jpg', 1820, 0, 0, -0.691834, 38.8243, 9, 14, 3, 1, 3),
+(35, 'Parcela en Xativa', 8, 'Valencia', 'Disponible', 56800, 'Parcela de 2000 metros urbanizable', 'view/img/parcela3.jpg', 2000, 0, 0, -0.500858, 39.0078, 9, 14, 3, 1, 3),
+(36, 'Parcela en Valencia', 7, 'Valencia', 'Disponible', 135800, 'Parcela de 2000 metros urbanizable en el extraradio de Valencia', 'view/img/parcela4.jpg', 2000, 0, 0, -0.3633, 39.527, 9, 14, 3, 1, 3),
+(37, 'Parcela en Paterna', 6, 'Valencia', 'Disponible', 12500, 'Parcela de 500 metros urbanizable en con muchas posibilidades', 'view/img/parcela5.jpg', 2000, 0, 0, -0.425729, 39.5213, 9, 14, 3, 1, 1),
+(38, 'Local en Paterna', 6, 'Valencia', 'Disponible', 32000, 'Local de 200 metros en zona comercial.', 'view/img/local2.jpg', 200, 1, 0, -0.411585, 39.5244, 9, 13, 4, 1, 3),
+(39, 'Local en Ontinyent', 3, 'Valencia', 'Disponible', 56000, 'Local de 200 en centro comercial', 'view/img/local3.jpg', 200, 1, 0, -0.582358, 38.8596, 9, 13, 4, 1, 1),
+(40, 'Local en Valencia', 7, 'Valencia', 'Disponible', 56000, 'Local de 200m2 en centro comercial', 'view/img/local4.jpg', 200, 1, 0, -0.351837, 39.5274, 9, 15, 4, 1, 3),
+(41, 'Local comercial', 7, 'Valencia', 'Disponible', 118000, 'Local de 200m2 en el centro de Valencia, apto para talleres de motos', 'view/img/local5.jpg', 90, 1, 0, -0.348506, 39.5091, 9, 15, 4, 1, 3),
+(42, 'Chalet con muchas posiblilidades', 3, 'Valencia', 'Disponible', 80000, 'Venta: Chalet 4 hab., piscina', 'view/img/chalet4.jpg', 130, 8, 0, -0.576871, 38.8254, 9, 14, 6, 1, 3),
+(43, 'Duplex a estrenar', 3, 'Valencia', 'Disponible', 320000, 'Agradable duplex de 3 dormitorios con diseño contemporáneo. Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/duplex2.jpg', 157, 3, 2, -0.56583, 38.8298, 7, 14, 9, 1, 1),
+(44, 'Duplex en Valencia', 7, 'Valencia', 'Disponible', 211500, 'Espectacular duplex de 3 dormitorios con diseño contemporáneo. Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/duplex3.jpg', 132, 3, 2, -0.308383, 39.5166, 7, 16, 9, 1, 2),
+(45, 'Espectacular Duplex', 7, 'Valencia', 'Disponible', 211500, 'Magnifico duplex de 3 dormitorios con diseño contemporáneo. Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/duplex4.jpg', 132, 3, 2, -0.376023, 39.5245, 8, 15, 9, 1, 3),
+(46, 'Duplex en Fontanars', 2, 'Valencia', 'Disponible', 211500, 'Duplex con cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/duplex5.jpg', 132, 3, 2, -0.705587, 38.8177, 8, 14, 9, 1, 3),
+(47, 'Duplex en Xativa', 8, 'Valencia', 'Disponible', 218000, 'Duplex con cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/duplex6.jpg', 156, 4, 3, -0.519411, 39.0169, 7, 14, 9, 1, 3),
+(48, 'Adosado unifamiliar.', 7, 'Valencia', 'Preventa', 13200, 'Estupendo adosado de 5 dormitorios con piscina, Cocina equipada, luminoso salón y patio privado. Ubicación conveniente cerca de servicios y transporte. Perfecto para aquellos que buscan confort y estilo en un hogar adosado moderno.', 'view/img/adosado3.jpg', 150, 3, 2, -0.505568, 39.0196, 9, 14, 2, 1, 3),
+(59, 'Piso amueblado.', 7, 'Valencia', 'En Venta', 95000, 'Acogedor piso en el centro de la ciudad. Totalmente amueblado y con buenas conexiones de transporte público.', 'view/img/piso1.jpg', 80, 2, 1, -0.375177, 39.4699, 7, 14, 1, 1, 3),
+(60, 'Chalet con jardin.', 7, 'Valencia', 'En Venta', 300000, 'Amplio chalet con jardín y piscina privada. Zona tranquila y bien comunicada.', 'view/img/chalet1.jpg', 200, 4, 3, -0.398358, 39.4659, 7, 14, 6, 1, 3),
+(61, 'Adosado con garaje.', 7, 'Valencia', 'En Venta', 180000, 'Acogedor adosado con terraza y garaje. Cerca de colegios y supermercados.', 'view/img/adosado1.jpg', 120, 3, 2, -0.365857, 39.4592, 7, 15, 2, 1, 3),
+(62, 'Piso en el extraradio', 7, 'Valencia', 'En Venta', 105000, 'Piso luminoso con balcón en zona residencial. Cercano a parques y servicios.', 'view/img/piso2.jpg', 90, 3, 2, -0.373182, 39.4754, 7, 15, 1, 1, 3),
+(63, 'Chalet rustico.', 7, 'Valencia', 'En Venta', 320000, 'Chalet moderno con amplios espacios interiores y vistas panorámicas. Ideal para familias.', 'view/img/chalet2.jpg', 220, 5, 4, -0.412836, 39.4718, 7, 14, 6, 1, 3),
+(64, 'Adosado con barbacoa.', 7, 'Valencia', 'En Venta', 195000, 'Adosado luminoso con patio y zona de barbacoa. Bien comunicado y cerca de comercios.', 'view/img/adosado2.jpg', 130, 4, 3, -0.361936, 39.4567, 8, 17, 2, 1, 3),
+(65, 'Piso en el centro', 7, 'Valencia', 'En Venta', 98000, 'Piso reformado con cocina equipada. Cerca de transporte público y zonas de ocio.', 'view/img/piso3.jpg', 85, 2, 1, -0.389225, 39.4782, 9, 17, 1, 1, 3);
 
 --
 -- Índices para tablas volcadas
@@ -663,7 +714,7 @@ ALTER TABLE `type`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+  MODIFY `id_user` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
 -- AUTO_INCREMENT de la tabla `viviendas`

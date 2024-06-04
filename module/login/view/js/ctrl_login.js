@@ -49,7 +49,7 @@ function login() {
 
                     $('.log-icon').empty();
                     $('#des_inf_user').empty();
-                    $('<img src=' + data.avatar + '"alt="Robot">').appendTo('.log-icon');
+                    $('<img src="' + data.avatar + '">').appendTo('.log-icon');
                     // $('<p></p>').attr('id', data.username).appendTo('#des_inf_user')
                     $('#des_inf_user').text(data.username);
 
@@ -92,10 +92,11 @@ function key_login() {
         login();
     });
 
-    $('#logout_btn').on('click', function (e) {
+    $('#logout').on('click', function (e) {
+        alert('hola');
         e.preventDefault();
         toastr.success("Logout exitoso");
-        setTimeout('logout(); ', 1000);
+        setTimeout(logout, 1000); //llama la funcion logout
     });
 
     $('#google').on('click', function (e) {
@@ -434,6 +435,7 @@ function social_login(param) {  // aqui recibe el tipo de red social GOOGLE o GI
                 ajaxPromise(friendlyURL("?module=login&op=social_login"), 'POST', 'JSON', { 'id': result.user.uid, 'username': username[0], 'email': result.user.email, 'avatar': result.user.photoURL, 'tipo_login': username[1] })
 
                     .then(function (data) {
+
                         data = JSON.parse(data);
                         //console.log(data);
                         localStorage.setItem("accestoken", data.accestoken);
@@ -443,7 +445,7 @@ function social_login(param) {  // aqui recibe el tipo de red social GOOGLE o GI
                         toastr.success("Inicio de sesión realizado");
                         $('.log-icon').empty();
                         $('#des_inf_user').empty();
-                        $('<img src=' + data.avatar + '"alt="Robot">').appendTo('.log-icon');
+                        $('<img src="' + data.avatar + '">').appendTo('.log-icon');
                         $('<p></p>').attr('id', data.username).appendTo('#des_inf_user')
 
                         setTimeout('window.location.href = friendlyURL("?module=shop&op=view")', 6000);

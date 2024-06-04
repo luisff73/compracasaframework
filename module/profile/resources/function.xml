@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<functions>
+    <function>
+        <name>view</name>
+        <uri>view</uri>
+    </function>
+    <function>
+        <name>agrega_carrito</name>
+        <uri>agrega_carrito</uri>
+    </function>
+    <function>
+        <name>lista_carrito</name>
+        <uri>lista_carrito</uri>
+    </function>
+    <function>
+        <name>borra_vivienda</name>
+        <uri>borra_vivienda</uri>
+    </function>
+    <function>
+        <name>cierra_carrito</name>
+        <uri>cierra_carrito</uri>
+    </function>
+    <function>
+        <name>lista_historico</name>
+        <uri>lista_historico</uri>
+    </function>
+
+
+</functions>

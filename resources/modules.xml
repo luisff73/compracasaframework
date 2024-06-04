@@ -32,4 +32,8 @@
         <name>register</name>
         <uri>register</uri>
     </module>
+    <module>
+        <name>profile</name>
+        <uri>profile</uri>
+    </module>
 </modules>

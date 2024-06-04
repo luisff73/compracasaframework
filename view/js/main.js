@@ -42,9 +42,9 @@ function load_menu() {
         ajaxPromise(friendlyURL('?module=login&op=data_user'), 'POST', 'JSON', { 'accestoken': accestoken })
 
             .then(function (data) {
-                //console.log('valor de data en main js: ');
-                //console.log(data);
-                if (data.type_user == "client") {
+                console.log('valor de data en main js: ');
+                console.log(data[0].username);
+                if (data[0].type_user == "client") {
                     console.log("Cliente logeado");
                     $('#login-register').empty();
 
@@ -55,10 +55,9 @@ function load_menu() {
 
                 $('.log-icon').empty();
                 $('#des_inf_user').empty();
-                //$('login-register').empty();
-                $('<img src=' + data.avatar + '"alt="Robot">').appendTo('.log-icon');
-                $('<p></p>').attr({ 'id': data.username }).appendTo('#des_inf_user')
-                    .html('<a>' + data.username + '<a/>&nbsp;&nbsp;' +
+                $('<img src=' + data[0].avatar + '">').appendTo('.log-icon');
+                $('<p></p>').attr({ 'id': data[0].username }).appendTo('#des_inf_user')
+                    .html('<a>' + data[0].username + '<a/>&nbsp;&nbsp;' +
                         '<a id="logout"><i id="icon-logout" class="fa-solid fa-right-from-bracket"></i></a>'
                     )
 
@@ -68,9 +67,9 @@ function load_menu() {
                 //console.log(data);
             });
     } else {
-        //console.log("No hay token disponible");
         $('#des_inf_user').hide();
-        $('.log-icon').empty();
+        //$('.log-icon').empty();
+        $('.log-icon').hide();
         $('<a href="?module=login&op=login"><i id="col-ico" class="fa-solid fa-user fa-2xl"></i></a>').appendTo('.log-icon'); //añadimos el icono de login
 
     }
@@ -78,15 +77,14 @@ function load_menu() {
 
 
 // Remove localstorage('page') with click in shop
-function click_shop() {
-    $(document).on('click', '#btn_carrito', function () {
-        // localStorage.removeItem('page');
-        // localStorage.removeItem('total_prod');
+// function click_shop() {
+//     $(document).on('click', '#c', function () {
+//         // localStorage.removeItem('page');
+//         // localStorage.removeItem('total_prod');
+//     });
+// }
 
 
-
-    });
-}
 
 /* FRIENDLY URL */
 function friendlyURL(url) {
@@ -111,7 +109,11 @@ function friendlyURL(url) {
 
 
 $(document).ready(function () {
+    $('body').on('click', '#logout', function () {
+        logout();
+    });
+
     load_menu();
-    click_shop();
+    //click_shop();
 
 });
