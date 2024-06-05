@@ -20,8 +20,9 @@
         
 
         function lista_facturas() {   
-            echo json_encode ($_POST['username']) ;                                                           
-            //echo json_encode(common::load_model('profile_model', 'get_lista_facturas',$_POST['username'])); 
+            //echo json_encode ($_POST['username']) ;                                                           
+             echo json_encode(common::load_model('profile_model', 'get_lista_facturas', $_POST['username']));
+
         }
 
         // function borra_vivienda() {      

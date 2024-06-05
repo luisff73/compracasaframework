@@ -15,9 +15,7 @@
 		}
         
         function view() {
-            //echo ('Hola view'); // hay que practicar esto
-            //echo '<p>Hola view</p>';  // hay que practicar esto
-            //echo ( VIEW_PATH_CART . 'cart.html');
+
             common::load_view('top_page_cart.html', VIEW_PATH_CART . 'cart.html'); //cargamos la vista del carrito
         }
         

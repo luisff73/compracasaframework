@@ -36,15 +36,18 @@
 
 
 // }
+// $(document).ready(function () {
 
-function lista_factura() {
+//     lista_profile();
+// });
+
+function lista_profile() {
     $(document).on('click', '#des_inf_user', function () {
         let username = localStorage.getItem('username');
         //let total_facturas = 0
 
 
-
-        ajaxPromise(friendlyURL("?module=profile&op=listafacturas"), 'POST', 'JSON', { 'username': username })
+        ajaxPromise(friendlyURL("?module=profile&op=lista_facturas"), 'POST', 'JSON', { 'username': username })
             .then(function (data) {
                 $('#facturas').empty();
                 for (row in data) {
@@ -63,8 +66,8 @@ function lista_factura() {
                     //$('<td class="facturas-estado"></td>').text(data[row].status).appendTo(fila4);
                     $('<td class="facturas-estado"></td>').text("Compra finalizada").appendTo(fila4);
                     $('<td class="facturas-actions"></td>')
-                        .append('<button class="increment-button" onclick="factura_pdf(\'' + data[row].id_vivienda + '\')">Imprime Factura</button>')
-                        .append('<button class="decrement-button" onclick="factura_qr(\'' + data[row].id_vivienda + '\')">Genera QR</button>')
+                        .append('<button class="pdf_button" onclick="factura_pdf(\'' + data[row].id_vivienda + '\')">Imprime Factura</button>')
+                        .append('<button class="qr_button" onclick="factura_qr(\'' + data[row].id_vivienda + '\')">Genera QR</button>')
                         // .append('<button class="delete-button" onclick="borra_compra(\'' + data[row].id_vivienda + '\', \'' + data[row].username + '\')">Borrar</button>')
                         .appendTo(fila4);
                 }
@@ -118,8 +121,5 @@ function friendlyURL(url) {
 }
 
 
-$(document).ready(function () {
 
-    lista_factura();
-});
 

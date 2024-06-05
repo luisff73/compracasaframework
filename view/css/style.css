@@ -1178,47 +1178,82 @@ footer {
   color: rgb(232, 145, 145)
 }
 
+/* Estilos para la tabla de facturas */
 #facturas {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  color: #4a4a4d;
-  font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: 80%;
+  border-collapse: collapse;
+  background-color: #e4e4e4;
+  border: 2 px solid #1a1a1a;
 }
 
 #facturas tr.facturas-row {
-  background: #f8f8f8;
-  border-top: 1px solid #e6e6e6;
-  border-radius: 3px;
+  background-color: #ffffff;
+
+  border-radius: 8px;
+
 }
 
 #facturas td {
-  padding: 10px;
+  border: 2 px solid #1a1a1a;
   vertical-align: middle;
+
+}
+
+#facturas th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #525151;
+  color: white;
+  border: 2 px solid #1a1a1a;
 }
 
 #facturas td.facturas-img img {
-  width: 50px;
-  height: 50px;
-  border-radius: 20%;
+  width: 150px;
+  height: 150px;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 #facturas td.facturas-name,
 #facturas td.facturas-quantity,
 #facturas td.facturas-price,
 #facturas td.facturas-estado {
-  color: #4a4a4d;
+  color: #333333;
+  font-weight: 400;
 }
 
 #facturas td.facturas-actions button {
-  background-color: #e6e6e6;
-  color: #4a4a4d;
+  background-color: #e0e0e0;
+  color: #333333;
   border: none;
-  border-radius: 3px;
-  padding: 5px 10px;
-  margin-right: 5px;
+  border-radius: 4px;
+  padding: 8px 16px;
+  margin-right: 8px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  width: 50%;
+
 }
 
 #facturas td.facturas-actions button:hover {
-  background-color: #d4d4d4;
+  background-color: #d0d0d0;
+}
+
+.facturas-estado {
+  font-weight: bold;
+  font-size: 16px;
+
+
+}
+
+#facturas td.facturas-actions button.pdf_button,
+#facturas td.facturas-actions button.qr_button {
+  font-size: 16px;
+
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  margin: 0 5px;
 }
