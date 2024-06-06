@@ -1,8 +1,6 @@
 <?php
 // Incluir la biblioteca TCPDF
-require_once('utils/vendor/autoload.php');
-
-require_once('vendor/autoload.php');
+require_once("vendor/autoload.php");
 
 // Crear un nuevo documento PDF
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -10,7 +8,7 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 // Establecer la información del documento
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Tu Nombre');
-$pdf->SetTitle('PDF de Ejemplo');
+$pdf->SetTitle('Factura de compra');
 $pdf->SetSubject('Tutorial de TCPDF');
 $pdf->SetKeywords('TCPDF, PDF, ejemplo, prueba, guía');
 
