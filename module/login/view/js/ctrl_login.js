@@ -498,55 +498,34 @@ function load_content() {
         localStorage.setItem('token_email', path[4]);
 
     } else if (path[3] === 'verify_email') {
+        alert(path[4]);
         var token_email = path[4];
         console.log('token_email en verify_email: ' + token_email);
 
-        //ajaxPromise(friendlyURL("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': $token_email }))
-        ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': token_email })
-            // $.ajax({
-            //     type: "POST",
-            //     dataType: "JSON",
-            //     url: "?module=login&op=verify_email",
-            //     data: { 'token_email': token_email },
-            // })
+        //ajaxPromise(friendlyURL("?module=login&op=verify_email", 'POST', 'JSON', { 'token_email': token_email }))
+        //ajaxPromise("?module=login&op=verify_email", 'POST', 'JSON', { token_email: path[4] })
+        ajaxPromise('index.php?module=login&op=verify_email', 'POST', 'JSON', { 'token_email': path[4] })
 
-            // $.ajax({
-            //     type: "POST",
-            //     dataType: "JSON",
-            //     url: "?module=login&op=verify_email",
-            //     data: { 'token_email': token_email },
-            // })
-
-
-            .then(function (response) {//data es lo que devuelve el php
-                //.then(function (data) {//data es lo que devuelve el php
-                console.log('Data: ', response);
+            .then(function (data) {//data es lo que devuelve el php
+                console.log('data en verify_email: ' + data);
                 // return;
-
-                // console.log('data en verify_email: ' + data);
-
                 toastr.options.timeOut = 3000;
-                toastr.success('Email verified');
+                toastr.success('Email verificado');
                 //setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 4000);
             })
-            .catch(function (response, jqXHR, textStatus, errorThrow, url, type, dataType) {
-                console.log('data en verify_email error: ' + response);
-                console.log(JSON.stringify(response));
-                console.log("Error en el promise, Valor de Url: ", url);
-                console.log("VALOR DE sType: ", type);
-                console.log("VALOR DE sTdata: ", dataType);
-                // console.log("Importante Respuesta del servidor en el promise responsetext : ", jqXHR.responseText);
-                console.log("Código de estado HTTP: ", jqXHR.status);
-                console.log("Descripción del estado HTTP: ", jqXHR.statusText);
-                console.log("Cuerpo de la respuesta como JSON: ", jqXHR.responseJSON);
-                console.log("Tipo de error: ", textStatus, errorThrown);
-                console.log(errorThrow);
-
+            .catch(function (data, jqXHR, textStatus, errorThrow, url, type, dataType) {
+                console.log('ERROR data en verify_email: ' + data);
+                // //console.log('jqXHR.responseText: ' + jqXHR.responseText);
+                // console.log('textStatus: ' + textStatus);
+                // console.log('errorThrow: ' + errorThrow);
+                // console.log('url: ' + url);
+                // console.log('type: ' + type);
+                // console.log('dataType: ' + dataType);
                 toastr.options.timeOut = 3000;
                 toastr.error('Email no verificado');
             });
 
-    } else if (path[4] === 'view') {
+    } else if (path[3] === 'view') {
         $(".login-wrap").show();
         $(".forget_html").hide();
     } else if (path[3] === 'recover_view') {

@@ -4,7 +4,7 @@
     require_once(SITE_ROOT . 'utils/ultrmsg.inc.php');
     
     spl_autoload_extensions('.php,.inc.php,.class.php,.class.singleton.php');
-    spl_autoload_register('loadClasses');
+    spl_autoload_register('loadClasses'); 
     
     function loadClasses($className) {
         $breakClass = explode('_', $className); // divide la variable $classname en un array utilizando el elemento delimitador "_"

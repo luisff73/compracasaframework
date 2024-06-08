@@ -453,6 +453,15 @@ footer {
 
 .content-img-details {
   width: 150px;
+  height: 150px;
+}
+
+.content-img-details img {
+  max-width: 100%;
+  max-height: 300px;
+  /* Ajusta este valor según tus necesidades */
+  object-fit: contain;
+  /* Mantiene la relación de aspecto de la imagen */
 }
 
 .button {
@@ -1027,10 +1036,20 @@ footer {
   align-items: center;
 }
 
-#date_img {
-  width: 500px;
+.date_img {
+  max-width: 300px;
+  /* Ajusta este valor según tus necesidades */
+  max-height: 300px;
+  /* Ajusta este valor según tus necesidades */
+  margin: 0 auto;
+}
+
+
+
+.date_img_dentro {
+  width: 100px;
+  height: 100px;
   display: flex;
-  align-items: center;
   justify-content: center;
   align-items: center;
 }

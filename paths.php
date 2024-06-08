@@ -50,8 +50,7 @@
     define('BLL_SEARCH', SITE_ROOT . 'module/search/model/BLL/');
     define('MODEL_SEARCH', SITE_ROOT . 'module/search/model/model/');
     define('JS_VIEW_SEARCH', SITE_PATH . 'module/search/view/js/');
-    define ('VIEW_PATH_SEARCH', SITE_ROOT . 'module/search/view/');
-    //define ('VIEW_PATH_SEARCH', SITE_ROOT . 'module/search/');
+
 
     //MODEL_SHOP
     define('UTILS_SHOP', SITE_ROOT . 'module/shop/utils/');
@@ -82,7 +81,6 @@
     define('MODEL_CART', SITE_ROOT . 'module/cart/model/model/');
     define('JS_VIEW_CART', SITE_PATH . 'module/cart/view/js/');
     define ('VIEW_PATH_CART', SITE_ROOT . 'module/cart/view/');
-    //define ('VIEW_PATH_CART', SITE_ROOT . 'module/cart/');
     
     //MODEL_LOGIN
     define('UTILS_LOGIN', SITE_ROOT . 'module/login/utils/');
@@ -91,7 +89,6 @@
     define('MODEL_LOGIN', SITE_ROOT . 'module/login/model/model/');
     define('JS_VIEW_LOGIN', SITE_PATH . 'module/login/view/js/');
     define ('VIEW_PATH_LOGIN', SITE_ROOT . 'module/login/view/');
-    //define ('VIEW_PATH_LOGIN', SITE_ROOT . 'module/login/');
 
     //MODEL_PROFILE
     define('UTILS_PROFILE', SITE_ROOT . 'module/profile/utils/');

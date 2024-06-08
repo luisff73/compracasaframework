@@ -11,6 +11,7 @@ function protecturl() {
         })
         .catch(function () { console.log("Usuario anonimo") });
 }
+
 function control_activity() {
     //ESTA FUNCION RECOGERA EL TOKEN Y COMPROBARA SI EL USUARIO ESTA ACTIVO O INACTIVO
     var accestoken = localStorage.getItem('accestoken');
@@ -55,7 +56,7 @@ $(document).ready(function () {
 
     //controal activity se ejecuta cada xxxx tiempo para comprobar si el usuario esta activo 
     //o inactivo dependiendo del valor que devuelva el php (alli definimos el tiempo de inactividad que queramos)
-    setInterval(function () { control_activity() }, 10000); //10min= 600000
+    setInterval(function () { control_activity() }, 600000); //10min= 600000
 
     // esta funcion se encarga de comprobar que el usuario que esta logeado 
     // es el mismo que el que esta en la session (comparando el token del 

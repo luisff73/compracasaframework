@@ -34,7 +34,8 @@ function load_menu() {
     document.getElementById('shop-link').href = friendlyURL("?module=shop&op=view");
     document.getElementById('login-register').href = friendlyURL("?module=login&op=view");
 
-    document.getElementById('btn_carrito').href = friendlyURL("?module=cart&op=view")
+    //document.getElementById('btn_carrito').href = friendlyURL("?module=cart&op=view")
+    document.getElementById('btn_carrito').href = friendlyURL("?module=cart")
 
 
     var accestoken = localStorage.getItem('accestoken');

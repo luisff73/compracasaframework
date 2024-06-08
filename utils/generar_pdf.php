@@ -39,7 +39,7 @@ $pdf->AddPage();
 // Establecer algún contenido para imprimir
 $html = <<<EOD
 <h1>¡Bienvenido a TCPDF!</h1>
-<i>Este es un ejemplo de contenido HTML</i>
+<i>Este es ZXVZXCVXZVZXCVun ejemplo de contenido HTML</i>
 <p>Puedes poner cualquier contenido HTML aquí.</p>
 EOD;
 

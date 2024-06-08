@@ -335,7 +335,10 @@ function loadDetails(id_vivienda) {
                 fade: true,
                 cssEase: 'linear',
                 arrows: true,
+
             });
+
+
             more_viviendas_related(data[0].id_city)// PASAMOS EL ID DE LA CIUDAD PARA QUE NOS DEVUELVA LOS INMUEBLES RELACIONADOS
 
             mapBox(data[0]);
