@@ -452,8 +452,8 @@ footer {
 /* //añadido luis */
 
 .content-img-details {
-  width: 150px;
-  height: 150px;
+  width: 350px;
+  height: 350px;
 }
 
 .content-img-details img {
@@ -1036,7 +1036,7 @@ footer {
   align-items: center;
 }
 
-.date_img {
+.imagen_detalle {
   max-width: 300px;
   /* Ajusta este valor según tus necesidades */
   max-height: 300px;
@@ -1046,7 +1046,7 @@ footer {
 
 
 
-.date_img_dentro {
+.imagen_detalle_dentro {
   width: 100px;
   height: 100px;
   display: flex;
