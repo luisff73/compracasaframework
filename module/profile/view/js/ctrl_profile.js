@@ -22,14 +22,14 @@ function lista_profile() {
                     let fila3 = $('<tr class="facturas-row"></tr>').appendTo("#facturas");
                     $('<td class="facturas-price" colspan="2"></td>').text("Total operación : " + data[row].vivienda_price + " €").appendTo(fila3);
 
-                    let fila4 = $('<tr class="facturas-row" ></tr>').appendTo("#facturas");
+                    let fila4 = $('<tr class="facturas-row" contador="' + data[row].contador + '"></tr>').appendTo("#facturas");
                     //$('<td class="facturas-estado"></td>').text(data[row].status).appendTo(fila4);
                     //$('<td class="facturas-estado"rowspan="2"></td>').text("Compra finalizada").appendTo(fila4);
                     $('<td class="facturas-numero"></td>').text("Factura Numero : " + data[row].contador).appendTo(fila4);
 
                     $('<td class="facturas-actions"></td>')
-                        .append('<button class="pdf_button" onclick="factura_pdf(\'' + data[row].id_vivienda + '\')">Imprime Factura</button>')
-                        .append('<button class="qr_button" onclick="factura_qr(\'' + data[row].id_vivienda + '\')">Genera QR</button>')
+                        .append('<button class="pdf_button" onclick="factura_pdf(\'' + data[row].contador + '\')">Imprime Factura</button>')
+                        .append('<button class="qr_button" onclick="factura_qr(\'' + data[row].contador + '\')">Genera QR</button>')
                         // .append('<button class="delete-button" onclick="borra_compra(\'' + data[row].id_vivienda + '\', \'' + data[row].username + '\')">Borrar</button>')
                         .appendTo(fila4);
                 }
@@ -42,27 +42,70 @@ function lista_profile() {
             });
     });
 }
+function aafactura_pdf(contador) {
+    var factura = document.querySelector('tr[contador="' + contador + '"]')?.getAttribute('contador');
+    console.log(factura);
+    fetch('C:/xampp/htdocs/compracasaframework/utils/generar_pdf_copy.php', {
+        //fetch('utils/generar_pdf_copy.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `action=generate_pdf&factura=${factura}`
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Algo ha ido mal.');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const newBlob = new Blob([blob], { type: 'application/pdf' });
+            const url = window.URL.createObjectURL(newBlob);
+            //const a = document.createElement('a');
+            //a.style.display = 'none';
+            //a.href = url;
+            //a.download = 'facturas.pdf';
+            //document.body.appendChild(a);
+            //a.click();
+            //window.URL.revokeObjectURL(url);
+            window.open(url, '_blank');
 
-function factura_pdf(id_vivienda) {
-    // Encuentra la fila de la tabla con el id_vivienda correspondiente
-    var fila = document.querySelector('tr[id_vivienda="' + id_vivienda + '"]');
-    console.log(fila);
-    // var cantidad = fila.querySelector('.facturas-quantity');
-    // var stock = fila.querySelector('.facturas-stock');
-    // var valorActual = parseInt(cantidad.innerText.split(": ")[1]);
-    // var valorStock = parseInt(stock.innerText.split(": ")[1]);
-    // // Incrementa la cantidad pero no la deja subir de 3 ni que sea mayor que el stock
-    // if (valorActual <= (valorStock - 1)) {
-    //     cantidad.innerText = "Cantidad: " + Math.min(3, valorActual + 1);
-    //}
+        })
+        .catch(error => console.error('There was a problem with the fetch operation:', error));
 }
 
+function factura_pdf(contador) {
+    var factura = document.querySelector('tr[contador="' + contador + '"]')?.getAttribute('contador');
+    console.log(factura);
+
+    fetch('http://localhost/compracasaframework/utils/generar_pdf.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `action=generate_pdf&factura=${factura}`
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Algo ha ido mal.');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            window.open(url, '_blank');
+        })
+        .catch(error => console.error('There was a problem with the fetch operation:', error));
+}
+
+
+
 function factura_qr(id_vivienda) {
-    // Encuentra la fila de la tabla con el id_vivienda correspondiente
-    var fila = document.querySelector('tr[id_vivienda="' + id_vivienda + '"]');
-    var cantidad = fila.querySelector('.facturas-quantity');
-    var valorActual = parseInt(cantidad.innerText.split(": ")[1]);
-    cantidad.innerText = "Cantidad: " + Math.max(1, valorActual - 1);
+    // Encuentra la fila de la tabla con la factura correspondiente
+    var factura = document.querySelector('tr[contador="' + contador + '"]')?.getAttribute('contador');
+    console.log(factura);
+
 }
 
 

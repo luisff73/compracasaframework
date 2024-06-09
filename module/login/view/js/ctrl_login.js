@@ -540,7 +540,7 @@ function logout() {
             localStorage.removeItem('id_vivienda_cart');
             localStorage.removeItem('accestoken');
             localStorage.removeItem('refreshtoken');
-
+            toastr.success("Logout Exitoso");
             window.location.href = friendlyURL("?module=home&op=view");
         }).catch(function () {
             console.log('No se ha podido cerrar la sesión');

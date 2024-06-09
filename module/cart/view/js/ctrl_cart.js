@@ -136,21 +136,23 @@ function cierra_carrito() {
                 .then(function (data) {
                     console.log(data);
                     console.log('Datos enviados con éxito');
-                    setTimeout(function () {
-                        toastr["info"]("Compra finalizada correctamente", "Información");
-                        window.location.href = friendlyURL("?module=home&op=view");
-                    }, 1000);
+
                 })
                 .catch(function (error) {
                     console.log(error);
                     console.log('Error al enviar los datos');
                     setTimeout(function () {
-                        toastr["errp"]("No ha sido posible finalizar la compra", "Información");
+                        toastr["error"]("No ha sido posible finalizar la compra", "Información");
                         window.location.href = friendlyURL("?module=home&op=view");
                     }, 1000);
                 });
         }
     });
+
+    setTimeout(function () {
+        toastr["info"]("Compra finalizada correctamente", "Información");
+        window.location.href = friendlyURL("?module=home&op=view");
+    }, 1000);
 
 }
 
