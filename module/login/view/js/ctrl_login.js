@@ -92,7 +92,7 @@ function key_login() {
         login();
     });
 
-    $('#logout').on('click', function (e) {
+    $('#icon-logout').on('click', function (e) {
         e.preventDefault();
         toastr.success("Logout exitoso");
         setTimeout(logout, 1000); //llama la funcion logout

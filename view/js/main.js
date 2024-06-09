@@ -103,16 +103,25 @@ function friendlyURL(url) {
     }
     return "http://localhost/compracasaframework" + link;
 }
+function logout() {
+    ajaxPromise(friendlyURL("?module=login&op=logout", 'POST', 'JSON'))
+        .then(function (data) {
+            localStorage.removeItem('username');
+            localStorage.removeItem('totalcarrito');
+            localStorage.removeItem('id_vivienda_cart');
+            localStorage.removeItem('accestoken');
+            localStorage.removeItem('refreshtoken');
 
+            window.location.href = friendlyURL("?module=home&op=view");
+        }).catch(function () {
+            console.log('No se ha podido cerrar la sesión');
+        });
+}
 
 $(document).ready(function () {
     $('body').on('click', '#logout', function () {
         logout();
     });
-    $('body').on('click', '#des_inf_user', function () {
-        lista_factura();
-    });
-
     load_menu();
     //click_shop();
 
