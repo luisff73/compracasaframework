@@ -149,11 +149,6 @@ function button_profile() {
         window.location.href = friendlyURL('?module=profile&op=view');
     })
 
-    // $('#des_inf_user').on('click', function () {
-
-    //     window.location.href = friendlyURL('?module=profile&op=lista_facturas');
-
-    // })
 }
 
 function remove_filters_search() {

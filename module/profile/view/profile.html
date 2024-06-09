@@ -1,32 +1,84 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subir Archivo con AJAX</title>
+</head>
 
 <body style="margin-top: 150px;">
-
-  <table id="facturas" style="margin:auto;">
-    <thead>
+  <form enctype="multipart/form-data" style="margin-left: 40px;" id="uploadForm">
+    <style>
+      input[type="text"] {
+        border: none;
+      }
+    </style>
+    <table style="border: 1px solid; margin: 10px; width: 90%; padding: 10px;">
       <tr>
-        <th colspan="5">Historico de las Compras realizadas</th>
-
+        <td style="text-align: left; padding-left: 10px;"><label for="username">Username:</label></td>
+        <td><input type="text" name="username" id="username" autocomplete="username"></td>
       </tr>
-
-    </thead>
+      <tr>
+        <td style="text-align: left; padding-left: 10px;"><label for="nombre_txt">Nombre:</label></td>
+        <td><input type="text" name="nombre" id="nombre_txt" value="Jose Miguel" autocomplete="name"></td>
+      </tr>
+      <tr>
+        <td style="text-align: left; padding-left: 10px;"><label for="direccion_txt">Dirección:</label></td>
+        <td><input type="text" name="direccion" id="direccion_txt" value="Calle Real, 54" autocomplete="street-address">
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: left; padding-left: 10px;"><label for="poblacion_txt">Población:</label></td>
+        <td><input type="text" name="poblacion" id="poblacion_txt" value="Fontanars" autocomplete="address-level2"></td>
+      </tr>
+      <tr>
+        <td style="text-align: left; padding-left: 10px;"><label for="provincia_txt">Provincia:</label></td>
+        <td><input type="text" name="provincia" id="provincia_txt" value="Valencia" autocomplete="address-level1"></td>
+      </tr>
+      <tr>
+        <td style="text-align: left; padding-left: 10px;"><label for="telefono_txt">Teléfono:</label></td>
+        <td><input type="text" name="telefono" id="telefono_txt" value="+34 684579862" autocomplete="tel"></td>
+      </tr>
+    </table>
+    <label for="fileToUpload" style="margin-top: 10px;">Cambiar imagen del perfil:</label>
+    <input type="file" name="fileToUpload" id="fileToUpload" autocomplete="off"><br>
+    <input type="submit" value="Actualiza imagen" name="submit" id="submitButton"><br><br>
+  </form>
+  <table id="facturas" style="margin:auto;">
     <tbody style="padding-bottom: 3px;">
-
       <!-- Aquí se agregan las filas con JavaScript -->
-
     </tbody>
     <br>
   </table>
 
-  <!-- <div style="text-align: right; margin-top: 20px;">
-    <button id="cierra_carrito" class="cierra_carrito">Finalizar compra</button>
-  </div> -->
-  <form action="upload.php" method="post" enctype="multipart/form-data">
-    Select image to upload:
-    <input type="file" name="fileToUpload" id="fileToUpload">
-    <input type="submit" value="Upload Image" name="submit">
-  </form>
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', function (event) {
+      event.preventDefault(); // Evitar el comportamiento predeterminado de envío del formulario
 
+      // Crear un objeto FormData para recopilar los datos del formulario
+      var formData = new FormData(this);
+
+      // Obtener el valor del campo username y agregarlo al objeto FormData
+      var username = document.getElementById('username').value;
+      formData.append('username', username);
+      //// aqui añadiriamos modificiaciones de otros campos del usuario
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'http://localhost/compracasaframework/utils/upload.php', true); // URL corregida a una ruta absoluta
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          console.log(xhr.responseText); // Manejar la respuesta del servidor si es necesario
+        } else {
+          console.error('Error al enviar el formulario.'); // Manejar errores
+        }
+      };
+      xhr.onerror = function () {
+        console.error('Error de red al enviar el formulario.'); // Manejar errores de red
+      };
+      xhr.send(formData); // Enviar el formulario
+    });
+  </script>
 </body>
 
 </html>

@@ -50,7 +50,6 @@ function login() {
                     $('.log-icon').empty();
                     $('#des_inf_user').empty();
                     $('<img src="' + data.avatar + '">').appendTo('.log-icon');
-                    // $('<p></p>').attr('id', data.username).appendTo('#des_inf_user')
                     $('#des_inf_user').text(data.username);
 
                     setTimeout(' window.location.href = friendlyURL("?module=shop&op=view"); ', 3000);
@@ -92,11 +91,12 @@ function key_login() {
         login();
     });
 
-    $('#icon-logout').on('click', function (e) {
+    $('#logout').on('click', function (e) {
         e.preventDefault();
         toastr.success("Logout exitoso");
         setTimeout(logout, 1000); //llama la funcion logout
     });
+
 
     $('#google').on('click', function (e) {
         e.preventDefault();

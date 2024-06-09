@@ -10,8 +10,17 @@ function lista_profile() {
         ajaxPromise(friendlyURL("?module=profile&op=lista_facturas"), 'POST', 'JSON', { 'username': username })
             .then(function (data) {
                 $('#facturas').empty();
+                // Agregamos el valor de username al campo del formulario profile
+                $('#username').val(username);
+                $('#facturas').append(`
+                <thead>
+                    <tr>
+                        <th colspan="5">&nbsp;&nbsp;&nbsp;&nbsp;Historico de las Compras realizadas</th>
+                    </tr>
+                </thead>
+            `);
+                let total_facturas = 0;
                 for (row in data) {
-                    //total_facturas += parseInt(data[row].quantity); // suma el total de las viviendas
                     let fila1 = $('<tr class="facturas-row"></tr>').appendTo("#facturas");
                     $('<td class="facturas-img" rowspan="4"><img src="http://localhost/compracasaframework/' + data[row].image_name + '" alt="Imagen de la vivienda"></td>').appendTo(fila1);
                     $('<td class="facturas-name" colspan="2"></td>').text("Descripción: " + data[row].vivienda_name).appendTo(fila1);
@@ -21,25 +30,24 @@ function lista_profile() {
 
                     let fila3 = $('<tr class="facturas-row"></tr>').appendTo("#facturas");
                     $('<td class="facturas-price" colspan="2"></td>').text("Total operación : " + data[row].vivienda_price + " €").appendTo(fila3);
+                    // Sumar el precio de la vivienda al total_facturas
+                    total_facturas += parseInt(data[row].vivienda_price);
 
                     let fila4 = $('<tr class="facturas-row" contador="' + data[row].contador + '"></tr>').appendTo("#facturas");
-                    //$('<td class="facturas-estado"></td>').text(data[row].status).appendTo(fila4);
-                    //$('<td class="facturas-estado"rowspan="2"></td>').text("Compra finalizada").appendTo(fila4);
                     $('<td class="facturas-numero"></td>').text("Factura Numero : " + data[row].contador).appendTo(fila4);
 
                     $('<td class="facturas-actions"></td>')
                         .append('<button class="pdf_button" onclick="factura_pdf(\'' + data[row].contador + '\')">Imprime Factura</button>')
                         .append('<button class="qr_button" onclick="factura_qr(\'' + data[row].contador + '\')">Genera QR</button>')
-                        // .append('<button class="delete-button" onclick="borra_compra(\'' + data[row].id_vivienda + '\', \'' + data[row].username + '\')">Borrar</button>')
                         .appendTo(fila4);
                 }
-                //localStorage.setItem('totalfacturas', total_facturas);
-                //actualizarContadorfacturas()
+                // Agregar el campo sumatorio al final de la tabla
+                $('#facturas').append('<tfoot><tr><td colspan="5"><h3>Total compras cliente: ' + total_facturas + ' €</h3></td></tr></tfoot>');
             })
             .catch(function () {
-
                 console.log('Error en la carga de las facturas');
             });
+
     });
 }
 

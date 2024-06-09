@@ -63,10 +63,18 @@ function load_menu() {
                 $('.log-icon').empty();
                 $('#des_inf_user').empty();
                 $('<img src=' + data[0].avatar + '>').appendTo('.log-icon');
+                // $('<p></p>').attr({ 'id': data[0].username }).appendTo('#des_inf_user')
+                //     .html('<a>' + data[0].username + '<a/>&nbsp;&nbsp;' +
+                //         '<a id="logout"><i id="icon-logout" class="fa-solid fa-right-from-bracket"></i></a>'
+                //     )
+                // Primera parte: Crear y añadir el párrafo con el nombre de usuario
                 $('<p></p>').attr({ 'id': data[0].username }).appendTo('#des_inf_user')
-                    .html('<a>' + data[0].username + '<a/>&nbsp;&nbsp;' +
-                        '<a id="logout"><i id="icon-logout" class="fa-solid fa-right-from-bracket"></i></a>'
-                    )
+                    .html('<a>' + data[0].username + '</a>&nbsp;&nbsp;');
+
+                // Segunda parte: Crear y añadir el enlace de cierre de sesión
+                $('<a></a>').appendTo('#logout')
+                    .html('<i id="logout" class="fa-solid fa-right-from-bracket"></i>');
+
 
             }).catch(function () {
                 //console.log('valor de data en el main error js: ' + data);
@@ -81,7 +89,7 @@ function load_menu() {
     }
 }
 
-$('#icon-logout').on('click', function (e) {
+$('#logout').on('click', function (e) {
     e.preventDefault();
     toastr.success("Logout exitoso");
     setTimeout(logout, 1000); //llama la funcion logout
