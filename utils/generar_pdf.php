@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdf->SetSubject('Facturas Generadas');
         $pdf->SetKeywords('TCPDF, PDF, facturas');
 
-        $logo = 'C:/xampp/htdocs/compracasaframework/view/img/logo_minusvalido_mini.png';
+        $logo = $_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/view/img/logo_minusvalido_mini.png';
         $titulo = 'Fotocasa & Company SL.';
         $subtitulo = 'Calle Alqueria, 24 - 33550 - Oviedo';
         $pdf->SetHeaderData($logo, 10, $titulo, $subtitulo);
@@ -74,12 +74,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
         }
 
-        // Generar y enviar el PDF
-        $pdf->Output('facturas.pdf', 'I'); // 'I' para mostrar en línea, 'D' para descargar, 'F' para guardar en archivo
+        // Guardar el archivo PDF en la carpeta utils/pdf
+        $filename = 'factura_' . $factura . '.pdf';
+        $filePath = $_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/utils/pdf/' . $filename;
+        $pdf->Output($filePath, 'F'); // 'F' para guardar en archivo
 
+        // Devolver la ruta del archivo
+        echo json_encode(['file' => '/compracasaframework/utils/pdf/' . $filename]);
     } else {
-        echo "No se encontraron facturas.";
+        echo json_encode(['error' => 'No se encontraron facturas.']);
     }
 } else {
-    echo "Método no permitido";
+    echo json_encode(['error' => 'Método no permitido']);
 }

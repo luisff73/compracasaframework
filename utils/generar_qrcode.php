@@ -2,26 +2,28 @@
 // Incluir la biblioteca PHP QR Code
 include "vendor/phpqrcode/qrlib.php";
 
-// Definir la ruta donde se guardará la imagen del código QR
-$rutaGuardar = 'qrcodes/';  
+if (isset($_POST['factura'])) {
 
-$nombreArchivo = $rutaGuardar . 'ejemplo_qrcode.png';
+    $factura = $_POST['factura'];
 
-// Verificar si el directorio existe, si no, crearlo
-if (!file_exists($rutaGuardar)) {
-    mkdir($rutaGuardar, 0755, true);
+    // Definir la ruta donde se guardará la imagen del código QR
+    $rutaGuardar = 'qrcodes/';
+
+    // Nombre del archivo con el formato 'factura_<numero_factura>.png'
+    $nombreArchivo = $rutaGuardar . 'factura_' . $factura . '.png';
+
+    // URL de la factura
+    $datos = 'http://localhost/compracasaframework/utils/pdf/factura_' . $factura . '.pdf';
+
+    // Generamos el código QR y lo guardamos en un archivo
+    QRcode::png($datos, $nombreArchivo, QR_ECLEVEL_L, 10);
+
+    // Mostrar la imagen del código QR
+    echo '<img src="http://localhost/compracasaframework/utils/' . $nombreArchivo . '" />';
+
+    // Proporcionar un enlace de descarga opcional
+    echo '<br><a href="http://localhost/compracasaframework/utils/' . $nombreArchivo . '" download>Descargar Código QR</a>';
+} else {
+    // Si no se recibió la variable 'factura', mostrar un mensaje de error
+    echo "Error: No se recibió el número de factura.";
 }
-
-// Los datos que quieres codificar
-$datos = 'https://www.example.com';
-
-// Generar el código QR y guardarlo en un archivo
-QRcode::png($datos, $nombreArchivo, QR_ECLEVEL_L, 10);
-
-// Mostrar la imagen del código QR
-//echo '<img src="' . $nombreArchivo . '" />';
-echo '<img src="http://localhost/compracasaframework/utils/qrcodes' . $nombreArchivo . '" />';
-// Opcionalmente, proporcionar un enlace de descarga
-//echo '<br><a href="' . $nombreArchivo . '" download>Descargar Código QR</a>';
-echo '<br><a href="' . $nombreArchivo . '" download>Descargar Código QR</a>';
-?>

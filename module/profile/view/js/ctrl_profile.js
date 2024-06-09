@@ -42,44 +42,45 @@ function lista_profile() {
             });
     });
 }
-function aafactura_pdf(contador) {
-    var factura = document.querySelector('tr[contador="' + contador + '"]')?.getAttribute('contador');
-    console.log(factura);
-    fetch('C:/xampp/htdocs/compracasaframework/utils/generar_pdf_copy.php', {
-        //fetch('utils/generar_pdf_copy.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `action=generate_pdf&factura=${factura}`
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Algo ha ido mal.');
-            }
-            return response.blob();
-        })
-        .then(blob => {
-            const newBlob = new Blob([blob], { type: 'application/pdf' });
-            const url = window.URL.createObjectURL(newBlob);
-            //const a = document.createElement('a');
-            //a.style.display = 'none';
-            //a.href = url;
-            //a.download = 'facturas.pdf';
-            //document.body.appendChild(a);
-            //a.click();
-            //window.URL.revokeObjectURL(url);
-            window.open(url, '_blank');
-
-        })
-        .catch(error => console.error('There was a problem with the fetch operation:', error));
-}
 
 function factura_pdf(contador) {
     var factura = document.querySelector('tr[contador="' + contador + '"]')?.getAttribute('contador');
     console.log(factura);
 
     fetch('http://localhost/compracasaframework/utils/generar_pdf.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `factura=${factura}`
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Algo ha ido mal.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            const url = 'http://localhost' + data.file;
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `factura_${factura}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => console.error('There was a problem with the fetch operation:', error));
+}
+
+function factura_qr(contador) {
+    // Encuentra la fila de la tabla con la factura correspondiente
+    var factura = document.querySelector('tr[contador="' + contador + '"]')?.getAttribute('contador');
+    console.log(factura);
+    fetch('http://localhost/compracasaframework/utils/generar_qrcode.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -97,14 +98,8 @@ function factura_pdf(contador) {
             window.open(url, '_blank');
         })
         .catch(error => console.error('There was a problem with the fetch operation:', error));
-}
 
 
-
-function factura_qr(id_vivienda) {
-    // Encuentra la fila de la tabla con la factura correspondiente
-    var factura = document.querySelector('tr[contador="' + contador + '"]')?.getAttribute('contador');
-    console.log(factura);
 
 }
 
