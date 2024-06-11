@@ -77,7 +77,6 @@ function load_menu() {
 
 
             }).catch(function () {
-                //console.log('valor de data en el main error js: ' + data);
                 console.log("Error al cargar los datos del user");
                 //console.log(data);
             });

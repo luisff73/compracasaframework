@@ -32,6 +32,12 @@ class controller_login
     {
         common::load_view('top_page_login.html', VIEW_PATH_LOGIN . 'recover_pass.html');
     }
+    function end_register()
+    {
+        common::load_view('top_page_login.html', VIEW_PATH_LOGIN . 'end_register.html');
+    }
+
+
     function register()
     {
         echo json_encode(common::load_model('login_model', 'register', [$_POST['username_reg'], $_POST['passwd1_reg'], $_POST['passwd2_reg'], $_POST['email_reg']]));

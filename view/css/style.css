@@ -1232,6 +1232,7 @@ footer {
   height: 150px;
   border-radius: 8px;
   object-fit: cover;
+  margin: 10px;
 }
 
 #facturas td.facturas-name,
@@ -1267,8 +1268,90 @@ footer {
 
 }
 
+#facturas td.facturas-actions {
+  display: flex;
+  justify-content: center;
+}
+
 #facturas td.facturas-actions button.pdf_button,
 #facturas td.facturas-actions button.qr_button {
+  font-size: 16px;
+  flex: 1;
+  margin: 0 5px;
+}
+
+/* Estilos para la tabla de likes */
+#likes {
+  width: 80%;
+  border-collapse: collapse;
+  background-color: #e4e4e4;
+  border: 2 px solid #1a1a1a;
+}
+
+#likes tr.likes-row {
+  background-color: #ffffff;
+
+  border-radius: 8px;
+
+}
+
+#likes td {
+  border: 2 px solid #1a1a1a;
+  vertical-align: middle;
+
+}
+
+#likes th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #525151;
+  color: white;
+  border: 2 px solid #1a1a1a;
+}
+
+#likes td.likes-img img {
+  width: 150px;
+  height: 150px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+#likes td.likes-name,
+#likes td.likes-quantity,
+#likes td.likes-price,
+#likes td.likes-estado {
+  color: #333333;
+  font-weight: 400;
+}
+
+#likes td.likes-actions button {
+  background-color: #e0e0e0;
+  color: #333333;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  margin-right: 8px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  width: 50%;
+
+}
+
+#likes td.likes-actions button:hover {
+  background-color: #d0d0d0;
+}
+
+.likes-estado {
+  font-weight: bold;
+  font-size: 16px;
+
+
+}
+
+#likes td.likes-actions button.pdf_button,
+#likes td.likes-actions button.qr_button {
   font-size: 16px;
 
   display: flex;

@@ -68,8 +68,7 @@ function ajaxForSearch(url, type, dataType, sData = undefined, offset = 0, items
                             "</table>" +
                             "<div class='buttons'>" +
                             "<button id='" + data[row].id_vivienda + "' class='detalles_inmueble button add' >Detalles</button>" +
-                            "<button id='" + data[row].id_vivienda + "' data-id='" + data[row].id_vivienda + "' class='button_cesta' >Añadir a la cesta</button>" +
-                            // "<button class='button buy' >Comprar</button>" + "&nbsp;&nbsp;&nbsp;" +
+                            "<button id='" + data[row].id_vivienda + "' data-id='" + data[row].id_vivienda + "'class='detalles_inmueble button cesta' >Añadir a la cesta</button>" +
                             "<li id='boton_like' data-id-vivienda='" + data[row].id_vivienda + "'><i id='col-ico' class='image'></i>&nbsp;&nbsp;&nbsp;" + resultlike + "</li>" +
                             "<h1><b><span class='button' id='price'>" + data[row].vivienda_price + ' €' + "</span></b></h1>" +
 
@@ -848,6 +847,8 @@ $(document).ready(function () {
     filter_button();
     pagination();
     click_like();
+    loadDetails();
+
 
 });
 

@@ -70,7 +70,7 @@ function lista_like() {
                 let total_likes = 0;
                 for (row in data) {
                     let fila1 = $('<tr class="likes-row"></tr>').appendTo("#likes");
-                    $('<td class="likes-img" rowspan="4"><img src="http://localhost/compracasaframework/' + data[row].image_name + '" alt="Imagen de la vivienda"></td>').appendTo(fila1);
+                    $('<td class="likes-img" rowspan="4"><img style="margin: 10px;" src="http://localhost/compracasaframework/' + data[row].image_name + '" alt="Imagen de la vivienda"></td>').appendTo(fila1);
                     $('<td class="likes-name" colspan="2"></td>').text("Descripción: " + data[row].description).appendTo(fila1);
 
                     let fila2 = $('<tr class="likes-row" id_vivienda="' + data[row].id_vivienda + '"></tr>').appendTo("#likes");
@@ -78,14 +78,13 @@ function lista_like() {
 
                     let fila3 = $('<tr class="likes-row"></tr>').appendTo("#likes");
                     $('<td class="likes-price" colspan="2"></td>').text("Precio actual : " + data[row].vivienda_price + " €").appendTo(fila3);
-                    // Sumar el precio de la vivienda al total_likes
-                    total_likes += parseInt(data[row].vivienda_price);
+                    total_likes++;
 
                     let fila4 = $('<tr class="likes-row" contador="' + data[row].vivienda_name + '"></tr>').appendTo("#likes");
                     $('<td class="likes-numero"></td>').text("Solo quedan : " + data[row].stock).appendTo(fila4);
                 }
                 // Agregar el campo sumatorio al final de la tabla
-                $('#likes').append('<tfoot><tr><td colspan="5"><h3>Total likes: ' + total_likes + ' €</h3></td></tr></tfoot>');
+                $('#likes').append('<tfoot><tr><td colspan="5"><h3 style="margin-left: 10px;">Total likes: ' + total_likes + '</h3></td></tr></tfoot>');
             })
             .catch(function () {
                 console.log('Error en la carga de las likes');
@@ -97,7 +96,13 @@ function lista_like() {
 
 function factura_pdf(contador) {
     var factura = document.querySelector('tr[contador="' + contador + '"]')?.getAttribute('contador');
-    console.log(factura);
+    //console.log(factura);
+    // acabar mas adelante para no usar el fetch y seguir la logica de la aplicacion
+    // ajaxPromise(friendlyURL("?module=profile&op=generar_pdf"), 'POST', 'JSON', { 'factura': factura })
+
+    // .then(function (data) {
+    //     console.log(data);
+    //     // if (data.error) {
 
     fetch('http://localhost/compracasaframework/utils/generar_pdf.php', {
         method: 'POST',
@@ -116,7 +121,9 @@ function factura_pdf(contador) {
             if (data.error) {
                 throw new Error(data.error);
             }
-            const url = 'http://localhost' + data.file;
+            console.log(data);
+            //const url = 'http://localhost' + data.file;
+            const url = data.file;
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
@@ -128,10 +135,11 @@ function factura_pdf(contador) {
         .catch(error => console.error('There was a problem with the fetch operation:', error));
 }
 
+
 function factura_qr(contador) {
     // Encuentra la fila de la tabla con la factura correspondiente
     var factura = document.querySelector('tr[contador="' + contador + '"]')?.getAttribute('contador');
-    console.log(factura);
+    //console.log(factura);
     fetch('http://localhost/compracasaframework/utils/generar_qrcode.php', {
         method: 'POST',
         headers: {

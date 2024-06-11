@@ -1,17 +1,41 @@
 
 
+// function click_compra_antigua() {
+//     $(document).on('click', '.detalles_inmueble.button.cesta', function () {
+//         console.log("click");
+//         var id_vivienda = $(this).attr('id');
+
+//         localStorage.setItem('id_vivienda_cart', id_vivienda);
+
+//         let totalCarrito = parseInt(localStorage.getItem('totalcarrito')) || 0;
+//         totalCarrito += 1;
+//         localStorage.setItem('totalcarrito', totalCarrito);
+//         actualizarContadorCarrito()
+
+
+//         if (localStorage.getItem('accestoken') == null) {
+//             toastr["info"]("Debes estar logeado para comprar una vivienda", "Control de acceso")
+
+//             setTimeout(function () {
+//                 window.location.href = friendlyURL("?module=login&op=view");
+//             }, 3000);
+//         }
+//         let username = localStorage.getItem('username');
+//         console.log(id_vivienda);
+//         console.log(username);
+//         //ajaxPromise(friendlyURL('?module=cart&op=agrega_carrito'), 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken }) //enviamos el id_vivienda y el accesstoken para decodificar el usuario
+//         ajaxPromise('?module=cart&op=agrega_carrito', 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'username': username }) //provisional
+
+//             .then(function (data) {
+//                 //console.log(data);
+//                 console.log('Vivienda agregada correctamente al carrito');
+//             })
+//             .catch(function () {
+//                 console.log('Error al agregar la vivienda');
+//             });
+//     });
 function click_compra() {
-    $(document).on('click', '.button_cesta', function () {
-        console.log("click");
-        var id_vivienda = $(this).attr('id');
-
-        localStorage.setItem('id_vivienda_cart', id_vivienda);
-
-        let totalCarrito = parseInt(localStorage.getItem('totalcarrito')) || 0;
-        totalCarrito += 1;
-        localStorage.setItem('totalcarrito', totalCarrito);
-        actualizarContadorCarrito()
-
+    $(document).on('click', '.detalles_inmueble.button.cesta', function () {
 
         if (localStorage.getItem('accestoken') == null) {
             toastr["info"]("Debes estar logeado para comprar una vivienda", "Control de acceso")
@@ -19,62 +43,81 @@ function click_compra() {
             setTimeout(function () {
                 window.location.href = friendlyURL("?module=login&op=view");
             }, 3000);
+            return; // Si no hay 'accestoken', terminamos la ejecución aquí.
         }
+        var id_vivienda = $(this).attr('id');
+        localStorage.setItem('id_vivienda_cart', id_vivienda);
+
+        let totalCarrito = parseInt(localStorage.getItem('totalcarrito')) || 0;
+        totalCarrito += 1;
+        localStorage.setItem('totalcarrito', totalCarrito);
+        actualizarContadorCarrito()
+
         let username = localStorage.getItem('username');
         console.log(id_vivienda);
         console.log(username);
         //ajaxPromise(friendlyURL('?module=cart&op=agrega_carrito'), 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'accestoken': accestoken }) //enviamos el id_vivienda y el accesstoken para decodificar el usuario
-        ajaxPromise('?module=cart&op=agrega_carrito', 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'username': username }) //provisional
+        ajaxPromise(friendlyURL('?module=cart&op=agrega_carrito'), 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'username': username }) //provisional
 
             .then(function (data) {
                 //console.log(data);
-                console.log('Vivienda agregada correctamente al carrito');
+                toastr["info"]("Vivienda agregada correctamente al carrito", "Cesta compra")
+                //console.log('Vivienda agregada correctamente al carrito');
             })
             .catch(function () {
                 console.log('Error al agregar la vivienda');
             });
     });
 
-
 }
 
 function lista_carrito() {
-    $(document).on('click', '#btn_carrito', function () {
-        let username = localStorage.getItem('username');
-        let total_carrito = 0
+    $(document).ready(function () {
+        $('body').on('click', '#btn_carrito', function () {
+            console.log('has echo click en carrito');
+            let username = localStorage.getItem('username');
+            let total_carrito = 0
 
 
-        ajaxPromise(friendlyURL("?module=cart&op=lista_carrito"), 'POST', 'JSON', { 'username': username })
-            .then(function (data) {
-                $('#carrito').empty();
-                for (row in data) {
-                    total_carrito += parseInt(data[row].quantity); // suma el total de las viviendas
-                    let fila1 = $('<tr class="carrito-row"></tr>').appendTo("#carrito");
-                    $('<td class="carrito-img" rowspan="4"><img src="http://localhost/compracasaframework/' + data[row].image_name + '" alt="Imagen de la vivienda"></td>').appendTo(fila1);
-                    $('<td class="carrito-name" colspan="2"></td>').text("Descripción: " + data[row].vivienda_name).appendTo(fila1);
+            ajaxPromise(friendlyURL("?module=cart&op=lista_carrito"), 'POST', 'JSON', { 'username': username })
+                .then(function (data) {
+                    $('#carrito').empty();
+                    $('#carrito').append(`
+                    <thead>
+                        <tr>
+                            <th colspan="5">Detalle del Carrito</th>
+                        </tr>
+                    </thead>
+                `);
+                    for (row in data) {
+                        total_carrito += parseInt(data[row].quantity); // suma el total de las viviendas
+                        let fila1 = $('<tr class="carrito-row"></tr>').appendTo("#carrito");
+                        $('<td class="carrito-img" rowspan="4"><img src="http://localhost/compracasaframework/' + data[row].image_name + '" alt="Imagen de la vivienda"></td>').appendTo(fila1);
+                        $('<td class="carrito-name" colspan="2"></td>').text("Descripción: " + data[row].vivienda_name).appendTo(fila1);
 
-                    let fila2 = $('<tr class="carrito-row" id_vivienda="' + data[row].id_vivienda + '"></tr>').appendTo("#carrito");
-                    $('<td class="carrito-quantity"></td>').text("Cantidad: " + data[row].quantity).appendTo(fila2);
-                    $('<td class="carrito-stock"></td>').text("Stock: " + data[row].stock).appendTo(fila2);
+                        let fila2 = $('<tr class="carrito-row" id_vivienda="' + data[row].id_vivienda + '"></tr>').appendTo("#carrito");
+                        $('<td class="carrito-quantity"></td>').text("Cantidad: " + data[row].quantity).appendTo(fila2);
+                        $('<td class="carrito-stock"></td>').text("Stock: " + data[row].stock).appendTo(fila2);
 
-                    let fila3 = $('<tr class="carrito-row"></tr>').appendTo("#carrito");
-                    $('<td class="carrito-price" colspan="2"></td>').text("Precio : " + data[row].vivienda_price + " €").appendTo(fila3);
+                        let fila3 = $('<tr class="carrito-row"></tr>').appendTo("#carrito");
+                        $('<td class="carrito-price" colspan="2"></td>').text("Precio : " + data[row].vivienda_price + " €").appendTo(fila3);
 
-                    let fila4 = $('<tr class="carrito-row"></tr>').appendTo("#carrito");
-                    $('<td class="carrito-estado"></td>').text(data[row].status).appendTo(fila4);
-                    $('<td class="carrito-actions"></td>')
-                        .append('<button class="increment-button" onclick="incrementar(\'' + data[row].id_vivienda + '\')">+</button>')
-                        .append('<button class="decrement-button" onclick="decrementar(\'' + data[row].id_vivienda + '\')">-</button>')
-                        .append('<button class="delete-button" onclick="borra_compra(\'' + data[row].id_vivienda + '\', \'' + data[row].username + '\')">Borrar</button>')
-                        .appendTo(fila4);
-                }
-                localStorage.setItem('totalcarrito', total_carrito);
-                actualizarContadorCarrito()
-            })
-            .catch(function () {
+                        let fila4 = $('<tr class="carrito-row"></tr>').appendTo("#carrito");
+                        $('<td class="carrito-estado"></td>').text(data[row].status).appendTo(fila4);
+                        $('<td class="carrito-actions"></td>')
+                            .append('<button class="increment-button" onclick="incrementar(\'' + data[row].id_vivienda + '\')">+</button>')
+                            .append('<button class="decrement-button" onclick="decrementar(\'' + data[row].id_vivienda + '\')">-</button>')
+                            .append('<button class="delete-button" onclick="borra_compra(\'' + data[row].id_vivienda + '\', \'' + data[row].username + '\')">Borrar</button>')
+                            .appendTo(fila4);
+                    }
+                    localStorage.setItem('totalcarrito', total_carrito);
+                    actualizarContadorCarrito()
+                })
+                .catch(function () {
 
-                console.log('Error en la carga del carrito');
-            });
+                    console.log('Error en la carga del carrito');
+                });
+        });
     });
 }
 
@@ -104,22 +147,19 @@ function borra_compra(id_vivienda, username) {
     let totalCarrito = parseInt(localStorage.getItem('totalcarrito')) || 0;
     totalCarrito -= 1;
     localStorage.setItem('totalcarrito', totalCarrito);
-    actualizarContadorCarrito()
+
 
     ajaxPromise(friendlyURL('?module=cart&op=borra_vivienda'), 'POST', 'JSON', { 'id_vivienda': id_vivienda, 'username': username })
 
         .then(function (data) {
+            actualizarContadorCarrito()
             toastr.options.timeOut = 3000;
             toastr.success("Vivienda borrada correctamente");
-            setTimeout(location.reload, 3900);
-            setTimeout('window.location.href = friendlyURL("?module=cart&op=view"); ', 4000);
-
-
-            //location.reload();
+            setTimeout(location.reload, 2000);
         })
         .catch(function (data) {
             console.log(data)
-            console.log('Error al agregar la vivienda');
+            console.log('Error al borrar la vivienda');
         });
 
 }
@@ -189,4 +229,5 @@ $(document).ready(function () {
 
 
 });
+
 

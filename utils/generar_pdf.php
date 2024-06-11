@@ -77,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Guardar el archivo PDF en la carpeta utils/pdf
         $filename = 'factura_' . $factura . '.pdf';
         $filePath = $_SERVER['DOCUMENT_ROOT'] . '/compracasaframework/utils/pdf/' . $filename;
+        //$filePath = 'https://drive.google.com/drive/folders/1uHTmNPGU-r5l7yz4XVqgHriA1A56yQL-/' . $filename;
         $pdf->Output($filePath, 'F'); // 'F' para guardar en archivo
 
         // Devolver la ruta del archivo

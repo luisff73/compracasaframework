@@ -299,3 +299,48 @@ a {
 .social_login * {
     border: 2px solid transparent;
 }
+
+.end_register_html {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    padding: 20px 70px 20px 70px;
+    background: rgba(158, 158, 158, 0.9);
+    border-radius: 20px;
+}
+
+.end_register_html form {
+    min-height: 345px;
+    position: relative;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.end_register_html .group {
+    margin-bottom: 15px;
+}
+
+.end_register_html .label,
+.end_register_html .input,
+.end_register_html .button {
+    width: 100%;
+    color: #fff;
+    display: block;
+}
+
+.end_register_html .input,
+.end_register_html .button {
+    border: none;
+    padding: 5px 20px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.468);
+}
+
+.end_register_html .label {
+    color: white;
+    font-size: 14px;
+}
+
+.end_register_html .button {
+    background: #595959;
+}

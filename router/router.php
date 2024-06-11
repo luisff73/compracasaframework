@@ -47,7 +47,8 @@ class router
             if ($_GET['module'] == 'login' && $_GET['op'] == 'verify_email') {
 
                 //$this ->uriFunction ='verify_email';    
-                $this->uriFunction = 'view';
+                //$this->uriFunction = 'view';
+                $this->uriFunction = 'end_register';
             } else if ($_GET['op'] === 'recover_email') {
                 $this->uriFunction = 'recover_view';
             } else {

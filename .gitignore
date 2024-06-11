@@ -3,3 +3,4 @@
 /utils/vendor
 composer.lock
 view/js/credentials.js
+utils/uploads

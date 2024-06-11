@@ -1,9 +1,9 @@
 <?php
 
-$host = 'localhost'; // reemplaza con tu host
-$dbname = 'fotocasa'; // reemplaza con el nombre de tu base de datos
-$user = 'root'; // reemplaza con tu usuario
-$pass = ''; // reemplaza con tu contraseña
+$host = 'localhost';
+$dbname = 'fotocasa';
+$user = 'root';
+$pass = '';
 
 $db = new mysqli($host, $user, $pass, $dbname);
 

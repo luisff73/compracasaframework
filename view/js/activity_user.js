@@ -46,6 +46,8 @@ function logout_auto() {
             localStorage.removeItem('id_vivienda_cart');
             localStorage.removeItem('accestoken');
             localStorage.removeItem('refreshtoken');
+            $('.log-icon').empty();
+
             window.location.href = friendlyURL("index.php?module=login&op=view");
         }).catch(function () {
             console.log('Something has occured');
