@@ -51,6 +51,50 @@ function lista_profile() {
     });
 }
 
+function lista_like() {
+    $(document).on('click', '#des_inf_user', function () {
+        let username = localStorage.getItem('username');
+
+        ajaxPromise(friendlyURL("?module=profile&op=lista_likes"), 'POST', 'JSON', { 'username': username })
+            .then(function (data) {
+                $('#likes').empty();
+                // Agregamos el valor de username al campo del formulario profile
+                $('#username').val(username);
+                $('#likes').append(`
+                <thead>
+                    <tr>
+                        <th colspan="5">&nbsp;&nbsp;&nbsp;&nbsp;Sabemos que te gustan.......</th>
+                    </tr>
+                </thead>
+            `);
+                let total_likes = 0;
+                for (row in data) {
+                    let fila1 = $('<tr class="likes-row"></tr>').appendTo("#likes");
+                    $('<td class="likes-img" rowspan="4"><img src="http://localhost/compracasaframework/' + data[row].image_name + '" alt="Imagen de la vivienda"></td>').appendTo(fila1);
+                    $('<td class="likes-name" colspan="2"></td>').text("Descripción: " + data[row].description).appendTo(fila1);
+
+                    let fila2 = $('<tr class="likes-row" id_vivienda="' + data[row].id_vivienda + '"></tr>').appendTo("#likes");
+                    // $('<td class="likes-quantity" colspan="2"</td>').text("Cantidad comprada: " + data[row].quantity).appendTo(fila2);
+
+                    let fila3 = $('<tr class="likes-row"></tr>').appendTo("#likes");
+                    $('<td class="likes-price" colspan="2"></td>').text("Precio actual : " + data[row].vivienda_price + " €").appendTo(fila3);
+                    // Sumar el precio de la vivienda al total_likes
+                    total_likes += parseInt(data[row].vivienda_price);
+
+                    let fila4 = $('<tr class="likes-row" contador="' + data[row].vivienda_name + '"></tr>').appendTo("#likes");
+                    $('<td class="likes-numero"></td>').text("Solo quedan : " + data[row].stock).appendTo(fila4);
+                }
+                // Agregar el campo sumatorio al final de la tabla
+                $('#likes').append('<tfoot><tr><td colspan="5"><h3>Total likes: ' + total_likes + ' €</h3></td></tr></tfoot>');
+            })
+            .catch(function () {
+                console.log('Error en la carga de las likes');
+            });
+
+    });
+}
+
+
 function factura_pdf(contador) {
     var factura = document.querySelector('tr[contador="' + contador + '"]')?.getAttribute('contador');
     console.log(factura);

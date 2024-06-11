@@ -20,4 +20,12 @@
         <name>cierra_carrito</name>
         <uri>cierra_carrito</uri>
     </function>
+    <function>
+        <name>lista_likes</name>
+        <uri>lista_likes</uri>
+    </function>
+    <function>
+        <name>generar_pdf</name>
+        <uri>generar_pdf</uri>
+    </function>
 </functions>

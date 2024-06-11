@@ -31,4 +31,11 @@ class profile_dao
         return $db->listar($stmt);
         //return $sql;
     }
+    public function genera_pdf($db, $username)  /// ojo que este select no es
+    {
+        $sql = "SELECT v.vivienda_name, v.description, v.image_name, v.vivienda_price, v.stock FROM viviendas v, likes l where v.id_vivienda=l.id_vivienda and l.id_username='$username'";
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+        //return $sql;
+    }
 }

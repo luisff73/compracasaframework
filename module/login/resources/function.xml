@@ -66,5 +66,8 @@
         <name>token_expires</name>
         <uri>token_expires</uri>
     </function>
-
+    <function>
+        <name>end_register</name>
+        <uri>end_register</uri>
+    </function>
 </functions>
