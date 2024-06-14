@@ -4,3 +4,4 @@
 composer.lock
 view/js/credentials.js
 utils/uploads
+utils/pdf
